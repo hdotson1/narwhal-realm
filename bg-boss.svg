@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="arena" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e0002"/>
+      <stop offset="40%" stop-color="#120004"/>
+      <stop offset="100%" stop-color="#080002"/>
+    </linearGradient>
+    <radialGradient id="dangerGlow" cx="50%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="#ff0022" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#080002" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="metalSheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="50%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#111111"/>
+    </linearGradient>
+    <pattern id="grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <rect width="40" height="40" fill="none"/>
+      <path d="M0 0 L40 0 L40 40 L0 40 Z" stroke="#1a0004" stroke-width="0.5" fill="none"/>
+      <path d="M20 0 L20 40 M0 20 L40 20" stroke="#150003" stroke-width="0.3" fill="none"/>
+    </pattern>
+  </defs>
+
+  <!-- Base dark arena -->
+  <rect width="800" height="600" fill="url(#arena)"/>
+
+  <!-- Metal floor grid -->
+  <rect width="800" height="600" fill="url(#grid)" opacity="0.5"/>
+
+  <!-- Danger glow from above (boss approach) -->
+  <ellipse cx="400" cy="180" rx="400" ry="220" fill="url(#dangerGlow)"/>
+
+  <!-- Top section: boss track area - metallic ceiling -->
+  <rect x="0" y="0" width="800" height="80" fill="url(#metalSheen)" opacity="0.7"/>
+  <!-- Ceiling rivets / bolts -->
+  <g fill="#2a0008" opacity="0.6">
+    <circle cx="40"  cy="20" r="4"/>
+    <circle cx="40"  cy="55" r="4"/>
+    <circle cx="120" cy="20" r="4"/>
+    <circle cx="120" cy="55" r="4"/>
+    <circle cx="200" cy="20" r="4"/>
+    <circle cx="200" cy="55" r="4"/>
+    <circle cx="280" cy="20" r="4"/>
+    <circle cx="280" cy="55" r="4"/>
+    <circle cx="360" cy="20" r="4"/>
+    <circle cx="360" cy="55" r="4"/>
+    <circle cx="440" cy="20" r="4"/>
+    <circle cx="440" cy="55" r="4"/>
+    <circle cx="520" cy="20" r="4"/>
+    <circle cx="520" cy="55" r="4"/>
+    <circle cx="600" cy="20" r="4"/>
+    <circle cx="600" cy="55" r="4"/>
+    <circle cx="680" cy="20" r="4"/>
+    <circle cx="680" cy="55" r="4"/>
+    <circle cx="760" cy="20" r="4"/>
+    <circle cx="760" cy="55" r="4"/>
+  </g>
+
+  <!-- Left wall panel -->
+  <rect x="0" y="80" width="55" height="520" fill="url(#metalSheen)" opacity="0.55"/>
+  <rect x="0" y="80" width="55" height="520" fill="#1a0004" opacity="0.3"/>
+  <!-- Left wall warning stripes -->
+  <g opacity="0.55">
+    <rect x="0" y="100" width="55" height="18" fill="#ff2200"/>
+    <rect x="0" y="136" width="55" height="18" fill="#111111"/>
+    <rect x="0" y="172" width="55" height="18" fill="#ff2200"/>
+    <rect x="0" y="208" width="55" height="18" fill="#111111"/>
+    <rect x="0" y="244" width="55" height="18" fill="#ff2200"/>
+    <rect x="0" y="280" width="55" height="18" fill="#111111"/>
+    <rect x="0" y="316" width="55" height="18" fill="#ff2200"/>
+    <rect x="0" y="352" width="55" height="18" fill="#111111"/>
+    <rect x="0" y="388" width="55" height="18" fill="#ff2200"/>
+    <rect x="0" y="424" width="55" height="18" fill="#111111"/>
+    <rect x="0" y="460" width="55" height="18" fill="#ff2200"/>
+    <rect x="0" y="496" width="55" height="18" fill="#111111"/>
+    <rect x="0" y="532" width="55" height="18" fill="#ff2200"/>
+    <rect x="0" y="568" width="55" height="18" fill="#111111"/>
+  </g>
+
+  <!-- Right wall panel -->
+  <rect x="745" y="80" width="55" height="520" fill="url(#metalSheen)" opacity="0.55"/>
+  <rect x="745" y="80" width="55" height="520" fill="#1a0004" opacity="0.3"/>
+  <!-- Right wall warning stripes -->
+  <g opacity="0.55">
+    <rect x="745" y="100" width="55" height="18" fill="#ff2200"/>
+    <rect x="745" y="136" width="55" height="18" fill="#111111"/>
+    <rect x="745" y="172" width="55" height="18" fill="#ff2200"/>
+    <rect x="745" y="208" width="55" height="18" fill="#111111"/>
+    <rect x="745" y="244" width="55" height="18" fill="#ff2200"/>
+    <rect x="745" y="280" width="55" height="18" fill="#111111"/>
+    <rect x="745" y="316" width="55" height="18" fill="#ff2200"/>
+    <rect x="745" y="352" width="55" height="18" fill="#111111"/>
+    <rect x="745" y="388" width="55" height="18" fill="#ff2200"/>
+    <rect x="745" y="424" width="55" height="18" fill="#111111"/>
+    <rect x="745" y="460" width="55" height="18" fill="#ff2200"/>
+    <rect x="745" y="496" width="55" height="18" fill="#111111"/>
+    <rect x="745" y="532" width="55" height="18" fill="#ff2200"/>
+    <rect x="745" y="568" width="55" height="18" fill="#111111"/>
+  </g>
+
+  <!-- Floor: industrial metal grating -->
+  <rect x="0" y="550" width="800" height="50" fill="#0e0002" opacity="0.85"/>
+  <!-- Floor grate lines -->
+  <g stroke="#1a0004" stroke-width="1" opacity="0.5">
+    <line x1="55"  y1="550" x2="55"  y2="600"/>
+    <line x1="110" y1="550" x2="110" y2="600"/>
+    <line x1="165" y1="550" x2="165" y2="600"/>
+    <line x1="220" y1="550" x2="220" y2="600"/>
+    <line x1="275" y1="550" x2="275" y2="600"/>
+    <line x1="330" y1="550" x2="330" y2="600"/>
+    <line x1="385" y1="550" x2="385" y2="600"/>
+    <line x1="440" y1="550" x2="440" y2="600"/>
+    <line x1="495" y1="550" x2="495" y2="600"/>
+    <line x1="550" y1="550" x2="550" y2="600"/>
+    <line x1="605" y1="550" x2="605" y2="600"/>
+    <line x1="660" y1="550" x2="660" y2="600"/>
+    <line x1="715" y1="550" x2="715" y2="600"/>
+  </g>
+
+  <!-- Danger triangle symbols -->
+  <g opacity="0.35" fill="none" stroke="#ff4400" stroke-width="2">
+    <!-- Left symbol -->
+    <polygon points="27,400 10,430 44,430"/>
+    <line x1="27" y1="412" x2="27" y2="423"/>
+    <circle cx="27" cy="427" r="1.5" fill="#ff4400" stroke="none"/>
+    <!-- Right symbol -->
+    <polygon points="773,400 756,430 790,430"/>
+    <line x1="773" y1="412" x2="773" y2="423"/>
+    <circle cx="773" cy="427" r="1.5" fill="#ff4400" stroke="none"/>
+  </g>
+
+  <!-- Arena center crack lines (battle damage) -->
+  <path d="M380 200 L370 280 L390 320 L375 380 L395 420" stroke="#330004" stroke-width="2" fill="none" opacity="0.4"/>
+  <path d="M410 230 L425 310 L405 350 L420 410" stroke="#290003" stroke-width="1.5" fill="none" opacity="0.35"/>
+  <path d="M320 350 L350 340 L390 355 L430 348 L460 360" stroke="#2a0004" stroke-width="1.5" fill="none" opacity="0.35"/>
+
+  <!-- Electric spark accents (corners) -->
+  <g opacity="0.3" stroke="#ff4400" stroke-width="1" fill="none">
+    <path d="M55 80 L70 95 L60 105 L75 120"/>
+    <path d="M745 80 L730 95 L740 105 L725 120"/>
+    <path d="M55 550 L70 535 L60 525 L75 510"/>
+    <path d="M745 550 L730 535 L740 525 L725 510"/>
+  </g>
+
+  <!-- Atmospheric red tint at edges -->
+  <rect x="0"   y="0" width="12" height="600" fill="#ff0000" opacity="0.06"/>
+  <rect x="788" y="0" width="12" height="600" fill="#ff0000" opacity="0.06"/>
+  <rect x="0"   y="0" width="800" height="10" fill="#ff0000" opacity="0.06"/>
+  <rect x="0" y="590" width="800" height="10" fill="#ff0000" opacity="0.06"/>
+</svg>

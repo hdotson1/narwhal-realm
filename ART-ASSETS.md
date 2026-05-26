@@ -1,7 +1,25 @@
 # Art Assets
 
-All assets are PNG with transparency. The game canvas is 800×600 px.  
-Placeholders (copies of the originals) are already in place so the game runs immediately.
+All assets are PNG with transparency unless noted. The game canvas is 800×600 px.  
+Placeholders are already in place so the game runs immediately.
+
+---
+
+## Realm Backgrounds — 800×600 px each
+
+Full-canvas background scene for each realm. Delivered as **SVG or PNG** (no transparency needed — the file is always drawn edge-to-edge). The game composites a 50%-opacity dark gradient on top, so the image shows through as an atmospheric layer underneath the action.
+
+Draw each scene as a **wide establishing shot** of the realm environment. Keep important foreground detail sparse near the vertical center of the canvas — that is where most gameplay happens.
+
+| File | Realm | Mood & palette | Scene ideas |
+|---|---|---|---|
+| `bg-hub.svg` | Hub Realm | Calm ocean blues / `#003366` → `#001833` | Sunlit underwater plaza; light rays, coral, gentle bubbles, distant seabed |
+| `bg-water.svg` | Water Realm | Deep ocean / `#001428` → `#000a18` | Crushing deep sea; bioluminescent life, hydrothermal vents, rocky trenches |
+| `bg-fire.svg` | Fire Realm | Volcanic / `#220800` → `#110300` | Lava fields; glowing cracks in black rock, ember showers, distant volcanic peaks |
+| `bg-earth.svg` | Earth Realm | Ancient forest / `#071400` → `#030a00` | Dense dark woodland; gnarled tree canopy, glowing mushrooms, root-covered floor |
+| `bg-air.svg` | Air Realm | Storm sky / `#0a0a22` → `#060614` | High-altitude storm clouds; stars visible above, wind streaks, lightning in the distance |
+| `bg-void.svg` | Void Realm | Deep space / `#0e000e` → `#060006` | Cosmic void; star field, purple nebula wisps, jagged dimensional rifts |
+| `bg-boss.svg` | Boss Arena | Industrial danger / `#120004` → `#080002` | Dark metal arena; warning stripe walls, floor grating, atmospheric red edge lighting |
 
 ---
 

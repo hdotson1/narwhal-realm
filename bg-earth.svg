@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="forest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#040d00"/>
+      <stop offset="40%" stop-color="#071400"/>
+      <stop offset="100%" stop-color="#030a00"/>
+    </linearGradient>
+    <radialGradient id="forestFloor" cx="50%" cy="100%" r="50%">
+      <stop offset="0%" stop-color="#1a4400" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#030a00" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mushroomGlow1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#44ff44" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#44ff44" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mushroomGlow2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#88ff00" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#88ff00" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Base dark forest -->
+  <rect width="800" height="600" fill="url(#forest)"/>
+
+  <!-- Forest floor glow -->
+  <ellipse cx="400" cy="600" rx="500" ry="200" fill="url(#forestFloor)"/>
+
+  <!-- Background tree canopy silhouettes (far back, subtle) -->
+  <!-- Far tree line top -->
+  <rect x="0" y="0" width="800" height="120" fill="#030800" opacity="0.6"/>
+  <!-- Canopy shape top-left -->
+  <ellipse cx="80" cy="50" rx="90" ry="70" fill="#030d00" opacity="0.8"/>
+  <ellipse cx="200" cy="30" rx="110" ry="80" fill="#040e00" opacity="0.75"/>
+  <ellipse cx="330" cy="55" rx="100" ry="65" fill="#030c00" opacity="0.8"/>
+  <ellipse cx="480" cy="40" rx="120" ry="75" fill="#040e00" opacity="0.75"/>
+  <ellipse cx="620" cy="50" rx="105" ry="70" fill="#030d00" opacity="0.8"/>
+  <ellipse cx="750" cy="35" rx="95" ry="72" fill="#040e00" opacity="0.78"/>
+
+  <!-- Mid-layer trees (slightly closer, darker) -->
+  <rect x="30" y="60" width="20" height="550" fill="#020800" opacity="0.7"/>
+  <ellipse cx="40" cy="55" rx="55" ry="60" fill="#021100" opacity="0.8"/>
+  <rect x="110" y="80" width="16" height="530" fill="#020900" opacity="0.65"/>
+  <ellipse cx="118" cy="72" rx="48" ry="55" fill="#021000" opacity="0.8"/>
+  <rect x="220" y="50" width="22" height="560" fill="#020800" opacity="0.7"/>
+  <ellipse cx="231" cy="45" rx="62" ry="65" fill="#021200" opacity="0.78"/>
+  <rect x="550" y="65" width="18" height="545" fill="#020900" opacity="0.65"/>
+  <ellipse cx="559" cy="58" rx="52" ry="60" fill="#021100" opacity="0.8"/>
+  <rect x="680" y="75" width="20" height="535" fill="#020800" opacity="0.68"/>
+  <ellipse cx="690" cy="68" rx="56" ry="62" fill="#021200" opacity="0.78"/>
+  <rect x="760" y="55" width="18" height="555" fill="#020900" opacity="0.7"/>
+  <ellipse cx="769" cy="48" rx="50" ry="58" fill="#021000" opacity="0.8"/>
+
+  <!-- Closer trees / trunks left side -->
+  <rect x="0" y="100" width="28" height="510" fill="#010500" opacity="0.9"/>
+  <ellipse cx="14" cy="92" rx="38" ry="50" fill="#010c00" opacity="0.9"/>
+  <!-- Closer trees right side -->
+  <rect x="772" y="110" width="28" height="500" fill="#010500" opacity="0.9"/>
+  <ellipse cx="786" cy="102" rx="38" ry="50" fill="#010c00" opacity="0.9"/>
+
+  <!-- Vines hanging from top -->
+  <path d="M160 0 C158 80 162 120 155 180 C148 240 165 280 158 360" stroke="#0a2200" stroke-width="3" fill="none" opacity="0.65" stroke-linecap="round"/>
+  <path d="M380 0 C382 60 376 110 384 170 C392 230 375 270 383 340" stroke="#0b2400" stroke-width="2.5" fill="none" opacity="0.6" stroke-linecap="round"/>
+  <path d="M540 0 C537 70 543 115 536 175 C529 235 544 275 537 350" stroke="#0a2200" stroke-width="3" fill="none" opacity="0.65" stroke-linecap="round"/>
+  <path d="M700 0 C703 55 697 100 705 160 C713 220 698 260 706 330" stroke="#092100" stroke-width="2" fill="none" opacity="0.55" stroke-linecap="round"/>
+
+  <!-- Ground foliage / moss -->
+  <path d="M0 560 Q80 540 160 558 Q240 575 320 550 Q400 525 480 552 Q560 578 640 552 Q720 526 800 548 L800 600 L0 600 Z" fill="#061200" opacity="0.95"/>
+  <path d="M0 580 Q100 568 200 582 Q300 596 400 574 Q500 552 600 576 Q700 598 800 572 L800 600 L0 600 Z" fill="#030a00" opacity="0.98"/>
+
+  <!-- Glowing mushrooms -->
+  <!-- Mushroom cluster 1 - left -->
+  <g>
+    <ellipse cx="140" cy="575" rx="22" ry="24" fill="url(#mushroomGlow1)"/>
+    <ellipse cx="140" cy="562" rx="22" ry="10" fill="#224400" opacity="0.9"/>
+    <ellipse cx="140" cy="558" rx="16" ry="7" fill="#44aa00" opacity="0.8"/>
+    <rect x="136" y="562" width="8" height="22" fill="#1a3300" opacity="0.9"/>
+    <!-- spots -->
+    <circle cx="134" cy="555" r="2" fill="#aaff44" opacity="0.7"/>
+    <circle cx="144" cy="553" r="1.5" fill="#aaff44" opacity="0.6"/>
+  </g>
+  <g>
+    <ellipse cx="160" cy="585" rx="15" ry="16" fill="url(#mushroomGlow1)"/>
+    <ellipse cx="160" cy="576" rx="15" ry="7" fill="#1e3d00" opacity="0.9"/>
+    <ellipse cx="160" cy="572" rx="11" ry="5" fill="#33880a" opacity="0.8"/>
+    <rect x="157" y="576" width="6" height="18" fill="#162e00" opacity="0.9"/>
+  </g>
+
+  <!-- Mushroom cluster 2 - right -->
+  <g>
+    <ellipse cx="640" cy="572" rx="20" ry="22" fill="url(#mushroomGlow2)"/>
+    <ellipse cx="640" cy="560" rx="20" ry="9" fill="#1e3d00" opacity="0.9"/>
+    <ellipse cx="640" cy="556" rx="14" ry="6" fill="#3d9900" opacity="0.75"/>
+    <rect x="636" y="560" width="8" height="20" fill="#172f00" opacity="0.9"/>
+    <circle cx="633" cy="553" r="2" fill="#99ff22" opacity="0.65"/>
+    <circle cx="644" cy="552" r="1.5" fill="#99ff22" opacity="0.55"/>
+  </g>
+
+  <!-- Glowing fireflies / forest spirits -->
+  <circle cx="300" cy="320" r="2.5" fill="#66ff22" opacity="0.5"/>
+  <circle cx="300" cy="320" r="6" fill="#44cc00" opacity="0.12"/>
+  <circle cx="520" cy="280" r="2" fill="#88ff33" opacity="0.45"/>
+  <circle cx="520" cy="280" r="5" fill="#66cc00" opacity="0.1"/>
+  <circle cx="200" cy="380" r="2.5" fill="#55ee11" opacity="0.48"/>
+  <circle cx="200" cy="380" r="7" fill="#44aa00" opacity="0.1"/>
+  <circle cx="600" cy="350" r="2" fill="#77ff22" opacity="0.42"/>
+  <circle cx="600" cy="350" r="5" fill="#55cc00" opacity="0.1"/>
+  <circle cx="440" cy="230" r="1.5" fill="#88ff44" opacity="0.4"/>
+  <circle cx="360" cy="170" r="2" fill="#66ee22" opacity="0.38"/>
+  <circle cx="680" cy="250" r="1.5" fill="#77ff33" opacity="0.38"/>
+  <circle cx="130" cy="250" r="2" fill="#55ee11" opacity="0.4"/>
+
+  <!-- Root tendrils on ground -->
+  <path d="M0 600 Q60 575 120 595 Q160 608 200 590 Q250 570 300 590" stroke="#0d2200" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M500 600 Q560 578 620 595 Q670 608 720 585 Q760 568 800 582" stroke="#0d2200" stroke-width="2" fill="none" opacity="0.6"/>
+</svg>

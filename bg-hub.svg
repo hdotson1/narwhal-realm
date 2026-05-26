@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0055aa"/>
+      <stop offset="60%" stop-color="#002255"/>
+      <stop offset="100%" stop-color="#001133"/>
+    </linearGradient>
+    <radialGradient id="centerGlow" cx="50%" cy="45%" r="40%">
+      <stop offset="0%" stop-color="#0088cc" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#001133" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bubbleGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00ccff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#00ccff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Base gradient -->
+  <rect width="800" height="600" fill="url(#sky)"/>
+
+  <!-- Light rays from surface -->
+  <polygon points="340,0 290,420 380,420" fill="#00aaff" opacity="0.04"/>
+  <polygon points="420,0 460,380 370,380" fill="#00aaff" opacity="0.035"/>
+  <polygon points="500,0 540,340 480,340" fill="#00bbff" opacity="0.03"/>
+  <polygon points="250,0 230,300 270,300" fill="#0099ee" opacity="0.025"/>
+  <polygon points="600,0 620,280 580,280" fill="#0088ee" opacity="0.025"/>
+
+  <!-- Center portal glow -->
+  <ellipse cx="400" cy="270" rx="300" ry="220" fill="url(#centerGlow)"/>
+
+  <!-- Mid-water shimmer bands -->
+  <rect x="0" y="140" width="800" height="3" fill="#00aaff" opacity="0.05"/>
+  <rect x="0" y="200" width="800" height="2" fill="#00aaff" opacity="0.04"/>
+  <rect x="0" y="260" width="800" height="3" fill="#0099ee" opacity="0.05"/>
+  <rect x="0" y="320" width="800" height="2" fill="#0088dd" opacity="0.04"/>
+
+  <!-- Distant fish silhouettes -->
+  <ellipse cx="180" cy="160" rx="22" ry="8" fill="#001a40" opacity="0.55"/>
+  <polygon points="158,160 170,153 170,167" fill="#001a40" opacity="0.55"/>
+  <ellipse cx="620" cy="200" rx="16" ry="6" fill="#001a40" opacity="0.45"/>
+  <polygon points="604,200 614,194 614,206" fill="#001a40" opacity="0.45"/>
+  <ellipse cx="460" cy="130" rx="12" ry="5" fill="#001a40" opacity="0.35"/>
+  <ellipse cx="290" cy="240" rx="18" ry="7" fill="#001a40" opacity="0.4"/>
+
+  <!-- Seabed -->
+  <path d="M0 500 Q100 490 200 505 Q320 520 400 500 Q520 480 620 510 Q720 525 800 495 L800 600 L0 600 Z" fill="#001533" opacity="0.9"/>
+  <path d="M0 530 Q150 520 280 540 Q400 555 520 530 Q660 510 800 535 L800 600 L0 600 Z" fill="#000e22" opacity="0.95"/>
+
+  <!-- Seaweed left -->
+  <path d="M80 600 C70 570 90 555 82 530 C74 505 94 490 86 460 C78 430 98 415 90 385" stroke="#005533" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M95 600 C105 568 85 553 95 528 C105 503 82 488 93 458 C104 428 81 413 92 383" stroke="#006644" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <!-- Seaweed right -->
+  <path d="M700 600 C690 572 710 557 702 530 C694 503 714 488 706 458 C698 428 718 415 710 385" stroke="#005533" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M718 600 C728 570 708 555 718 528 C728 501 705 486 716 456 C727 426 704 413 715 383" stroke="#006644" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+  <!-- Coral left cluster -->
+  <g opacity="0.65">
+    <line x1="50" y1="505" x2="50" y2="465" stroke="#0055bb" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="50" cy="460" r="12" fill="#0066cc"/>
+    <line x1="68" y1="510" x2="68" y2="478" stroke="#0044aa" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="68" cy="473" r="9" fill="#0055bb"/>
+    <line x1="38" y1="512" x2="38" y2="490" stroke="#0066dd" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="38" cy="486" r="7" fill="#0077dd"/>
+  </g>
+  <!-- Coral right cluster -->
+  <g opacity="0.65">
+    <line x1="740" y1="500" x2="740" y2="460" stroke="#0055bb" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="740" cy="455" r="12" fill="#0066cc"/>
+    <line x1="758" y1="508" x2="758" y2="474" stroke="#0044aa" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="758" cy="469" r="9" fill="#0055bb"/>
+  </g>
+
+  <!-- Rising bubbles -->
+  <circle cx="120" cy="420" r="6" fill="none" stroke="#00bbff" stroke-width="1.5" opacity="0.35"/>
+  <circle cx="140" cy="350" r="4" fill="none" stroke="#00aaff" stroke-width="1" opacity="0.3"/>
+  <circle cx="130" cy="290" r="5" fill="none" stroke="#00ccff" stroke-width="1" opacity="0.25"/>
+  <circle cx="670" cy="400" r="7" fill="none" stroke="#00bbff" stroke-width="1.5" opacity="0.35"/>
+  <circle cx="655" cy="330" r="4" fill="none" stroke="#00aaff" stroke-width="1" opacity="0.28"/>
+  <circle cx="400" cy="380" r="5" fill="none" stroke="#00ccff" stroke-width="1" opacity="0.3"/>
+  <circle cx="350" cy="300" r="3" fill="none" stroke="#00aaff" stroke-width="1" opacity="0.22"/>
+  <circle cx="500" cy="350" r="6" fill="none" stroke="#00bbff" stroke-width="1" opacity="0.28"/>
+
+  <!-- Distant particle stars/plankton -->
+  <circle cx="200" cy="80" r="1.5" fill="#66ddff" opacity="0.3"/>
+  <circle cx="350" cy="60" r="1" fill="#66ddff" opacity="0.25"/>
+  <circle cx="500" cy="90" r="1.5" fill="#88eeff" opacity="0.28"/>
+  <circle cx="650" cy="70" r="1" fill="#66ddff" opacity="0.22"/>
+  <circle cx="160" cy="40" r="1" fill="#88eeff" opacity="0.2"/>
+  <circle cx="720" cy="110" r="1.5" fill="#66ddff" opacity="0.25"/>
+</svg>

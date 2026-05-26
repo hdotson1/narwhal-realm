@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="void" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#080008"/>
+      <stop offset="40%" stop-color="#0e000e"/>
+      <stop offset="100%" stop-color="#060006"/>
+    </linearGradient>
+    <radialGradient id="nebula1" cx="30%" cy="40%" r="35%">
+      <stop offset="0%" stop-color="#5500aa" stop-opacity="0.22"/>
+      <stop offset="50%" stop-color="#330066" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#0e000e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebula2" cx="75%" cy="65%" r="30%">
+      <stop offset="0%" stop-color="#7700cc" stop-opacity="0.2"/>
+      <stop offset="50%" stop-color="#440088" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#0e000e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="nebula3" cx="55%" cy="20%" r="25%">
+      <stop offset="0%" stop-color="#3300ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0e000e" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="riftGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#9900ff" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#660099" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0e000e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Deep void -->
+  <rect width="800" height="600" fill="url(#void)"/>
+
+  <!-- Nebula clouds -->
+  <ellipse cx="240" cy="240" rx="280" ry="200" fill="url(#nebula1)"/>
+  <ellipse cx="600" cy="390" rx="240" ry="180" fill="url(#nebula2)"/>
+  <ellipse cx="440" cy="120" rx="200" ry="130" fill="url(#nebula3)"/>
+
+  <!-- Stars - varying sizes and brightness -->
+  <circle cx="22"  cy="28"  r="1.5" fill="#ccaaff" opacity="0.7"/>
+  <circle cx="58"  cy="65"  r="0.8" fill="#aa88ee" opacity="0.55"/>
+  <circle cx="95"  cy="20"  r="1.2" fill="#ddbcff" opacity="0.65"/>
+  <circle cx="140" cy="85"  r="0.8" fill="#bb99ff" opacity="0.58"/>
+  <circle cx="185" cy="35"  r="1.5" fill="#eeddff" opacity="0.7"/>
+  <circle cx="230" cy="72"  r="1"   fill="#ccaaff" opacity="0.6"/>
+  <circle cx="275" cy="18"  r="0.8" fill="#aa88ee" opacity="0.52"/>
+  <circle cx="315" cy="55"  r="1.2" fill="#ddbcff" opacity="0.65"/>
+  <circle cx="360" cy="30"  r="2"   fill="#ffffff" opacity="0.55"/><!-- bright star -->
+  <circle cx="410" cy="78"  r="0.8" fill="#bb99ff" opacity="0.55"/>
+  <circle cx="455" cy="22"  r="1.5" fill="#ccaaff" opacity="0.68"/>
+  <circle cx="498" cy="60"  r="1"   fill="#aa88ee" opacity="0.6"/>
+  <circle cx="540" cy="32"  r="0.8" fill="#ddbcff" opacity="0.55"/>
+  <circle cx="585" cy="75"  r="1.2" fill="#bb99ff" opacity="0.62"/>
+  <circle cx="628" cy="20"  r="1.5" fill="#ccaaff" opacity="0.7"/>
+  <circle cx="672" cy="58"  r="0.8" fill="#aa88ee" opacity="0.55"/>
+  <circle cx="715" cy="35"  r="1"   fill="#eeddff" opacity="0.62"/>
+  <circle cx="760" cy="68"  r="1.5" fill="#ddbcff" opacity="0.68"/>
+  <circle cx="795" cy="22"  r="0.8" fill="#ccaaff" opacity="0.55"/>
+  <!-- Mid stars -->
+  <circle cx="50"  cy="140" r="1"   fill="#9977cc" opacity="0.48"/>
+  <circle cx="160" cy="158" r="1.5" fill="#bb99ee" opacity="0.52"/>
+  <circle cx="270" cy="135" r="0.8" fill="#9977cc" opacity="0.45"/>
+  <circle cx="400" cy="155" r="1.2" fill="#aa88dd" opacity="0.5"/>
+  <circle cx="530" cy="142" r="1"   fill="#9977cc" opacity="0.46"/>
+  <circle cx="660" cy="162" r="1.5" fill="#bb99ee" opacity="0.52"/>
+  <circle cx="775" cy="148" r="0.8" fill="#9977cc" opacity="0.44"/>
+  <!-- Scattered deep stars -->
+  <circle cx="105" cy="200" r="0.8" fill="#8866bb" opacity="0.4"/>
+  <circle cx="220" cy="220" r="1.2" fill="#9977cc" opacity="0.42"/>
+  <circle cx="345" cy="195" r="0.8" fill="#8866bb" opacity="0.38"/>
+  <circle cx="470" cy="215" r="1"   fill="#9977cc" opacity="0.42"/>
+  <circle cx="590" cy="198" r="0.8" fill="#8866bb" opacity="0.38"/>
+  <circle cx="710" cy="218" r="1.2" fill="#9977cc" opacity="0.4"/>
+  <!-- More scattered -->
+  <circle cx="75"  cy="300" r="0.8" fill="#7755aa" opacity="0.35"/>
+  <circle cx="190" cy="280" r="1"   fill="#8866bb" opacity="0.38"/>
+  <circle cx="305" cy="310" r="0.8" fill="#7755aa" opacity="0.32"/>
+  <circle cx="420" cy="290" r="1.2" fill="#9977cc" opacity="0.38"/>
+  <circle cx="540" cy="305" r="0.8" fill="#7755aa" opacity="0.33"/>
+  <circle cx="665" cy="285" r="1"   fill="#8866bb" opacity="0.36"/>
+  <circle cx="780" cy="308" r="0.8" fill="#7755aa" opacity="0.32"/>
+
+  <!-- Cosmic rift 1 (jagged void crack, upper area) -->
+  <path d="M160 120 L175 145 L155 162 L178 185 L158 205 L180 228" stroke="#6600cc" stroke-width="3" fill="none" opacity="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M160 120 L175 145 L155 162 L178 185 L158 205 L180 228" stroke="#aa44ff" stroke-width="1" fill="none" opacity="0.45" stroke-linecap="round"/>
+  <ellipse cx="170" cy="174" rx="30" ry="60" fill="url(#riftGlow)" opacity="0.4" transform="rotate(-10 170 174)"/>
+
+  <!-- Cosmic rift 2 (right side) -->
+  <path d="M620 280 L635 308 L615 328 L638 352 L618 372 L642 398" stroke="#7700dd" stroke-width="3" fill="none" opacity="0.55" stroke-linecap="round"/>
+  <path d="M620 280 L635 308 L615 328 L638 352 L618 372 L642 398" stroke="#bb55ff" stroke-width="1" fill="none" opacity="0.4" stroke-linecap="round"/>
+  <ellipse cx="629" cy="338" rx="28" ry="62" fill="url(#riftGlow)" opacity="0.35" transform="rotate(8 629 338)"/>
+
+  <!-- Cosmic rift 3 (small, bottom left) -->
+  <path d="M80 450 L92 470 L76 488 L96 506" stroke="#5500bb" stroke-width="2.5" fill="none" opacity="0.5"/>
+  <path d="M80 450 L92 470 L76 488 L96 506" stroke="#9933ff" stroke-width="0.8" fill="none" opacity="0.38"/>
+
+  <!-- Galaxy spiral wisps (subtle arcs) -->
+  <path d="M400 300 Q320 260 280 300 Q240 340 280 380 Q320 420 400 380 Q480 340 480 300" stroke="#440088" stroke-width="2" fill="none" opacity="0.2"/>
+  <path d="M400 300 Q460 250 500 280 Q540 310 520 360 Q500 410 440 420" stroke="#330066" stroke-width="1.5" fill="none" opacity="0.15"/>
+
+  <!-- Floating void particles -->
+  <circle cx="340" cy="340" r="3" fill="#7700cc" opacity="0.45"/>
+  <circle cx="340" cy="340" r="8" fill="#5500aa" opacity="0.1"/>
+  <circle cx="460" cy="380" r="2.5" fill="#8800dd" opacity="0.42"/>
+  <circle cx="460" cy="380" r="7" fill="#6600bb" opacity="0.1"/>
+  <circle cx="250" cy="420" r="3" fill="#6600bb" opacity="0.4"/>
+  <circle cx="550" cy="450" r="2" fill="#7700cc" opacity="0.38"/>
+  <circle cx="680" cy="200" r="2.5" fill="#5500aa" opacity="0.42"/>
+  <circle cx="120" cy="380" r="2" fill="#8800dd" opacity="0.38"/>
+
+  <!-- Gravity-lensed light arc -->
+  <path d="M300 500 Q400 465 500 500" stroke="#440066" stroke-width="1.5" fill="none" opacity="0.3"/>
+  <path d="M280 520 Q400 478 520 520" stroke="#330055" stroke-width="1" fill="none" opacity="0.22"/>
+
+  <!-- Ground: deep void darkness -->
+  <path d="M0 555 Q100 535 200 555 Q300 575 400 548 Q500 520 600 550 Q700 578 800 548 L800 600 L0 600 Z" fill="#050005" opacity="0.92"/>
+  <rect x="0" y="575" width="800" height="25" fill="#040004" opacity="0.98"/>
+</svg>

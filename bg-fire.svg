@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="inferno" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0500"/>
+      <stop offset="40%" stop-color="#220800"/>
+      <stop offset="100%" stop-color="#110300"/>
+    </linearGradient>
+    <radialGradient id="lavaGlow1" cx="25%" cy="85%" r="25%">
+      <stop offset="0%" stop-color="#ff4400" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#aa2200" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#110300" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lavaGlow2" cx="72%" cy="90%" r="22%">
+      <stop offset="0%" stop-color="#ff6600" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#bb2200" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#110300" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lavaGlow3" cx="50%" cy="95%" r="30%">
+      <stop offset="0%" stop-color="#ff3300" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#110300" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Base dark inferno -->
+  <rect width="800" height="600" fill="url(#inferno)"/>
+
+  <!-- Lava pool glows at bottom -->
+  <ellipse cx="200" cy="510" rx="200" ry="120" fill="url(#lavaGlow1)"/>
+  <ellipse cx="576" cy="540" rx="176" ry="100" fill="url(#lavaGlow2)"/>
+  <ellipse cx="400" cy="570" rx="240" ry="80" fill="url(#lavaGlow3)"/>
+
+  <!-- Rocky terrain / volcanic ground -->
+  <path d="M0 580 Q40 555 80 572 Q130 592 180 560 Q230 528 280 558 Q320 582 360 548 Q400 514 440 550 Q480 582 520 555 Q560 528 600 558 Q640 585 680 560 Q720 535 760 562 Q780 572 800 555 L800 600 L0 600 Z" fill="#0d0200" opacity="0.97"/>
+  <path d="M0 550 Q60 520 120 545 Q200 572 260 535 Q330 495 390 530 Q450 562 510 528 Q570 494 630 528 Q690 560 750 530 Q775 516 800 528 L800 600 L0 600 Z" fill="#180500" opacity="0.9"/>
+
+  <!-- Jagged rocky peaks at bottom -->
+  <polygon points="0,580 40,530 80,570 120,510 160,555 200,500 240,548 280,520 320,560 360,500 400,545 440,510 480,548 520,518 560,558 600,510 640,552 680,518 720,556 760,520 800,550 800,600 0,600" fill="#0a0100" opacity="0.88"/>
+
+  <!-- Lava cracks - glowing orange fissures -->
+  <!-- Crack 1: center main fissure -->
+  <path d="M380 600 L390 540 L375 500 L400 460 L385 420 L405 380" stroke="#ff4400" stroke-width="3" fill="none" opacity="0.7" stroke-linecap="round"/>
+  <path d="M380 600 L390 540 L375 500 L400 460 L385 420 L405 380" stroke="#ff8800" stroke-width="1" fill="none" opacity="0.5" stroke-linecap="round"/>
+  <!-- Branch left -->
+  <path d="M390 540 L340 510 L310 475" stroke="#ff4400" stroke-width="2" fill="none" opacity="0.55"/>
+  <path d="M375 500 L330 490 L300 460" stroke="#ee3300" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- Crack 2: left side -->
+  <path d="M150 600 L165 545 L148 510 L170 475 L155 440" stroke="#ff3300" stroke-width="2.5" fill="none" opacity="0.6"/>
+  <path d="M150 600 L165 545 L148 510 L170 475 L155 440" stroke="#ff6600" stroke-width="0.8" fill="none" opacity="0.45"/>
+  <path d="M165 545 L200 530 L225 508" stroke="#ff3300" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- Crack 3: right side -->
+  <path d="M630 600 L615 550 L635 510 L618 465 L640 428" stroke="#ff4400" stroke-width="2.5" fill="none" opacity="0.6"/>
+  <path d="M630 600 L615 550 L635 510 L618 465 L640 428" stroke="#ff7700" stroke-width="0.8" fill="none" opacity="0.45"/>
+  <path d="M615 550 L575 535 L548 514" stroke="#ff3300" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+  <!-- Crack 4: far left -->
+  <path d="M50 600 L58 565 L45 540 L60 512" stroke="#dd2200" stroke-width="2" fill="none" opacity="0.5"/>
+  <!-- Crack 5: far right -->
+  <path d="M750 600 L740 558 L755 528 L742 498" stroke="#dd2200" stroke-width="2" fill="none" opacity="0.5"/>
+
+  <!-- Horizontal crack near middle-top -->
+  <path d="M200 310 L250 305 L310 318 L370 308 L430 320 L480 310 L530 318 L580 308" stroke="#cc2200" stroke-width="1.5" fill="none" opacity="0.4"/>
+
+  <!-- Rising embers / sparks -->
+  <circle cx="385" cy="370" r="2.5" fill="#ff6600" opacity="0.7"/>
+  <circle cx="390" cy="340" r="1.5" fill="#ff8800" opacity="0.55"/>
+  <circle cx="380" cy="310" r="2" fill="#ffaa00" opacity="0.5"/>
+  <circle cx="395" cy="280" r="1.5" fill="#ff8800" opacity="0.4"/>
+  <circle cx="162" cy="410" r="2" fill="#ff5500" opacity="0.6"/>
+  <circle cx="157" cy="380" r="1.5" fill="#ff7700" opacity="0.5"/>
+  <circle cx="165" cy="350" r="2" fill="#ff9900" opacity="0.45"/>
+  <circle cx="625" cy="395" r="2.5" fill="#ff5500" opacity="0.65"/>
+  <circle cx="630" cy="362" r="1.5" fill="#ff7700" opacity="0.5"/>
+  <circle cx="620" cy="332" r="2" fill="#ffaa00" opacity="0.45"/>
+  <!-- Scattered embers -->
+  <circle cx="280" cy="250" r="1.5" fill="#ff6600" opacity="0.4"/>
+  <circle cx="490" cy="230" r="1.5" fill="#ff5500" opacity="0.38"/>
+  <circle cx="200" cy="200" r="2" fill="#ff4400" opacity="0.35"/>
+  <circle cx="600" cy="180" r="1.5" fill="#ff6600" opacity="0.35"/>
+  <circle cx="350" cy="170" r="2" fill="#ff8800" opacity="0.3"/>
+  <circle cx="450" cy="150" r="1.5" fill="#ffaa00" opacity="0.28"/>
+  <circle cx="150" cy="140" r="1.5" fill="#ff4400" opacity="0.3"/>
+  <circle cx="700" cy="160" r="2" fill="#ff6600" opacity="0.3"/>
+
+  <!-- Volcanic smoke wisps at top -->
+  <ellipse cx="400" cy="60" rx="180" ry="50" fill="#1a0600" opacity="0.5"/>
+  <ellipse cx="200" cy="40" rx="120" ry="35" fill="#180500" opacity="0.4"/>
+  <ellipse cx="620" cy="50" rx="140" ry="40" fill="#1a0600" opacity="0.4"/>
+</svg>

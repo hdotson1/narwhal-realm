@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#080820"/>
+      <stop offset="30%" stop-color="#0a0a22"/>
+      <stop offset="70%" stop-color="#0d0d28"/>
+      <stop offset="100%" stop-color="#060614"/>
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="72%" cy="22%" r="15%">
+      <stop offset="0%" stop-color="#aabbff" stop-opacity="0.25"/>
+      <stop offset="50%" stop-color="#8899ee" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#0a0a22" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cloudGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#88aaff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#88aaff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Deep night sky base -->
+  <rect width="800" height="600" fill="url(#sky)"/>
+
+  <!-- Stars - dense field -->
+  <circle cx="45"  cy="18"  r="1.2" fill="#ccddff" opacity="0.7"/>
+  <circle cx="112" cy="42"  r="0.8" fill="#aabbff" opacity="0.6"/>
+  <circle cx="178" cy="15"  r="1"   fill="#ddeeff" opacity="0.65"/>
+  <circle cx="234" cy="55"  r="1.5" fill="#eef0ff" opacity="0.7"/>
+  <circle cx="290" cy="25"  r="0.8" fill="#bbccff" opacity="0.55"/>
+  <circle cx="345" cy="48"  r="1.2" fill="#ccddff" opacity="0.65"/>
+  <circle cx="398" cy="12"  r="1"   fill="#ddeeff" opacity="0.6"/>
+  <circle cx="456" cy="38"  r="1.5" fill="#aabbff" opacity="0.7"/>
+  <circle cx="512" cy="20"  r="0.8" fill="#eef0ff" opacity="0.6"/>
+  <circle cx="568" cy="52"  r="1"   fill="#bbccff" opacity="0.65"/>
+  <circle cx="628" cy="18"  r="1.2" fill="#ccddff" opacity="0.68"/>
+  <circle cx="684" cy="44"  r="0.8" fill="#aabbff" opacity="0.58"/>
+  <circle cx="742" cy="22"  r="1.5" fill="#ddeeff" opacity="0.72"/>
+  <circle cx="790" cy="55"  r="1"   fill="#eef0ff" opacity="0.6"/>
+  <circle cx="70"  cy="75"  r="1"   fill="#bbccff" opacity="0.5"/>
+  <circle cx="155" cy="88"  r="1.5" fill="#ccddff" opacity="0.62"/>
+  <circle cx="260" cy="80"  r="0.8" fill="#aabbff" opacity="0.55"/>
+  <circle cx="375" cy="92"  r="1.2" fill="#ddeeff" opacity="0.58"/>
+  <circle cx="490" cy="78"  r="1"   fill="#bbccff" opacity="0.55"/>
+  <circle cx="605" cy="90"  r="1.5" fill="#ccddff" opacity="0.62"/>
+  <circle cx="720" cy="82"  r="0.8" fill="#aabbff" opacity="0.52"/>
+  <!-- Deeper scattered stars -->
+  <circle cx="88"  cy="130" r="0.8" fill="#99aacc" opacity="0.45"/>
+  <circle cx="200" cy="115" r="1"   fill="#aabbdd" opacity="0.42"/>
+  <circle cx="310" cy="140" r="0.8" fill="#99aacc" opacity="0.4"/>
+  <circle cx="420" cy="122" r="1.2" fill="#bbccee" opacity="0.45"/>
+  <circle cx="530" cy="138" r="0.8" fill="#99aacc" opacity="0.4"/>
+  <circle cx="650" cy="120" r="1"   fill="#aabbdd" opacity="0.42"/>
+  <circle cx="758" cy="142" r="0.8" fill="#99aacc" opacity="0.38"/>
+
+  <!-- Moon glow -->
+  <circle cx="576" cy="80" r="22" fill="#8899dd" opacity="0.12"/>
+  <circle cx="576" cy="80" r="16" fill="#aabbee" opacity="0.18"/>
+  <circle cx="576" cy="80" r="10" fill="#ccdeff" opacity="0.25"/>
+  <ellipse cx="576" cy="80" rx="200" ry="120" fill="url(#moonGlow)"/>
+
+  <!-- Wind current streaks (long curved horizontal lines) -->
+  <path d="M0 180 Q200 165 400 178 Q600 192 800 175" stroke="#8899cc" stroke-width="1.5" fill="none" opacity="0.18" stroke-linecap="round"/>
+  <path d="M0 220 Q150 208 350 222 Q550 236 800 215" stroke="#7788bb" stroke-width="1" fill="none" opacity="0.14" stroke-linecap="round"/>
+  <path d="M0 300 Q250 288 500 302 Q650 310 800 295" stroke="#6677aa" stroke-width="1.2" fill="none" opacity="0.15" stroke-linecap="round"/>
+  <path d="M0 380 Q200 370 400 384 Q600 398 800 378" stroke="#5566aa" stroke-width="1" fill="none" opacity="0.12" stroke-linecap="round"/>
+  <path d="M0 460 Q180 450 380 462 Q580 474 800 456" stroke="#445599" stroke-width="1.2" fill="none" opacity="0.12" stroke-linecap="round"/>
+
+  <!-- Cloud layer 1 (upper, thin, wispy) -->
+  <g opacity="0.22">
+    <ellipse cx="150" cy="155" rx="120" ry="18" fill="#8899cc"/>
+    <ellipse cx="120" cy="150" rx="70" ry="14" fill="#99aadd"/>
+    <ellipse cx="190" cy="148" rx="80" ry="12" fill="#99aadd"/>
+  </g>
+  <g opacity="0.18">
+    <ellipse cx="650" cy="145" rx="130" ry="16" fill="#7788bb"/>
+    <ellipse cx="620" cy="140" rx="80" ry="12" fill="#8899cc"/>
+    <ellipse cx="690" cy="138" rx="85" ry="13" fill="#8899cc"/>
+  </g>
+
+  <!-- Cloud layer 2 (mid, thicker) -->
+  <g opacity="0.28">
+    <ellipse cx="250" cy="270" rx="160" ry="28" fill="#6677aa"/>
+    <ellipse cx="200" cy="262" rx="100" ry="22" fill="#7788bb"/>
+    <ellipse cx="310" cy="258" rx="110" ry="20" fill="#7788bb"/>
+    <ellipse cx="250" cy="255" rx="80" ry="18" fill="#8899cc"/>
+  </g>
+  <g opacity="0.25">
+    <ellipse cx="590" cy="285" rx="180" ry="26" fill="#5566aa"/>
+    <ellipse cx="540" cy="278" rx="110" ry="20" fill="#6677bb"/>
+    <ellipse cx="650" cy="276" rx="115" ry="21" fill="#6677bb"/>
+    <ellipse cx="590" cy="270" rx="85" ry="17" fill="#7788cc"/>
+  </g>
+
+  <!-- Cloud layer 3 (low, bigger, denser) -->
+  <g opacity="0.32">
+    <ellipse cx="160" cy="420" rx="180" ry="38" fill="#445588"/>
+    <ellipse cx="100" cy="410" rx="120" ry="28" fill="#556699"/>
+    <ellipse cx="240" cy="408" rx="130" ry="26" fill="#556699"/>
+    <ellipse cx="160" cy="400" rx="90" ry="22" fill="#6677aa"/>
+  </g>
+  <g opacity="0.30">
+    <ellipse cx="620" cy="430" rx="200" ry="40" fill="#334477"/>
+    <ellipse cx="560" cy="420" rx="130" ry="30" fill="#445588"/>
+    <ellipse cx="690" cy="418" rx="140" ry="28" fill="#445588"/>
+    <ellipse cx="620" cy="408" rx="95" ry="22" fill="#556699"/>
+  </g>
+
+  <!-- Ground: cloud floor (bottom, thick) -->
+  <path d="M-20 530 Q60 510 140 528 Q220 546 310 520 Q390 496 470 522 Q550 548 640 518 Q720 490 820 522 L820 600 L-20 600 Z" fill="#080820" opacity="0.9"/>
+  <g opacity="0.38">
+    <ellipse cx="80"  cy="535" rx="120" ry="32" fill="#223355"/>
+    <ellipse cx="250" cy="528" rx="150" ry="35" fill="#1e3050"/>
+    <ellipse cx="440" cy="540" rx="170" ry="38" fill="#223355"/>
+    <ellipse cx="630" cy="530" rx="150" ry="32" fill="#1a2a48"/>
+    <ellipse cx="780" cy="538" rx="110" ry="28" fill="#223355"/>
+  </g>
+
+  <!-- Lightning hint in far distance -->
+  <path d="M480 200 L468 240 L478 240 L462 280" stroke="#aaccff" stroke-width="1.5" fill="none" opacity="0.18"/>
+</svg>

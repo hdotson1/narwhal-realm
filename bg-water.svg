@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="deep" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#001428"/>
+      <stop offset="50%" stop-color="#000c1c"/>
+      <stop offset="100%" stop-color="#000810"/>
+    </linearGradient>
+    <radialGradient id="vent1" cx="30%" cy="90%" r="20%">
+      <stop offset="0%" stop-color="#003366" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#000c1c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="vent2" cx="75%" cy="95%" r="18%">
+      <stop offset="0%" stop-color="#004488" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000c1c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="biolumin" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00aaff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#00aaff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Base -->
+  <rect width="800" height="600" fill="url(#deep)"/>
+
+  <!-- Pressure depth lines (horizontal haze) -->
+  <rect x="0" y="80"  width="800" height="1" fill="#003366" opacity="0.12"/>
+  <rect x="0" y="160" width="800" height="1" fill="#002255" opacity="0.1"/>
+  <rect x="0" y="240" width="800" height="1" fill="#002255" opacity="0.1"/>
+  <rect x="0" y="320" width="800" height="1" fill="#001e44" opacity="0.1"/>
+  <rect x="0" y="400" width="800" height="1" fill="#001e44" opacity="0.1"/>
+  <rect x="0" y="480" width="800" height="1" fill="#001a33" opacity="0.1"/>
+
+  <!-- Hydrothermal vent glow bottom-left -->
+  <ellipse cx="240" cy="540" rx="160" ry="90" fill="url(#vent1)"/>
+  <!-- Vent right -->
+  <ellipse cx="600" cy="570" rx="140" ry="80" fill="url(#vent2)"/>
+
+  <!-- Vent plume left -->
+  <path d="M220 600 Q215 540 225 500 Q235 460 220 420 Q205 380 218 340" stroke="#003366" stroke-width="18" fill="none" opacity="0.25" stroke-linecap="round"/>
+  <path d="M235 600 Q240 545 230 505 Q220 465 235 425 Q250 385 237 345" stroke="#004488" stroke-width="10" fill="none" opacity="0.18" stroke-linecap="round"/>
+  <!-- Vent plume right -->
+  <path d="M595 600 Q590 545 600 505 Q610 465 595 425 Q580 385 593 345" stroke="#003366" stroke-width="16" fill="none" opacity="0.22" stroke-linecap="round"/>
+
+  <!-- Deep sea floor rocky silhouette -->
+  <path d="M0 570 Q50 555 100 570 Q150 585 200 565 Q260 548 310 570 Q360 590 420 560 Q480 530 540 562 Q600 590 650 558 Q700 530 750 560 Q775 572 800 555 L800 600 L0 600 Z" fill="#000810" opacity="0.95"/>
+
+  <!-- Rock formations -->
+  <polygon points="50,570 80,520 110,570" fill="#001122" opacity="0.8"/>
+  <polygon points="100,570 140,505 180,570" fill="#000e1a" opacity="0.85"/>
+  <polygon points="620,558 660,500 700,558" fill="#001122" opacity="0.8"/>
+  <polygon points="700,555 730,518 760,555" fill="#000e1a" opacity="0.8"/>
+
+  <!-- Bioluminescent plants - glowing tendrils -->
+  <path d="M150 600 C142 572 158 558 150 536 C142 514 158 500 150 478" stroke="#0055aa" stroke-width="2.5" fill="none" opacity="0.6" stroke-linecap="round"/>
+  <circle cx="150" cy="474" r="5" fill="#0077cc" opacity="0.5"/>
+  <circle cx="150" cy="474" r="9" fill="#0055aa" opacity="0.2"/>
+
+  <path d="M680 600 C672 574 688 560 680 538 C672 516 688 502 680 480" stroke="#0066bb" stroke-width="2.5" fill="none" opacity="0.6" stroke-linecap="round"/>
+  <circle cx="680" cy="476" r="5" fill="#0088dd" opacity="0.5"/>
+  <circle cx="680" cy="476" r="9" fill="#0066bb" opacity="0.2"/>
+
+  <path d="M420 600 C412 578 426 566 420 548 C414 530 428 518 420 500" stroke="#004499" stroke-width="2" fill="none" opacity="0.55" stroke-linecap="round"/>
+  <circle cx="420" cy="496" r="4" fill="#0066bb" opacity="0.45"/>
+
+  <!-- Bioluminescent creatures - floating jellyfish-like blobs -->
+  <g opacity="0.4">
+    <ellipse cx="280" cy="240" rx="18" ry="12" fill="#003366"/>
+    <ellipse cx="280" cy="240" rx="14" ry="8" fill="#0044aa" opacity="0.6"/>
+    <line x1="272" y1="252" x2="268" y2="280" stroke="#0033aa" stroke-width="1.5" opacity="0.5"/>
+    <line x1="280" y1="252" x2="278" y2="282" stroke="#0033aa" stroke-width="1.5" opacity="0.5"/>
+    <line x1="288" y1="252" x2="292" y2="280" stroke="#0033aa" stroke-width="1.5" opacity="0.5"/>
+  </g>
+  <g opacity="0.35">
+    <ellipse cx="560" cy="180" rx="14" ry="9" fill="#003366"/>
+    <ellipse cx="560" cy="180" rx="10" ry="6" fill="#0055bb" opacity="0.6"/>
+    <line x1="554" y1="189" x2="551" y2="212" stroke="#0044aa" stroke-width="1.5" opacity="0.5"/>
+    <line x1="560" y1="189" x2="558" y2="214" stroke="#0044aa" stroke-width="1.5" opacity="0.5"/>
+    <line x1="566" y1="189" x2="569" y2="212" stroke="#0044aa" stroke-width="1.5" opacity="0.5"/>
+  </g>
+
+  <!-- Glowing particles / plankton -->
+  <circle cx="180" cy="300" r="2" fill="#0088cc" opacity="0.4"/>
+  <circle cx="320" cy="180" r="1.5" fill="#00aaee" opacity="0.35"/>
+  <circle cx="450" cy="250" r="2" fill="#0077bb" opacity="0.38"/>
+  <circle cx="630" cy="320" r="1.5" fill="#0088cc" opacity="0.32"/>
+  <circle cx="100" cy="150" r="2" fill="#00aaee" opacity="0.3"/>
+  <circle cx="700" cy="200" r="1.5" fill="#0077bb" opacity="0.35"/>
+  <circle cx="380" cy="120" r="2" fill="#0099dd" opacity="0.3"/>
+  <circle cx="520" cy="400" r="2" fill="#0066aa" opacity="0.35"/>
+
+  <!-- Distant fish -->
+  <ellipse cx="340" cy="170" rx="20" ry="7" fill="#000c18" opacity="0.6"/>
+  <polygon points="320,170 332,163 332,177" fill="#000c18" opacity="0.6"/>
+  <ellipse cx="580" cy="290" rx="15" ry="5" fill="#000a14" opacity="0.5"/>
+  <polygon points="565,290 575,285 575,295" fill="#000a14" opacity="0.5"/>
+</svg>
