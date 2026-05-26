@@ -170,6 +170,19 @@
 <script>
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d'),W=800,H=600;
 
+// ── ART ASSETS ────────────────────────────────────────────────────────────────
+// Display dimensions in canvas pixels (independent of source PNG resolution)
+const NARWHAL_SIZE=80;  // square bounding box at scale=1; companions drawn at 0.55×
+const ENEMY_SIZE=48;    // square
+const BOSS_W=140,BOSS_H=100;
+
+const IMAGES={};
+let _imgsTotal=0,_imgsLoaded=0,_onImgsReady=null;
+function _imgDone(){if(++_imgsLoaded===_imgsTotal&&_onImgsReady)_onImgsReady();}
+['narwhal-player','narwhal-water','narwhal-fire','narwhal-earth','narwhal-air','narwhal-void',
+ 'enemy-water','enemy-fire','enemy-earth','enemy-air','enemy-void','cybertruck-boss',
+].forEach(k=>{_imgsTotal++;const i=new Image();i.onload=i.onerror=_imgDone;i.src=k+'.png';IMAGES[k]=i;});
+
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let state='title'; // title|playing|carrying|shop|boss|win|lose|fact
 let keys={},mouseX=W/2,mouseY=H/2,sandDollars=0,gameTime=0,lastTime=0;
@@ -763,16 +776,13 @@ function showStatus(msg,dur=2){
 }
 
 // ── DRAW NARWHAL ──────────────────────────────────────────────────────────────
-function drawNarwhal(x,y,angle,scale=1,color='#c9a0ff',flash=false){
-  ctx.save();ctx.translate(x,y);ctx.rotate(angle+Math.PI/2);ctx.scale(scale,scale);
-  if(flash){ctx.shadowColor='#fff';ctx.shadowBlur=20;}
-  ctx.beginPath();ctx.ellipse(0,0,14,22,0,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();
-  ctx.beginPath();ctx.ellipse(0,6,8,14,0,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.28)';ctx.fill();
-  ctx.beginPath();ctx.moveTo(-10,22);ctx.lineTo(0,16);ctx.lineTo(10,22);ctx.fillStyle=color;ctx.fill();
-  ctx.beginPath();ctx.moveTo(-3,-18);ctx.lineTo(3,-18);ctx.lineTo(0,-42);ctx.fillStyle='#fff8e0';ctx.fill();
-  ctx.beginPath();ctx.arc(6,-4,4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
-  ctx.beginPath();ctx.arc(7,-4,2.5,0,Math.PI*2);ctx.fillStyle='#222';ctx.fill();
-  ctx.beginPath();ctx.arc(8,-5,1,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+function drawNarwhal(x,y,angle,scale=1,color='#c9a0ff',flash=false,imgKey='narwhal-player'){
+  const img=IMAGES[imgKey];
+  const s=NARWHAL_SIZE*scale;
+  ctx.save();ctx.translate(x,y);ctx.rotate(angle+Math.PI/2);
+  if(flash)ctx.filter='brightness(5)';
+  if(img&&img.complete&&img.naturalWidth)ctx.drawImage(img,-s/2,-s/2,s,s);
+  ctx.filter='none';
   ctx.restore();
 }
 
@@ -786,7 +796,7 @@ function drawShopkeeper(){
   ctx.fillStyle='#cc88ff';ctx.font='11px Nunito,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(lumaRescued?'🌑 The Void awaits...':'🌑 Find Luma first!',x,y-bob-57);
   ctx.restore();
-  drawNarwhal(x,y+bob,Math.PI*0.1,1.1,'#111111');
+  drawNarwhal(x,y+bob,Math.PI*0.1,1.1,'#111111',false,'narwhal-void');
   ctx.save();
   const g=ctx.createRadialGradient(x,y+bob,5,x,y+bob,38);
   g.addColorStop(0,'rgba(80,0,120,0.3)');g.addColorStop(1,'rgba(0,0,0,0)');
@@ -795,48 +805,24 @@ function drawShopkeeper(){
 }
 
 function drawRobot(x,y,elem,r,flash){
+  const img=IMAGES['enemy-'+elem]||IMAGES['enemy-water'];
   ctx.save();ctx.translate(x,y);
-  const ec=ELEM_COLORS[elem]||'#aaa';
-  if(flash){ctx.shadowColor='#fff';ctx.shadowBlur=16;}
-  ctx.fillStyle='rgba(30,30,50,0.92)';
-  ctx.beginPath();ctx.roundRect(-r*0.8,-r*0.8,r*1.6,r*1.6,4);ctx.fill();
-  ctx.strokeStyle=ec;ctx.lineWidth=2;ctx.stroke();
-  ctx.fillStyle=ec;ctx.beginPath();ctx.arc(0,0,r*0.4,0,Math.PI*2);ctx.globalAlpha=0.7;ctx.fill();ctx.globalAlpha=1;
-  ctx.fillStyle='#fff';ctx.beginPath();
-  ctx.arc(-r*0.25,-r*0.15,r*0.12,0,Math.PI*2);ctx.arc(r*0.25,-r*0.15,r*0.12,0,Math.PI*2);ctx.fill();
+  if(flash)ctx.filter='brightness(5)';
+  if(img&&img.complete&&img.naturalWidth)ctx.drawImage(img,-ENEMY_SIZE/2,-ENEMY_SIZE/2,ENEMY_SIZE,ENEMY_SIZE);
+  ctx.filter='none';
   ctx.restore();
 }
 
 function drawCybertruck(flash){
+  const img=IMAGES['cybertruck-boss'];
   ctx.save();ctx.translate(boss.x,boss.y);
-  boss.angle=Math.atan2(player.y-boss.y,player.x-boss.x);
-  if(flash){ctx.shadowColor='#ff0044';ctx.shadowBlur=40;}
-  // truck body — angular cybertruck silhouette
-  ctx.fillStyle='#222228';
-  // main body
-  ctx.beginPath();
-  ctx.moveTo(-50,-22);ctx.lineTo(-50,22);ctx.lineTo(50,22);ctx.lineTo(50,-22);
-  ctx.lineTo(30,-38);ctx.lineTo(-20,-38);ctx.closePath();ctx.fill();
-  ctx.strokeStyle=flash?'#fff':'#00ffcc';ctx.lineWidth=2.5;ctx.stroke();
-  // cab
-  ctx.beginPath();ctx.moveTo(-20,-38);ctx.lineTo(-20,-22);ctx.lineTo(30,-22);ctx.lineTo(30,-38);ctx.closePath();
-  ctx.fillStyle='#1a1a20';ctx.fill();ctx.strokeStyle=flash?'#fff':'#00ffcc';ctx.stroke();
-  // windshield
-  ctx.beginPath();ctx.moveTo(-18,-36);ctx.lineTo(-18,-24);ctx.lineTo(28,-24);ctx.lineTo(28,-36);ctx.closePath();
-  ctx.fillStyle='rgba(0,200,200,0.3)';ctx.fill();
-  // wheels
-  [[-34,22],[34,22]].forEach(([wx,wy])=>{
-    ctx.beginPath();ctx.arc(wx,wy,12,0,Math.PI*2);
-    ctx.fillStyle='#111';ctx.fill();ctx.strokeStyle='#444';ctx.lineWidth=2;ctx.stroke();
-    ctx.beginPath();ctx.arc(wx,wy,5,0,Math.PI*2);ctx.fillStyle='#888';ctx.fill();
-  });
-  // headlights
-  ctx.fillStyle=boss.phase>=2?'#ff4400':'#ffdd00';
-  ctx.fillRect(46,-18,6,8);ctx.fillRect(46,8,6,8);
-  // phase 2 — exhaust flames
+  if(flash)ctx.filter='brightness(5)';
+  if(img&&img.complete&&img.naturalWidth)ctx.drawImage(img,-BOSS_W/2,-BOSS_H/2,BOSS_W,BOSS_H);
+  ctx.filter='none';
+  // phase 2 — exhaust flames drawn on top of PNG
   if(boss.phase>=2){
     const flk=Math.sin(gameTime/60)*8;
-    ctx.beginPath();ctx.moveTo(-50,-10);ctx.lineTo(-60+flk,-2);ctx.lineTo(-50,10);
+    ctx.beginPath();ctx.moveTo(-BOSS_W/2,-10);ctx.lineTo(-BOSS_W/2-12+flk,-2);ctx.lineTo(-BOSS_W/2,10);
     ctx.fillStyle='rgba(255,100,0,0.8)';ctx.fill();
   }
   ctx.restore();
@@ -1640,7 +1626,7 @@ function render(){
           ctx.strokeStyle='rgba(100,0,160,0.35)';ctx.stroke();
           ctx.restore();
           // Draw Luma spinning fast
-          drawNarwhal(lx,ly,lumaState.spinAngle,1,ELEM_COLORS['void']);
+          drawNarwhal(lx,ly,lumaState.spinAngle,1,ELEM_COLORS['void'],false,'narwhal-void');
           // Cry text bubble
           if(lumaState.cryText){
             ctx.save();
@@ -1669,7 +1655,7 @@ function render(){
           for(let i=0;i<6;i++){ctx.beginPath();ctx.moveTo(0,-36);const ba=(Math.PI*2/6)*i;ctx.lineTo(Math.cos(ba)*30,Math.sin(ba)*28);ctx.stroke();}
           ctx.beginPath();ctx.ellipse(0,0,30,28,0,0,Math.PI*2);ctx.strokeStyle='rgba(120,120,120,0.45)';ctx.stroke();
           ctx.restore();
-          drawNarwhal(cn.x,by,cn.bobT*0.5,1,ELEM_COLORS[cn.element]);
+          drawNarwhal(cn.x,by,cn.bobT*0.5,1,ELEM_COLORS[cn.element],false,'narwhal-'+cn.id);
           ctx.font='bold 12px Nunito,sans-serif';ctx.fillStyle='#ffffaa';ctx.textAlign='center';
           ctx.fillText('Swim close to rescue!',cn.x,by-56);ctx.fillText(cn.emoji+' '+cn.name,cn.x,by-70);
           const ddx=cn.x-player.x,ddy=cn.y-player.y,dd=Math.hypot(ddx,ddy);
@@ -1785,7 +1771,7 @@ function render(){
       ctx.fillStyle='rgba(60,180,30,0.75)';ctx.fill();
     }
   }
-  drawNarwhal(player.x,player.y,player.angle,1,PLAYER_COLOR,flash);
+  drawNarwhal(player.x,player.y,player.angle,1,PLAYER_COLOR,flash,'narwhal-player');
 
   // Orbiting companions
   const rescArr=[...rescuedSet];
@@ -1799,7 +1785,7 @@ function render(){
       ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.shadowColor=col;ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;ctx.restore();
     }
     ctx.globalAlpha=0.4+hpPct*0.6;
-    drawNarwhal(op.x,op.y,op.angle,0.55,col,hpPct<0.25&&Math.sin(gameTime/80)>0);
+    drawNarwhal(op.x,op.y,op.angle,0.55,col,hpPct<0.25&&Math.sin(gameTime/80)>0,'narwhal-'+id);
     ctx.globalAlpha=1;
     const pipW=24,pipH=4;
     ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(op.x-pipW/2,op.y-24,pipW,pipH);
@@ -1972,40 +1958,28 @@ function drawQR(){
 }
 
 // ── DRAW PLAYER NARWHAL ICONS ─────────────────────────────────────────────────
-function drawNarwhalToCanvas(canvasEl, size, color='#c9a0ff'){
+function drawNarwhalToCanvas(canvasEl,size,color='#c9a0ff'){
   if(!canvasEl)return;
+  const img=IMAGES['narwhal-player'];
+  if(!img||!img.complete||!img.naturalWidth)return;
   const c=canvasEl.getContext('2d');
-  const s=size/110; // scale factor based on local coord range ~110px tall
   c.clearRect(0,0,canvasEl.width,canvasEl.height);
   c.save();
-  c.translate(canvasEl.width/2, canvasEl.height/2);
-  c.rotate(-Math.PI/2); // tusk pointing up
-  c.scale(s,s);
-  // body
-  c.beginPath();c.ellipse(0,0,14,22,0,0,Math.PI*2);c.fillStyle=color;c.fill();
-  // belly
-  c.beginPath();c.ellipse(0,6,8,14,0,0,Math.PI*2);c.fillStyle='rgba(255,255,255,0.28)';c.fill();
-  // tail
-  c.beginPath();c.moveTo(-10,22);c.lineTo(0,16);c.lineTo(10,22);c.fillStyle=color;c.fill();
-  // tusk
-  c.beginPath();c.moveTo(-3,-18);c.lineTo(3,-18);c.lineTo(0,-42);c.fillStyle='#fff8e0';c.fill();
-  // eye
-  c.beginPath();c.arc(6,-4,4,0,Math.PI*2);c.fillStyle='#fff';c.fill();
-  c.beginPath();c.arc(7,-4,2.5,0,Math.PI*2);c.fillStyle='#222';c.fill();
-  c.beginPath();c.arc(8,-5,1,0,Math.PI*2);c.fillStyle='#fff';c.fill();
+  c.translate(canvasEl.width/2,canvasEl.height/2);
+  c.rotate(-Math.PI/2); // tusk pointing right for icon (horizontal swimming pose)
+  c.drawImage(img,-size/2,-size/2,size,size);
   c.restore();
 }
 
-// Render narwhal icons into UI elements on startup
-(function initNarwhalIcons(){
+function initNarwhalIcons(){
   drawNarwhalToCanvas(document.getElementById('titleNarwhalCanvas'),70);
   drawNarwhalToCanvas(document.getElementById('playerIconHP'),18);
-  // factNarwhal default — replace 🦄 text with canvas
   const fn=document.getElementById('factNarwhal');
   if(fn){fn.textContent='';}
-})();
+}
 
-requestAnimationFrame(ts=>{lastTime=ts;gameLoop(ts);});
+_onImgsReady=()=>{initNarwhalIcons();requestAnimationFrame(ts=>{lastTime=ts;gameLoop(ts);});};
+if(_imgsLoaded===_imgsTotal)_onImgsReady();
 </script>
 </body>
 </html>
