@@ -66,3 +66,21 @@ All rendering uses the 2D canvas API on an 800×600 `<canvas>`. `drawBackground`
 ### Void Realm Physics
 
 Luma bounces around the void realm with elastic wall and obstacle collisions (`updateVoidPhysics`). The 20 void obstacles (`rift` type) are also dynamic — they move, spin, and collide with each other. All of this only runs when `currentRealm === 'void'` and Luma hasn't been rescued.
+
+## Documentation
+
+Project documentation lives in `docs/`:
+
+| Folder | Purpose |
+|---|---|
+| `docs/planning/` | Pre-implementation session plans — written before coding, not updated after |
+| `docs/working_logs/` | Per-session change and decision logs |
+| `docs/implementation/` | Technical reference for game systems; updated when architecture changes |
+
+Run `/plan` to create a planning doc. Run `/document-and-commit-session` to write the working log and commit at the end of a session. Each folder has a `README.md` with naming conventions and format details.
+
+## Development Workflow
+
+1. `/plan` — scope the work and write a planning doc before touching code
+2. `/execute` — implement the plan
+3. `/document-and-commit-session` — log changes and commit
