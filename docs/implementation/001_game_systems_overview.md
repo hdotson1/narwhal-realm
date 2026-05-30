@@ -1,22 +1,32 @@
 # 001 — Game Systems Overview
 
-The game lives in `src/` as three files: `src/index.html` (markup only), `src/styles.css`, and `src/game.js` (~1837 lines of JavaScript). Art assets (12 PNGs + 7 SVGs) live in `src/assets/`. Sections of `game.js` are separated by banner comments in the form `// ── NAME ──`. There is no build step, module system, or external JavaScript beyond Google Fonts (CSS import) and a QR code library loaded lazily on the win screen.
+The game lives in `src/` as 9 files: `src/index.html` (markup only), `src/styles.css`, and 7 JavaScript files loaded sequentially via plain `<script>` tags. Art assets (12 PNGs + 7 SVGs) live in `src/assets/`. There is no build step, module system, or external JavaScript beyond Google Fonts (CSS import) and a QR code library loaded lazily on the win screen.
 
-> **Line references below** point to `src/game.js`. Each is approximately 171 less than the corresponding line in the original monolithic `index.html`.
+**JavaScript file load order** (each file is global-scope; later files can reference anything from earlier files):
+
+| File | Contents |
+|---|---|
+| `constants.js` | `W`, `H`, `NARWHAL_DEFS`, `REALMS`, `PORTALS`, element constants, and all other `const` values |
+| `state.js` | `canvas`/`ctx`, image loading infrastructure, all mutable `let` game state variables |
+| `obstacles.js` | `OBSTACLE_THEMES`, `generateObstacles`, `drawObstacle`, `applyObstacleEffects`, void physics |
+| `draw.js` | All draw functions (`drawNarwhal`, `drawRobot`, `drawBackground`, `drawPortal`, etc.) and `render()` |
+| `update.js` | All game logic: `update()`, `gameLoop()`, spawn/damage/collision helpers, boss, shop, realm transitions |
+| `input.js` | `keydown`, `keyup`, `mousemove`, `click` event listeners |
+| `main.js` | Button wiring, `drawQR`, `initNarwhalIcons`, startup safety guard |
 
 The canvas is 800×600 px, id `c`. All game drawing uses the 2D context `ctx`. `src/index.html` contains the UI overlay (health bar, ability slots, popups) positioned absolutely over the canvas.
 
 ---
 
-## Image Loading (line 174)
+## Image Loading (`state.js`)
 
-All PNGs and SVGs are loaded at startup into the `IMAGES` dict before the game loop starts. `_imgsTotal` / `_imgsLoaded` / `_onImgsReady` coordinate a simple callback-based ready gate. The game loop only starts after all images report `onload` or `onerror`.
+All PNGs and SVGs are loaded at startup into the `IMAGES` dict before the game loop starts. `_imgsTotal` / `_imgsLoaded` / `_onImgsReady` coordinate a simple callback-based ready gate. The game loop only starts after all images report `onload` or `onerror`. `main.js` adds a safety guard that fires immediately if all images are already cached at parse time.
 
 Asset keys match filenames without extensions: `narwhal-player`, `enemy-water`, `bg-hub`, `cybertruck-boss`, etc.
 
 ---
 
-## State Machine (line 188)
+## State Machine (`state.js` / `update.js`)
 
 The top-level `state` string drives the entire game:
 
@@ -35,7 +45,7 @@ The top-level `state` string drives the entire game:
 
 ---
 
-## Game Loop (line 988)
+## Game Loop (`update.js`)
 
 ```
 requestAnimationFrame → gameLoop(ts) → update(dt) → render()
@@ -45,7 +55,7 @@ requestAnimationFrame → gameLoop(ts) → update(dt) → render()
 
 ---
 
-## Realms & Progression (line 252)
+## Realms & Progression (`constants.js` / `update.js`)
 
 Six exploration realms plus a boss arena:
 
@@ -59,15 +69,15 @@ Six exploration realms plus a boss arena:
 | `void` | Requires all four narwhals AND 5 sand dollars |
 | `boss` | Final arena; no portal, triggered by `startBoss()` |
 
-Unlock logic lives in `canEnterRealm` (line 254). `UNLOCK_CHAIN` (line 252) defines the dependency order. `voidUnlocked` (line 253) is a permanent flag set to `true` after the first void entry purchase.
+Unlock logic lives in `canEnterRealm` (`update.js`). `UNLOCK_CHAIN` (`constants.js`) defines the dependency order. `voidUnlocked` (`state.js`) is a permanent flag set to `true` after the first void entry purchase.
 
-`enterRealm(id)` (line 1276) transitions to a new realm: resets obstacles via `generateObstacles`, clears enemies and projectiles, repositions the player, and updates the UI label.
+`enterRealm(id)` (`update.js`) transitions to a new realm: resets obstacles via `generateObstacles`, clears enemies and projectiles, repositions the player, and updates the UI label.
 
 ---
 
-## Narwhal Companions (line 281)
+## Narwhal Companions (`constants.js` / `update.js`)
 
-`NARWHAL_DEFS` (line 281) is an array of 5 companion definitions:
+`NARWHAL_DEFS` (`constants.js`) is an array of 5 companion definitions:
 
 | id | Name | Element | Special |
 |---|---|---|---|
@@ -77,60 +87,60 @@ Unlock logic lives in `canEnterRealm` (line 254). `UNLOCK_CHAIN` (line 252) defi
 | `air` | Breeze | air | Heals player + companions instead of attacking |
 | `void` | Luma | void | Black-hole projectile; instant phase damage in boss fight |
 
-`rescuedSet` (line 349) is a `Set<string>` of rescued companion ids. Active companions orbit the player via `getOrbitPos(idx, total)` (line 983) and auto-fire at the nearest enemy through `updateAutoFire` (line 1197). The currently selected companion (`selectedElement`, line 329) also fires on mouse click.
+`rescuedSet` (`state.js`) is a `Set<string>` of rescued companion ids. Active companions orbit the player via `getOrbitPos(idx, total)` (`update.js`) and auto-fire at the nearest enemy through `updateAutoFire`. The currently selected companion (`selectedElement`, `state.js`) also fires on mouse click.
 
-Companion HP is tracked in `companionHp` (line 306), capped at `COMPANION_MAX_HP = 60` (line 305). The UI cooldown overlays and companion HP bars are updated each frame by `updateCooldownUI` (line 1187) and `updateCompanionUI` (line 309).
+Companion HP is tracked in `companionHp` (`state.js`), capped at `COMPANION_MAX_HP = 60` (`constants.js`). The UI cooldown overlays and companion HP bars are updated each frame by `updateCooldownUI` and `updateCompanionUI` (both in `update.js`).
 
 ---
 
-## Combat (line 648)
+## Combat (`update.js` / `obstacles.js`)
 
-**Element system**: `ELEM_COLORS` (line 648), `ELEM_WEAKNESSES` (line 649), `REALM_ENEMY_ELEMENT` (line 650).
-- Hitting an enemy with its weakness element applies ×2 damage (`checkProjHitEnemies`, line 1246).
+**Element system**: `ELEM_COLORS`, `ELEM_WEAKNESSES`, `REALM_ENEMY_ELEMENT` (all in `constants.js`).
+- Hitting an enemy with its weakness element applies ×2 damage (`checkProjHitEnemies` in `update.js`).
 - `void` element has no weakness.
 
-**Projectiles**: `projectiles` — player/companion shots; `enemyProjectiles` — enemy shots. Both are arrays of `{x,y,vx,vy,r,damage,elem,…}` objects updated and culled each frame in `updateProjectiles` (line 1224).
+**Projectiles**: `projectiles` — player/companion shots; `enemyProjectiles` — enemy shots. Both are arrays of `{x,y,vx,vy,r,damage,elem,…}` objects updated and culled each frame in `updateProjectiles` (`update.js`).
 
-**Coin drops**: Defeated enemies call `spawnCoin(x,y)` (line 683). Coins bob in place until the player walks over them, incrementing `sandDollars`. `updateCoinPickups` / `drawCoinPickups` (lines 687, 702) manage them.
+**Coin drops**: Defeated enemies call `spawnCoin(x,y)` (`update.js`). Coins bob in place until the player walks over them, incrementing `sandDollars`. `updateCoinPickups` (`update.js`) / `drawCoinPickups` (`draw.js`) manage them.
 
-**Obstacle effects** (`applyObstacleEffects`, line 519):
+**Obstacle effects** (`applyObstacleEffects`, `obstacles.js`):
 - Fire rocks: apply burn damage over time
 - Earth trees: set `playerEntangled` (slows movement)
 - Air/void clouds: apply a velocity impulse via `playerBlown`
 
-**Enemy spawning**: `spawnEnemies(bossMode)` (line 656) populates the `enemies` array. Enemy element matches the current realm. Each enemy uses `updateEnemy` (line 1150) for AI movement and shooting.
+**Enemy spawning**: `spawnEnemies(bossMode)` (`update.js`) populates the `enemies` array. Enemy element matches the current realm. Each enemy uses `updateEnemy` (`update.js`) for AI movement and shooting.
 
 ---
 
-## Boss Fight (line 765)
+## Boss Fight (`update.js` / `state.js`)
 
-`boss` object (line 765): `{x, y, r, hp, maxHp, speed, velX, velY, shootTimer, phase, alive, dmgFlash, angle}`.
+`boss` object (`state.js`): `{x, y, r, hp, maxHp, speed, velX, velY, shootTimer, phase, alive, dmgFlash, angle}`.
 
 Three phases triggered by HP thresholds (50% → phase 2, 25% → phase 3), each increasing speed and bullet complexity. Phase 2 adds exhaust flame particles.
 
-`startBoss()` (line 1480) transitions state to `boss`, locks the player to the bottom third of the screen, and shows the boss HP bar. `updateBoss(dt)` (line 1526), `updateBossAutoFire(dt)` (line 1496), and `updateBossMinion` (line 741) handle the boss update path, all called from within `update(dt)`.
+`startBoss()` (`update.js`) transitions state to `boss`, locks the player to the bottom third of the screen, and shows the boss HP bar. `updateBoss(dt)`, `updateBossAutoFire(dt)`, and `updateBossMinion` handle the boss update path, all in `update.js`, all called from within `update(dt)`.
 
-`blackHoleEffect` (line 766) is a transient object created when Luma fires her void ability during the boss fight; it pulls all enemy projectiles toward a point and deals instant phase damage.
-
----
-
-## Void Realm Physics (line 553)
-
-`lumaState` (line 553) tracks Luma's position, velocity, spin angle, and bounce timer while she is uncaptured. `updateVoidPhysics(dt)` (line 560) applies elastic wall and obstacle collisions. The 20 void obstacles are dynamic — they move, spin, and collide with each other — but only while `currentRealm === 'void'` and Luma is unrescued.
+`blackHoleEffect` (`state.js`) is a transient object created when Luma fires her void ability during the boss fight; it pulls all enemy projectiles toward a point and deals instant phase damage.
 
 ---
 
-## Rendering (line 1611)
+## Void Realm Physics (`obstacles.js`)
 
-`render()` (line 1612) draws the full frame in this order:
+`lumaState` (`obstacles.js`) tracks Luma's position, velocity, spin angle, and bounce timer while she is uncaptured. `updateVoidPhysics(dt)` (`obstacles.js`) applies elastic wall and obstacle collisions. The 20 void obstacles are dynamic — they move, spin, and collide with each other — but only while `currentRealm === 'void'` and Luma is unrescued.
 
-1. `drawBackground()` (line 834) — SVG image + gradient overlay + optional hex grid or animated ocean waves
-2. Portals (`drawPortal`, line 882) — hub realm shows all six portals; other realms show only the hub return portal
-3. Obstacles (`drawObstacle`, line 425) — procedural shapes: `bubble`, `lavarock`, `tree`, `cloud`, `rift`
+---
+
+## Rendering (`draw.js`)
+
+`render()` (`draw.js`) draws the full frame in this order:
+
+1. `drawBackground()` — SVG image + gradient overlay + optional hex grid or animated ocean waves
+2. Portals (`drawPortal`) — hub realm shows all six portals; other realms show only the hub return portal
+3. Obstacles (`drawObstacle`, `obstacles.js`) — procedural shapes: `bubble`, `lavarock`, `tree`, `cloud`, `rift`
 4. Coin pickups, enemies, companions, player, particles
 5. Popups and end screens rendered via CSS overlay (HTML elements, not canvas)
 
-`drawNarwhal(x, y, angle, scale, color, flash, imgKey)` (line 782) is reused for the player, all companions, all captive narwhals, and the shopkeeper — it draws the PNG sprite centered and rotated to face `angle`. If the image is not yet loaded it falls back to a procedural ellipse.
+`drawNarwhal(x, y, angle, scale, color, flash, imgKey)` (`draw.js`) is reused for the player, all companions, all captive narwhals, and the shopkeeper — it draws the PNG sprite centered and rotated to face `angle`.
 
 ---
 
