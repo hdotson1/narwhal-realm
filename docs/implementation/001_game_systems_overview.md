@@ -1,8 +1,10 @@
 # 001 — Game Systems Overview
 
-The entire game lives in a single file: `index.html` (~1846 lines). Sections are separated by banner comments in the form `// ── NAME ──`. There is no build step, module system, or external JavaScript beyond Google Fonts (CSS import) and a QR code library loaded lazily on the win screen.
+The game lives in `src/` as three files: `src/index.html` (markup only), `src/styles.css`, and `src/game.js` (~1837 lines of JavaScript). Art assets (12 PNGs + 7 SVGs) live in `src/assets/`. Sections of `game.js` are separated by banner comments in the form `// ── NAME ──`. There is no build step, module system, or external JavaScript beyond Google Fonts (CSS import) and a QR code library loaded lazily on the win screen.
 
-The canvas is 800×600 px, id `c`. All game drawing uses the 2D context `ctx`. The HTML above the `<script>` block contains the UI overlay (health bar, ability slots, popups) positioned absolutely over the canvas.
+> **Line references below** point to `src/game.js`. Each is approximately 171 less than the corresponding line in the original monolithic `index.html`.
+
+The canvas is 800×600 px, id `c`. All game drawing uses the 2D context `ctx`. `src/index.html` contains the UI overlay (health bar, ability slots, popups) positioned absolutely over the canvas.
 
 ---
 

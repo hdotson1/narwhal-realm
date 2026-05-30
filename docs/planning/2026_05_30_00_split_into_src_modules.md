@@ -50,13 +50,13 @@ After the refactor, opening `src/index.html` via `file://` may cause canvas tain
 - Fixing the pre-existing CORS/canvas-taint edge case
 
 ## Tasks
-- [ ] Create `src/` and `src/assets/` directories
-- [ ] Move all 19 art assets (12 PNGs + 7 SVGs) from repo root to `src/assets/`
-- [ ] Extract CSS (current `index.html` lines 7–71, between `<style>` tags) into `src/styles.css`
-- [ ] Extract JS (current `index.html` lines 172–2008, between `<script>` tags) into `src/game.js`; at lines 183–186 update paths: `k+'.png'` → `'assets/'+k+'.png'` and `'bg-'+k+'.svg'` → `'assets/bg-'+k+'.svg'`
-- [ ] Create `src/index.html`: `<!DOCTYPE html>` shell with `<link rel="stylesheet" href="styles.css">` in `<head>`, all existing DOM markup (lines 73–170 of current `index.html`) in `<body>`, and `<script src="game.js"></script>` just before `</body>`
-- [ ] Update `CLAUDE.md`: change "Open `index.html` directly in a browser" to "Open `src/index.html` directly in a browser"
+- [x] Create `src/` and `src/assets/` directories
+- [x] Move all 19 art assets (12 PNGs + 7 SVGs) from repo root to `src/assets/`
+- [x] Extract CSS (current `index.html` lines 7–71, between `<style>` tags) into `src/styles.css`
+- [x] Extract JS (current `index.html` lines 172–2008, between `<script>` tags) into `src/game.js`; at lines 183–186 update paths: `k+'.png'` → `'assets/'+k+'.png'` and `'bg-'+k+'.svg'` → `'assets/bg-'+k+'.svg'`
+- [x] Create `src/index.html`: `<!DOCTYPE html>` shell with `<link rel="stylesheet" href="styles.css">` in `<head>`, all existing DOM markup (lines 73–170 of current `index.html`) in `<body>`, and `<script src="game.js"></script>` just before `</body>`
+- [x] Update `CLAUDE.md`: change "Open `index.html` directly in a browser" to "Open `src/index.html` directly in a browser"
 - [ ] Add `.github/workflows/deploy.yml` — workflow triggered on push to `main`, with `permissions: pages: write` + `id-token: write`, steps: `actions/checkout`, `actions/upload-pages-artifact` (path: `./src`), `actions/deploy-pages`
-- [ ] Open `src/index.html` in a browser and verify: (a) game canvas and title screen render, (b) narwhal + enemy PNGs appear in-game, (c) SVG backgrounds render per realm, (d) win screen shows (or at minimum the QR canvas doesn't error the whole screen)
-- [ ] Delete `index.html` from the repo root after verification passes
+- [x] Open `src/index.html` in a browser and verify: (a) game canvas and title screen render, (b) narwhal + enemy PNGs appear in-game, (c) SVG backgrounds render per realm, (d) win screen shows (or at minimum the QR canvas doesn't error the whole screen)
+- [x] Delete `index.html` from the repo root after verification passes
 - [ ] *(Post-merge, manual)* Switch GitHub Pages source to "GitHub Actions" in the repo's Settings > Pages
