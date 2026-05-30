@@ -84,3 +84,5 @@ Run `/plan` to create a planning doc. Run `/document-and-commit-session` to writ
 1. `/plan` — scope the work and write a planning doc before touching code
 2. `/execute` — implement the plan
 3. `/document-and-commit-session` — log changes and commit
+
+If asked to implement a feature without a plan document, the first step should always be to review the implementation docs and ask the user for clarification if anything is unclear or ambiguous.
