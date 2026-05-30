@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Running the Game
 
-Open `index.html` directly in a browser — no build step, no server, no dependencies. Everything is self-contained in that single file.
+Open `src/index.html` directly in a browser — no build step, no server, no dependencies.
 
 ## Architecture
 
-The entire game is a single HTML file (`index.html`, ~1966 lines) with inline CSS and a large `<script>` block. There is no module system, bundler, or external JS beyond Google Fonts and a QR code library loaded lazily on the win screen.
+The game lives in `src/` as three files: `index.html` (markup only), `styles.css`, and `game.js`. Art assets are in `src/assets/`. There is no module system, bundler, or external JS beyond Google Fonts and a QR code library loaded lazily on the win screen.
 
 ### State Machine
 
