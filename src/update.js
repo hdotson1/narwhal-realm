@@ -59,7 +59,7 @@ function meetLuma(cn){
   document.getElementById('factTitle').textContent='Luma the Void Narwhal!';
   document.getElementById('factText').textContent=
     'You found me! Thank you for rescuing all of us — the narwhals will never forget this.\n\n' +
-    'The Black Hole power is now yours. 🌑 Use it against the Evil Cybertruck and save the ocean!';
+    "The Black Hole power is now yours. 🌑 Use it against the Evil Orca's Cybertruck and save the ocean!";
 
   // Replace the single factBtn with two choices
   const factBtn=document.getElementById('factBtn');
@@ -389,7 +389,7 @@ function showReadyPrompt(){
   document.getElementById('factNarwhal').textContent='🌑';
   document.getElementById('factTitle').textContent='Luma the Void Narwhal';
   document.getElementById('factText').textContent=
-    'Are you ready to save the ocean and destroy the Evil Cybertruck?';
+    'Are you ready to save the ocean and defeat the Evil Orca?';
 
   const popup=document.getElementById('factPopup');
 
@@ -463,7 +463,7 @@ function shopAnswer(yes){
       rescuedSet.add('void');
       companionHp['void']=COMPANION_MAX_HP;
       updateCompanionUI();
-      document.getElementById('shopText').textContent='EXCELLENT. The Black Hole power is yours! Now go destroy the Evil Cybertruck! 🌑';
+      document.getElementById('shopText').textContent='EXCELLENT. The Black Hole power is yours! Now go defeat the Evil Orca! 🌑';
       document.getElementById('shopYes').style.display='none';
       document.getElementById('shopNo').textContent='LET\'S GO! 🚗💥';
       document.getElementById('shopNo').onclick=()=>{
@@ -561,7 +561,7 @@ function startBoss(){
   document.getElementById('realmLabel').textContent='Boss Arena';
   document.getElementById('bossHPWrap').style.display='flex';
   document.getElementById('sandDollars').style.display='none'; // no coins in final level
-  showStatus('🚗 THE EVIL CYBERTRUCK ARRIVES!',3);
+  showStatus('🚗 THE EVIL ORCA ARRIVES!',3);
 }
 
 // Boss-mode auto fire: all narwhals fire straight upward

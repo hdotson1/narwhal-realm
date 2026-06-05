@@ -37,7 +37,7 @@ function drawRobot(x,y,elem,r,flash){
 }
 
 function drawCybertruck(flash){
-  const img=IMAGES['cybertruck-boss'];
+  const img=IMAGES['orca-boss'];
   ctx.save();ctx.translate(boss.x,boss.y);
   if(flash)ctx.filter='brightness(5)';
   if(img&&img.complete&&img.naturalWidth)ctx.drawImage(img,-BOSS_W/2,-BOSS_H/2,BOSS_W,BOSS_H);

@@ -12,7 +12,6 @@
     --font-btn-sm:15px;
     --font-sand-dollars:18px;
     --font-status:22px;
-    --font-title:52px;
     --font-title-p:13px;
     --font-win-title:42px;
     --font-boss-lose-title:24px;
@@ -65,12 +64,13 @@
   .shopBtn:hover{transform:scale(1.05);}
   #shopYes{background:#44cc88;color:#001a08;}
   #shopNo{background:#cc4444;color:#fff;}
-  #titleScreen,#winScreen,#loseScreen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,10,25,0.95);border-radius:12px;z-index:200;pointer-events:all;}
-  #titleScreen h1{font-family:'Fredoka One',cursive;font-size:var(--font-title);color:#cc99ff;text-shadow:0 0 30px rgba(180,130,255,0.8);margin-bottom:8px;animation:pulse 2s ease-in-out infinite;}
-  @keyframes pulse{0%,100%{text-shadow:0 0 20px rgba(180,130,255,0.6);}50%{text-shadow:0 0 50px rgba(180,130,255,1);}}
-  .titleNarwhal{font-size:64px;margin-bottom:12px;animation:bob 2s ease-in-out infinite;}
+  #titleScreen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;z-index:200;pointer-events:all;overflow:hidden;}
+  #winScreen,#loseScreen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,10,25,0.95);border-radius:12px;z-index:200;pointer-events:all;}
+  #splashImg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#0a0a1a;border-radius:12px;}
+  .splash-btn-hidden{opacity:0;pointer-events:none;}
+  #startBtn{transition:opacity 0.6s ease,transform 0.15s,box-shadow 0.15s;position:absolute;bottom:60px;left:50%;transform:translateX(-50%);}
+  #startBtn:hover{transform:translateX(-50%) scale(1.07);}
   @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
-  #titleScreen p{color:#ccaaff;font-size:var(--font-title-p);margin-bottom:4px;text-align:center;max-width:540px;line-height:1.5;}
   .bigBtn{pointer-events:all;background:linear-gradient(135deg,#cc88ff,#8844cc);color:#fff;border:none;border-radius:12px;padding:14px 40px;font-family:'Fredoka One',cursive;font-size:var(--font-btn-lg);cursor:pointer;margin-top:20px;box-shadow:0 0 20px rgba(180,100,255,0.5);transition:transform 0.15s,box-shadow 0.15s;}
   .bigBtn:hover{transform:scale(1.07);box-shadow:0 0 35px rgba(180,100,255,0.9);}
   #winScreen h1{font-family:'Fredoka One',cursive;font-size:var(--font-win-title);color:#ffdd44;margin-bottom:12px;}

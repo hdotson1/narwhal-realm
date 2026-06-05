@@ -27,7 +27,7 @@
     <div id="carryHint">🌊 Carry your friend back to the exit!</div>
     <div id="statusMsg"></div>
     <div id="bossHPWrap">
-      <div id="bossLabel">🚗 EVIL CYBERTRUCK</div>
+      <div id="bossLabel">🚗 EVIL ORCA</div>
       <div id="bossBg"><div id="bossFill" style="width:100%"></div></div>
     </div>
     <div id="abilityBar">
@@ -69,16 +69,14 @@
   </div>
 
   <div id="titleScreen">
-    <canvas id="titleNarwhalCanvas" width="80" height="80" style="margin-bottom:12px;animation:bob 2s ease-in-out infinite;display:block;margin-left:auto;margin-right:auto;"></canvas>
-    <h1>Narwhal Realm</h1>
-    <p>Explore the realms, rescue your narwhal friends, and defeat the Evil Cybertruck!</p>
-    <button class="bigBtn" id="startBtn">🌊 Start Adventure!</button>
+    <img id="splashImg" src="assets/splash-screen.png" alt="">
+    <button class="bigBtn splash-btn-hidden" id="startBtn">🌊 Play</button>
   </div>
 
   <div id="winScreen" style="display:none">
     <div id="winEmoji" style="animation:bob 1s ease-in-out infinite;">🎉</div>
     <h1>You Saved the Narwhals!</h1>
-    <p style="color:#ccaaff;margin-bottom:4px;">The Evil Cybertruck is totaled!</p>
+    <p style="color:#ccaaff;margin-bottom:4px;">The Evil Orca's Cybertruck is totaled!</p>
     <p style="color:#664477;margin-top:8px;">
       <a href="https://us.whales.org/whales-dolphins/species-guide/narwhal/" target="_blank"
          style="color:#88ddff;text-decoration:underline;">Real narwhals need our protection! 🌊</a>
@@ -95,7 +93,7 @@
 
   <div id="bossLoseScreen" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,10,25,0.97);border-radius:12px;z-index:200;pointer-events:all;">
     <div id="bossLoseIcon" style="margin-bottom:6px;">😢</div>
-    <div id="bossLoseTitle" style="color:#ff8888;margin-bottom:8px;">The Cybertruck won... for now!</div>
+    <div id="bossLoseTitle" style="color:#ff8888;margin-bottom:8px;">The Orca won... for now!</div>
     <div id="bossLoseSubtitle" style="color:#cc99ff;margin-bottom:6px;">Answer this narwhal trivia question to try again:</div>
     <div id="bossLoseQ" style="color:#ddc8ff;line-height:1.6;margin-bottom:16px;max-width:460px;text-align:center;padding:0 20px;"></div>
     <div id="bossLoseFeedback" style="min-height:22px;margin-bottom:10px;"></div>

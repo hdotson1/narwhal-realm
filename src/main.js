@@ -64,7 +64,6 @@ function drawQR(){
 
 // ── NARWHAL ICONS ─────────────────────────────────────────────────────────────
 function initNarwhalIcons(){
-  drawNarwhalToCanvas(document.getElementById('titleNarwhalCanvas'),70);
   drawNarwhalToCanvas(document.getElementById('playerIconHP'),18);
   const fn=document.getElementById('factNarwhal');
   if(fn){fn.textContent='';}
@@ -76,6 +75,7 @@ function initNarwhalIcons(){
 function _startGame(){
   initNarwhalIcons();
   requestAnimationFrame(ts=>{lastTime=ts;gameLoop(ts);});
+  setTimeout(()=>{document.getElementById('startBtn').classList.remove('splash-btn-hidden');},2000);
 }
 if(_imgsLoaded===_imgsTotal){
   _startGame();

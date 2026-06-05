@@ -5,7 +5,7 @@ const IMAGES={};
 let _imgsTotal=0,_imgsLoaded=0,_onImgsReady=null;
 function _imgDone(){if(++_imgsLoaded===_imgsTotal&&_onImgsReady)_onImgsReady();}
 ['narwhal-player','narwhal-water','narwhal-fire','narwhal-earth','narwhal-air','narwhal-void',
- 'enemy-water','enemy-fire','enemy-earth','enemy-air','enemy-void','cybertruck-boss',
+ 'enemy-water','enemy-fire','enemy-earth','enemy-air','enemy-void','orca-boss',
 ].forEach(k=>{_imgsTotal++;const i=new Image();i.onload=i.onerror=_imgDone;i.src='assets/'+k+'.png';IMAGES[k]=i;});
 ['hub','water','fire','earth','air','void','boss'].forEach(k=>{_imgsTotal++;const i=new Image();i.onload=i.onerror=_imgDone;i.src='assets/bg-'+k+'.svg';IMAGES['bg-'+k]=i;});
 
