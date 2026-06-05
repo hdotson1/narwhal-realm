@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Running the Game
 
-Open `index.html` directly in a browser — no build step, no server, no dependencies. Everything is self-contained in that single file.
+Open `src/index.html` directly in a browser — no build step, no server, no dependencies.
 
 ## Architecture
 
-The entire game is a single HTML file (`index.html`, ~1966 lines) with inline CSS and a large `<script>` block. There is no module system, bundler, or external JS beyond Google Fonts and a QR code library loaded lazily on the win screen.
+The game lives in `src/` as three files: `index.html` (markup only), `styles.css`, and `game.js`. Art assets are in `src/assets/`. There is no module system, bundler, or external JS beyond Google Fonts and a QR code library loaded lazily on the win screen.
 
 ### State Machine
 
@@ -84,3 +84,5 @@ Run `/plan` to create a planning doc. Run `/document-and-commit-session` to writ
 1. `/plan` — scope the work and write a planning doc before touching code
 2. `/execute` — implement the plan
 3. `/document-and-commit-session` — log changes and commit
+
+If asked to implement a feature without a plan document, the first step should always be to review the implementation docs and ask the user for clarification if anything is unclear or ambiguous.
