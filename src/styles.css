@@ -1,25 +1,25 @@
   @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap');
   :root{
-    --font-ui:17px;
-    --font-ui-sm:15px;
-    --font-ui-xs:13px;
-    --font-popup-title:22px;
-    --font-popup-label:18px;
-    --font-popup-body:14px;
-    --font-popup-note:12px;
-    --font-btn:16px;
-    --font-btn-lg:22px;
-    --font-btn-sm:15px;
-    --font-sand-dollars:18px;
-    --font-status:22px;
-    --font-title-p:13px;
-    --font-win-title:42px;
-    --font-boss-lose-title:24px;
-    --font-boss-lose-sub:16px;
-    --font-emoji-xl:72px;
-    --font-emoji-lg:64px;
-    --font-emoji-md:52px;
-    --font-emoji-sm:48px;
+    --font-ui:22px;
+    --font-ui-sm:20px;
+    --font-ui-xs:17px;
+    --font-popup-title:29px;
+    --font-popup-label:23px;
+    --font-popup-body:18px;
+    --font-popup-note:16px;
+    --font-btn:21px;
+    --font-btn-lg:29px;
+    --font-btn-sm:20px;
+    --font-sand-dollars:23px;
+    --font-status:29px;
+    --font-title-p:17px;
+    --font-win-title:55px;
+    --font-boss-lose-title:31px;
+    --font-boss-lose-sub:21px;
+    --font-emoji-xl:94px;
+    --font-emoji-lg:84px;
+    --font-emoji-md:68px;
+    --font-emoji-sm:62px;
     --game-scale:1;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -52,6 +52,7 @@
   #factNarwhal{font-size:var(--font-emoji-sm);margin-bottom:8px;}
   #factTitle{font-family:'Fredoka One',cursive;color:#cc99ff;font-size:var(--font-popup-title);margin-bottom:8px;}
   #factText{color:#ddc8ff;font-size:var(--font-popup-body);line-height:1.6;margin-bottom:16px;}
+  #factNote{color:#ffcc44;font-style:italic;font-size:var(--font-popup-note);margin-bottom:14px;}
   #factBtn{pointer-events:all;background:#bb88ff;color:#1a0030;border:none;border-radius:8px;padding:10px 24px;font-family:'Fredoka One',cursive;font-size:var(--font-btn);cursor:pointer;}
   #factBtn:hover{background:#cc99ff;}
   #shopPopup{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:rgba(5,0,15,0.98);border:3px solid #330066;border-radius:16px;padding:28px 32px;max-width:460px;text-align:center;pointer-events:all;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);z-index:100;box-shadow:0 0 50px rgba(100,0,200,0.6);}

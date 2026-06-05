@@ -60,6 +60,7 @@ function meetLuma(cn){
   document.getElementById('factText').textContent=
     'You found me! Thank you for rescuing all of us — the narwhals will never forget this.\n\n' +
     "The Black Hole power is now yours. 🌑 Use it against the Evil Orca's Cybertruck and save the ocean!";
+  document.getElementById('factNote').style.display='none';
 
   // Replace the single factBtn with two choices
   const factBtn=document.getElementById('factBtn');
@@ -282,7 +283,19 @@ function updateProjectiles(dt){
     }
     return p.life>0&&p.x>-20&&p.x<W+20&&p.y>-20&&p.y<H+20;
   });
-  enemyProjectiles=enemyProjectiles.filter(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;return p.life>0&&p.x>-20&&p.x<W+20&&p.y>-20&&p.y<H+20;});
+  enemyProjectiles=enemyProjectiles.filter(p=>{
+    p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+    if(p.homing>0){
+      const speed=Math.hypot(p.vx,p.vy);
+      const ta=Math.atan2(player.y-p.y,player.x-p.x);
+      const blend=p.homing*dt*5;
+      p.vx+=(Math.cos(ta)*speed-p.vx)*blend;
+      p.vy+=(Math.sin(ta)*speed-p.vy)*blend;
+      const ns=Math.hypot(p.vx,p.vy)||1;
+      p.vx=p.vx/ns*speed;p.vy=p.vy/ns*speed;
+    }
+    return p.life>0&&p.x>-20&&p.x<W+20&&p.y>-20&&p.y<H+20;
+  });
 }
 
 function checkEnemyProjHit(){
@@ -364,20 +377,46 @@ function enterRealm(id){
       lumaState.spinAngle=0;lumaState.spinRate=4;lumaState.cryTimer=1;lumaState.cryText='';
     }
   } else {hint.style.display='none';}
+
+  // Companion realm tips — fire after hint toast settles, first entry only
+  if(id==='fire' &&rescuedSet.has('water')&&!realmTipsShown.has('fire'))
+    setTimeout(()=>{if(state==='playing')showRealmTip('fire','💧','Squirt says:','Squirt here! 💧 Water is super effective against these fire enemies — I\'ve got this!');},400);
+  else if(id==='earth'&&rescuedSet.has('fire') &&!realmTipsShown.has('earth'))
+    setTimeout(()=>{if(state==='playing')showRealmTip('earth','🔥','Spark says:','Spark here! 🔥 Fire tears right through earth creatures — leave it to me!');},400);
+  else if(id==='air'  &&rescuedSet.has('earth')&&!realmTipsShown.has('air'))
+    setTimeout(()=>{if(state==='playing')showRealmTip('air','🍃','Root says:','Root here! 🍃 Earth energy grounds these air enemies perfectly — I\'ll handle them!');},400);
 }
 
 function freeNarwhal(cn){
   cn.freed=true;rescuedSet.add(cn.id);
   companionHp[cn.id]=COMPANION_MAX_HP;
   carryingNarwhal=cn.id;
+  factResumeState='carrying';
   state='fact'; // pauses game behind popup
   document.getElementById('factNarwhal').textContent=cn.emoji;
   document.getElementById('factTitle').textContent=cn.factTitle;
-  document.getElementById('factText').textContent=cn.fact;
+  let factBody=cn.fact;
+  if(cn.element==='air')factBody+='\n\nAs your companion, Breeze will HEAL your whole team! Press [4] to activate her healing power.';
+  document.getElementById('factText').textContent=factBody;
+  document.getElementById('factNote').style.display='';
   document.getElementById('factPopup').classList.add('show');
   spawnBurst(cn.x,cn.y,ELEM_COLORS[cn.element],20);
   if(!selectedElement&&cn.element!=='air')setSelected(cn.id);
   updateCompanionUI();
+}
+
+function showRealmTip(realmId,emoji,title,msg){
+  factResumeState='playing';
+  realmTipsShown.add(realmId);
+  const factBtn=document.getElementById('factBtn');
+  factBtn.style.display='';
+  document.getElementById('factNarwhal').textContent=emoji;
+  document.getElementById('factTitle').textContent=title;
+  document.getElementById('factText').textContent=msg;
+  document.getElementById('factNote').style.display='none';
+  const popup=document.getElementById('factPopup');
+  state='fact';
+  popup.classList.add('show');
 }
 
 function showReadyPrompt(){
@@ -390,6 +429,7 @@ function showReadyPrompt(){
   document.getElementById('factTitle').textContent='Luma the Void Narwhal';
   document.getElementById('factText').textContent=
     'Are you ready to save the ocean and defeat the Evil Orca?';
+  document.getElementById('factNote').style.display='none';
 
   const popup=document.getElementById('factPopup');
 
@@ -628,7 +668,7 @@ function updateBoss(dt){
       for(let i=0;i<spread2;i++){
         const off=(i-(spread2-1)/2)*0.18;
         enemyProjectiles.push({x:boss.x,y:boss.y+boss.r,vx:Math.cos(ba+off)*280,vy:Math.sin(ba+off)*280,
-          color:ELEM_COLORS[be],element:be,r:9,dmg:14,life:4});
+          color:ELEM_COLORS[be],element:be,r:9,dmg:14,life:4,homing:BOSS_HOMING_FACTOR});
       }
     } else if(pattern===2){
       // Horizontal spray across full width

@@ -6,7 +6,7 @@ document.getElementById('startBtn').onclick=()=>{
 document.getElementById('factBtn').onclick=()=>{
   document.getElementById('factPopup').classList.remove('show');
   lastTime=performance.now(); // prevent dt spike after pause
-  state='carrying'; // now player must walk to exit
+  state=factResumeState;
 };
 document.getElementById('helpBtn').onclick=()=>{
   const c=document.getElementById('controls');

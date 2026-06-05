@@ -34,6 +34,8 @@ let playerEntangled=0;    // seconds remaining
 let playerBlown={vx:0,vy:0,t:0};  // wind push
 
 let rescuedSet=new Set();
+let factResumeState='carrying';
+let realmTipsShown=new Set();
 let carryingNarwhal=null; // narwhal id being carried back to exit
 let abilityCooldowns={};
 let autoFireTimer=0;

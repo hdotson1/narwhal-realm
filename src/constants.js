@@ -72,20 +72,21 @@ const CAPTIVE_POSITIONS={
 
 // ── ELEMENT COLORS / WEAKNESSES ───────────────────────────────────────────────
 const ELEM_COLORS={fire:'#ff4400',water:'#0088ff',air:'#88aaff',earth:'#44aa00',void:'#8800ff'};
+const BOSS_HOMING_FACTOR=0.08; // 0=no homing, 1=instant lock-on
 const ELEM_WEAKNESSES={fire:'water',water:'earth',earth:'fire',air:'earth'}; // void has no weakness
 const REALM_ENEMY_ELEMENT={water:'water',fire:'fire',earth:'earth',air:'air',void:'void'};
 const ALL_ELEMENTS=['fire','water','air','earth','void'];
 
 // ── CANVAS FONT TIERS ─────────────────────────────────────────────────────────
 const CANVAS_FONT={
-  xs:       '15px sans-serif',
-  sm:       '17px Nunito,sans-serif',
-  sm_bold:  'bold 18px Nunito,sans-serif',
-  md:       '20px Nunito,sans-serif',
-  md_bold:  'bold 20px Nunito,sans-serif',
-  lg_bold:  'bold 23px Nunito,sans-serif',
-  emoji_sm: '21px serif',
-  emoji_md: '25px serif',
-  emoji_lg: '35px serif',
+  xs:       '20px sans-serif',
+  sm:       '22px Nunito,sans-serif',
+  sm_bold:  'bold 23px Nunito,sans-serif',
+  md:       '26px Nunito,sans-serif',
+  md_bold:  'bold 26px Nunito,sans-serif',
+  lg_bold:  'bold 30px Nunito,sans-serif',
+  emoji_sm: '27px serif',
+  emoji_md: '33px serif',
+  emoji_lg: '46px serif',
 };
-const CANVAS_FONT_BASE_ANIM=32;
+const CANVAS_FONT_BASE_ANIM=42;

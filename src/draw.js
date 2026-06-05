@@ -261,6 +261,25 @@ function render(){
             ctx.fillStyle='#ee88ff';ctx.fillText(lumaState.cryText,lx,ly-52);
             ctx.restore();
           }
+          // Black-hole demo effect
+          if(lumaState.demoBhEffect){
+            const bh=lumaState.demoBhEffect;
+            const t=1-bh.life/bh.maxLife;
+            const alpha=bh.life/bh.maxLife;
+            const r=10+t*80;
+            ctx.save();
+            ctx.shadowColor='#aa00ff';ctx.shadowBlur=18;
+            ctx.globalAlpha=alpha;
+            // Expanding ring
+            ctx.strokeStyle='#cc44ff';ctx.lineWidth=3;
+            ctx.beginPath();ctx.arc(bh.x,bh.y,r,0,Math.PI*2);ctx.stroke();
+            // Dark singularity core
+            const cr=r*0.35;
+            ctx.fillStyle='#220033';
+            ctx.beginPath();ctx.arc(bh.x,bh.y,cr,0,Math.PI*2);ctx.fill();
+            ctx.globalAlpha=1;ctx.shadowBlur=0;
+            ctx.restore();
+          }
           // Rescue hint
           ctx.font=CANVAS_FONT.sm_bold;ctx.fillStyle='#cc88ff';ctx.textAlign='center';
           ctx.fillText('Catch Luma to rescue!',lx,ly+44);

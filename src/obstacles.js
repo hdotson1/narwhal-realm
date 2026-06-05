@@ -175,6 +175,7 @@ const lumaState={
   x:CAPTIVE_POSITIONS.void.x, y:CAPTIVE_POSITIONS.void.y,
   vx:40, vy:-30, spinAngle:0, spinRate:4,
   cryTimer:0, cryText:'',
+  demoTimer:4, demoBhEffect:null,
 };
 const LUMA_CRIES=['Help!','I\'m dizzy!','I\'ve lost control!','Somebody stop me!','Wheee... wait no!','HELP!','So dizzy...','Can\'t stop spinning!'];
 
@@ -230,6 +231,27 @@ function updateVoidPhysics(dt){
   if(lumaState.cryTimer<=0){
     lumaState.cryText=LUMA_CRIES[Math.floor(Math.random()*LUMA_CRIES.length)];
     lumaState.cryTimer=1.5+Math.random()*2;
+  }
+
+  // Black-hole demo effect
+  lumaState.demoTimer-=dt;
+  if(lumaState.demoTimer<=0&&!lumaState.demoBhEffect){
+    lumaState.demoBhEffect={x:lumaState.x,y:lumaState.y,life:2.2,maxLife:2.2};
+    lumaState.cryText='BLACK HOLE!!';
+    lumaState.cryTimer=2.5;
+    // Pull nearby rifts toward Luma
+    obstacles.forEach(o=>{
+      const od=Math.hypot(lumaState.x-o.x,lumaState.y-o.y);
+      if(od<180&&o.vx!==undefined){
+        const pa=Math.atan2(lumaState.y-o.y,lumaState.x-o.x);
+        o.vx+=Math.cos(pa)*40;o.vy+=Math.sin(pa)*40;
+      }
+    });
+    lumaState.demoTimer=5+Math.random()*3;
+  }
+  if(lumaState.demoBhEffect){
+    lumaState.demoBhEffect.life-=dt;
+    if(lumaState.demoBhEffect.life<=0)lumaState.demoBhEffect=null;
   }
 
   // Move void obstacles and bounce them off walls and each other
