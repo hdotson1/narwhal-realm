@@ -1,4 +1,7 @@
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+canvas.width=W*CANVAS_SCALE;canvas.height=H*CANVAS_SCALE;
+canvas.style.width=W+'px';canvas.style.height=H+'px';
+ctx.scale(CANVAS_SCALE,CANVAS_SCALE);
 
 // ── ART ASSETS ────────────────────────────────────────────────────────────────
 const IMAGES={};

@@ -1,4 +1,5 @@
 const W=800,H=600;
+const CANVAS_SCALE=Math.max(Math.ceil(window.devicePixelRatio||1),2);
 
 // ── ART ASSETS ────────────────────────────────────────────────────────────────
 // Display dimensions in canvas pixels (independent of source PNG resolution)
@@ -77,12 +78,12 @@ const ALL_ELEMENTS=['fire','water','air','earth','void'];
 
 // ── CANVAS FONT TIERS ─────────────────────────────────────────────────────────
 const CANVAS_FONT={
-  xs:       '12px serif',
-  sm:       '14px Nunito,sans-serif',
-  sm_bold:  'bold 14px Nunito,sans-serif',
-  md:       '16px Nunito,sans-serif',
-  md_bold:  'bold 16px Nunito,sans-serif',
-  lg_bold:  'bold 17px Nunito,sans-serif',
+  xs:       '15px sans-serif',
+  sm:       '17px Nunito,sans-serif',
+  sm_bold:  'bold 18px Nunito,sans-serif',
+  md:       '20px Nunito,sans-serif',
+  md_bold:  'bold 20px Nunito,sans-serif',
+  lg_bold:  'bold 23px Nunito,sans-serif',
   emoji_sm: '21px serif',
   emoji_md: '25px serif',
   emoji_lg: '35px serif',
