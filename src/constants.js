@@ -74,3 +74,17 @@ const ELEM_COLORS={fire:'#ff4400',water:'#0088ff',air:'#88aaff',earth:'#44aa00',
 const ELEM_WEAKNESSES={fire:'water',water:'earth',earth:'fire',air:'earth'}; // void has no weakness
 const REALM_ENEMY_ELEMENT={water:'water',fire:'fire',earth:'earth',air:'air',void:'void'};
 const ALL_ELEMENTS=['fire','water','air','earth','void'];
+
+// ── CANVAS FONT TIERS ─────────────────────────────────────────────────────────
+const CANVAS_FONT={
+  xs:       '12px serif',
+  sm:       '14px Nunito,sans-serif',
+  sm_bold:  'bold 14px Nunito,sans-serif',
+  md:       '16px Nunito,sans-serif',
+  md_bold:  'bold 16px Nunito,sans-serif',
+  lg_bold:  'bold 17px Nunito,sans-serif',
+  emoji_sm: '21px serif',
+  emoji_md: '25px serif',
+  emoji_lg: '35px serif',
+};
+const CANVAS_FONT_BASE_ANIM=32;
