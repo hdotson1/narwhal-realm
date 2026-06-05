@@ -16,7 +16,7 @@ function drawShopkeeper(){
   ctx.save();
   ctx.fillStyle='rgba(40,0,60,0.85)';
   ctx.beginPath();ctx.roundRect(x-85,y-bob-75,170,36,8);ctx.fill();
-  ctx.fillStyle='#cc88ff';ctx.font='11px Nunito,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle='#cc88ff';ctx.font=CANVAS_FONT.sm;ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(lumaRescued?'🌑 The Void awaits...':'🌑 Find Luma first!',x,y-bob-57);
   ctx.restore();
   drawNarwhal(x,y+bob,Math.PI*0.1,1.1,'#111111',false,'narwhal-void');
@@ -161,17 +161,17 @@ function drawPortal(p){
     ctx.restore();
 
     // Emoji and label below
-    ctx.font='32px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font=CANVAS_FONT.emoji_lg;ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.shadowColor='#8800ff';ctx.shadowBlur=unlocked?15:0;
     ctx.fillText(p.emoji,p.x,p.y);ctx.shadowBlur=0;
 
-    ctx.font=unlocked?'bold 13px Nunito,sans-serif':'12px Nunito,sans-serif';
+    ctx.font=unlocked?CANVAS_FONT.md_bold:CANVAS_FONT.md;
     ctx.fillStyle=unlocked?'#cc88ff':'#666';ctx.textAlign='center';ctx.textBaseline='top';
     ctx.fillText(REALMS.void.name,p.x,p.y+baseR+10);
     if(!unlocked){
       const four=hasAllFour();
       const coins=sandDollars>=5;
-      ctx.font='10px Nunito,sans-serif';
+      ctx.font=CANVAS_FONT.xs;
       ctx.fillStyle=four?'#88ff88':'#ff8888';
       ctx.fillText(four?'✅ All 4 narwhals rescued':'❌ Need all 4 narwhals',p.x,p.y+baseR+26);
       ctx.fillStyle=coins?'#88ff88':'#ff8888';
@@ -188,13 +188,13 @@ function drawPortal(p){
     ctx.setLineDash([5,8]);ctx.beginPath();ctx.arc(0,0,baseR*1.27,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
     ctx.restore();
 
-    ctx.font='22px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.emoji,p.x,p.y);
-    ctx.font='11px Nunito,sans-serif';ctx.fillStyle=unlocked?'#fff':'#666';
+    ctx.font=CANVAS_FONT.emoji_md;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.emoji,p.x,p.y);
+    ctx.font=CANVAS_FONT.sm;ctx.fillStyle=unlocked?'#fff':'#666';
     ctx.fillText(REALMS[p.id]?.name||'Home',p.x,p.y+42);
     if(!unlocked){
       const nid=UNLOCK_CHAIN[p.id];
       const hint='Need: '+NARWHAL_DEFS.find(n=>n.id===nid)?.emoji+' first';
-      ctx.font='10px Nunito,sans-serif';ctx.fillStyle='#ff8888';ctx.fillText(hint,p.x,p.y+56);
+      ctx.font=CANVAS_FONT.xs;ctx.fillStyle='#ff8888';ctx.fillText(hint,p.x,p.y+56);
     }
   }
 }
@@ -203,7 +203,7 @@ function drawPortal(p){
 function drawCoinPickups(){
   coinPickups.forEach(c=>{
     const by=c.y+Math.sin(c.bobT)*4;
-    ctx.font='18px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font=CANVAS_FONT.emoji_sm;ctx.textAlign='center';ctx.textBaseline='middle';
     // glow
     ctx.shadowColor='#ffcc00';ctx.shadowBlur=10;
     ctx.fillText('🪙',c.x,by);
@@ -224,7 +224,7 @@ function render(){
   if(state==='playing'||state==='carrying'||state==='shop'){
     if(currentRealm==='hub'){
       PORTALS.forEach(p=>drawPortal(p));
-      ctx.font='bold 13px Nunito,sans-serif';ctx.fillStyle='rgba(200,180,255,0.2)';
+      ctx.font=CANVAS_FONT.md_bold;ctx.fillStyle='rgba(200,180,255,0.2)';
       ctx.textAlign='center';
     } else {
       drawPortal(HUB_PORTAL);
@@ -254,7 +254,7 @@ function render(){
           // Cry text bubble
           if(lumaState.cryText){
             ctx.save();
-            ctx.font='bold 13px Nunito,sans-serif';ctx.textAlign='center';
+            ctx.font=CANVAS_FONT.md_bold;ctx.textAlign='center';
             const bw=ctx.measureText(lumaState.cryText).width+16;
             ctx.fillStyle='rgba(40,0,60,0.85)';
             ctx.beginPath();ctx.roundRect(lx-bw/2,ly-68,bw,24,6);ctx.fill();
@@ -262,7 +262,7 @@ function render(){
             ctx.restore();
           }
           // Rescue hint
-          ctx.font='bold 11px Nunito,sans-serif';ctx.fillStyle='#cc88ff';ctx.textAlign='center';
+          ctx.font=CANVAS_FONT.sm_bold;ctx.fillStyle='#cc88ff';ctx.textAlign='center';
           ctx.fillText('Catch Luma to rescue!',lx,ly+44);
           // Arrow if far
           const ddx=lx-player.x,ddy=ly-player.y,dd=Math.hypot(ddx,ddy);
@@ -280,7 +280,7 @@ function render(){
           ctx.beginPath();ctx.ellipse(0,0,30,28,0,0,Math.PI*2);ctx.strokeStyle='rgba(120,120,120,0.45)';ctx.stroke();
           ctx.restore();
           drawNarwhal(cn.x,by,cn.bobT*0.5,1,ELEM_COLORS[cn.element],false,'narwhal-'+cn.id);
-          ctx.font='bold 12px Nunito,sans-serif';ctx.fillStyle='#ffffaa';ctx.textAlign='center';
+          ctx.font=CANVAS_FONT.sm_bold;ctx.fillStyle='#ffffaa';ctx.textAlign='center';
           ctx.fillText('Swim close to rescue!',cn.x,by-56);ctx.fillText(cn.emoji+' '+cn.name,cn.x,by-70);
           const ddx=cn.x-player.x,ddy=cn.y-player.y,dd=Math.hypot(ddx,ddy);
           if(dd>200){
@@ -299,7 +299,7 @@ function render(){
           ctx.fillStyle='rgba(100,255,100,0.85)';ctx.beginPath();ctx.moveTo(14,0);ctx.lineTo(-7,-7);ctx.lineTo(-7,7);ctx.closePath();ctx.fill();ctx.restore();
           // entangle status indicator
           if(playerEntangled>0){
-            ctx.fillStyle='rgba(50,180,50,0.8)';ctx.font='bold 13px Nunito,sans-serif';ctx.textAlign='center';
+            ctx.fillStyle='rgba(50,180,50,0.8)';ctx.font=CANVAS_FONT.md_bold;ctx.textAlign='center';
             ctx.fillText('🌿 ENTANGLED '+playerEntangled.toFixed(1)+'s',player.x,player.y-38);
           }
         }
@@ -338,7 +338,7 @@ function render(){
       // Damage text — shows during first 70% of animation
       if(t<0.7){
         const textAlpha=t<0.5?1:1-(t-0.5)/0.2;
-        ctx.font=`bold ${32+t*16|0}px Fredoka One,cursive`;
+        ctx.font=`bold ${CANVAS_FONT_BASE_ANIM+t*16|0}px Fredoka One,cursive`;
         ctx.fillStyle=`rgba(255,180,255,${textAlpha})`;
         ctx.textAlign='center';ctx.textBaseline='middle';
         ctx.shadowColor='#cc00ff';ctx.shadowBlur=20;
@@ -372,7 +372,7 @@ function render(){
     // Small box icon tinted with element color so color stays readable
     ctx.save();
     ctx.globalAlpha=0.85;
-    ctx.font='9px serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font=CANVAS_FONT.xs;ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=4;
     ctx.fillText('📦',p.x,p.y);
     ctx.restore();
@@ -381,7 +381,7 @@ function render(){
   // Particles
   particles.forEach(p=>{
     const alpha=p.life/p.maxLife;
-    if(p.type==='text'){ctx.font='bold 14px Nunito,sans-serif';ctx.fillStyle=p.color;ctx.globalAlpha=alpha;ctx.textAlign='center';ctx.fillText(p.text,p.x,p.y-(1-alpha)*20);ctx.globalAlpha=1;}
+    if(p.type==='text'){ctx.font=CANVAS_FONT.lg_bold;ctx.fillStyle=p.color;ctx.globalAlpha=alpha;ctx.textAlign='center';ctx.fillText(p.text,p.x,p.y-(1-alpha)*20);ctx.globalAlpha=1;}
     else{ctx.beginPath();ctx.arc(p.x,p.y,p.size*alpha,0,Math.PI*2);ctx.fillStyle=p.color;ctx.globalAlpha=alpha;ctx.fill();ctx.globalAlpha=1;}
   });
 

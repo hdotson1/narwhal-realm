@@ -26,6 +26,14 @@ document.getElementById('controlToggleBtn').onclick=()=>{
 document.getElementById('restartBtn').onclick=()=>location.reload();
 document.getElementById('retryBtn').onclick=()=>location.reload();
 
+document.getElementById('scaleBar').addEventListener('click',e=>{
+  const btn=e.target.closest('.scaleBtn');
+  if(!btn)return;
+  document.querySelectorAll('.scaleBtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.documentElement.style.setProperty('--game-scale',btn.dataset.scale);
+});
+
 // ── QR CODE for win screen ────────────────────────────────────────────────────
 function drawQR(){
   // Minimal QR encoder for the narwhal URL using the qrcode-generator library
