@@ -1,4 +1,5 @@
 const W=800,H=600;
+const CANVAS_SCALE=Math.max(Math.ceil(window.devicePixelRatio||1),2);
 
 // ── ART ASSETS ────────────────────────────────────────────────────────────────
 // Display dimensions in canvas pixels (independent of source PNG resolution)

@@ -73,10 +73,22 @@ Use the closest tier above. If none fits, add a new key to `CANVAS_FONT` with a 
 
 ---
 
+## Canvas Backing Buffer (`CANVAS_SCALE`)
+
+A second scaling layer beneath `--game-scale` makes the canvas buffer larger than its CSS-displayed size so sprites render crisply on high-DPI screens and at higher scale-bar settings.
+
+`CANVAS_SCALE` (defined in `constants.js`) is `Math.max(Math.ceil(devicePixelRatio), 2)` — minimum 2 on any display. At startup (`state.js`, before the game loop), the canvas buffer is set to `W × CANVAS_SCALE` by `H × CANVAS_SCALE`, the CSS element size is pinned back to `800px × 600px`, and `ctx.scale(CANVAS_SCALE, CANVAS_SCALE)` is called once.
+
+All drawing code continues to use 800×600 logical coordinates; `ctx.scale` silently multiplies them into the larger buffer. Canvas font sizes and shadow blur values are in logical pixels and are unaffected — they scale naturally into more physical pixels, resulting in crisper text and glows.
+
+**Initialization order matters**: `canvas.width`/`canvas.height` must be set before `ctx.scale`, because resizing the buffer resets all 2D context state including any prior transform.
+
+---
+
 ## Game Scale (`--game-scale`)
 
 `#gameWrapper` applies `transform: scale(var(--game-scale))` with `transform-origin: center`. The CSS var defaults to `1` in `:root`.
 
-The `#scaleBar` control (`position:fixed`, outside `#gameWrapper`) exposes three presets: **1×**, **1.25×**, **1.5×**. Clicking a button calls `document.documentElement.style.setProperty('--game-scale', value)`. The canvas stays at 800×600 logical pixels; the browser handles all visual scaling. No drawing coordinates or game-world positions change.
+The `#scaleBar` control (`position:fixed`, outside `#gameWrapper`) exposes three presets: **1×**, **1.25×**, **1.5×**. Clicking a button calls `document.documentElement.style.setProperty('--game-scale', value)`. All game logic uses 800×600 logical coordinates; the browser handles the CSS-level visual scaling on top of the backing buffer scale.
 
 Scale is not persisted across page loads.
