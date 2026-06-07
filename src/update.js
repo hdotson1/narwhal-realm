@@ -392,6 +392,7 @@ function freeNarwhal(cn){
   companionHp[cn.id]=COMPANION_MAX_HP;
   carryingNarwhal=cn.id;
   factResumeState='carrying';
+  document.getElementById('factBtn').textContent='Awesome! Now bring them back safely! 🌊';
   state='fact'; // pauses game behind popup
   document.getElementById('factNarwhal').textContent=cn.emoji;
   document.getElementById('factTitle').textContent=cn.factTitle;
@@ -409,6 +410,7 @@ function showRealmTip(realmId,emoji,title,msg){
   factResumeState='playing';
   realmTipsShown.add(realmId);
   const factBtn=document.getElementById('factBtn');
+  factBtn.textContent='Got it';
   factBtn.style.display='';
   document.getElementById('factNarwhal').textContent=emoji;
   document.getElementById('factTitle').textContent=title;

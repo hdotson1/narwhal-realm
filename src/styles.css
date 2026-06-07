@@ -82,12 +82,12 @@
   #bossBg{width:240px;height:14px;background:rgba(0,0,0,0.5);border-radius:7px;border:2px solid rgba(255,100,100,0.5);overflow:hidden;}
   #bossFill{height:100%;background:linear-gradient(90deg,#ff2222,#ff8866);border-radius:7px;transition:width 0.2s;}
   #controls{position:absolute;bottom:110px;right:10px;font-size:var(--font-ui-xs);color:rgba(255,255,255,0.75);text-align:right;line-height:1.8;background:rgba(0,0,0,0.5);padding:8px 12px;border-radius:10px;display:none;}
-  #helpBtn{position:absolute;bottom:80px;right:10px;font-size:20px;cursor:pointer;pointer-events:all;background:rgba(0,0,0,0.4);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:background 0.15s;}
+  #helpBtn{position:absolute;bottom:10px;right:10px;font-size:20px;cursor:pointer;pointer-events:all;background:rgba(0,0,0,0.4);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;transition:background 0.15s;}
   #helpBtn:hover{background:rgba(255,220,50,0.25);}
   #unlockHint{position:absolute;top:36px;left:50%;transform:translateX(-50%);font-family:'Fredoka One',cursive;font-size:var(--font-popup-note);color:#ffcc66;background:rgba(0,0,0,0.5);padding:3px 12px;border-radius:12px;display:none;white-space:nowrap;}
   #activeElemLabel{position:absolute;bottom:82px;left:50%;transform:translateX(-50%);font-family:'Fredoka One',cursive;font-size:var(--font-ui);color:#fff;background:rgba(0,0,0,0.4);padding:2px 12px;border-radius:10px;display:none;}
   #statusMsg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Fredoka One',cursive;font-size:var(--font-status);color:#fff;text-shadow:0 0 20px #fff;background:rgba(0,0,0,0.6);padding:10px 24px;border-radius:14px;display:none;pointer-events:none;text-align:center;}
-  #carryHint{position:absolute;bottom:82px;right:10px;font-family:'Fredoka One',cursive;font-size:var(--font-ui-sm);color:#ffffaa;background:rgba(0,0,0,0.45);padding:2px 10px;border-radius:10px;display:none;}
+  #carryHint{position:absolute;top:82px;font-family:'Fredoka One',cursive;font-size:var(--font-ui-sm);color:#ffffaa;width:100%;text-align:center;padding:2px 10px;border-radius:10px;display:none;}
   #quizKeeperIcon{font-size:var(--font-emoji-md);}
   #quizKeeper{font-size:var(--font-popup-label);}
   #quizQuestion{font-size:var(--font-popup-body);}
