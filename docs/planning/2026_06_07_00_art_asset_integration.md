@@ -54,16 +54,16 @@ Canvas `fillText()` cannot embed images. For the void portal lock text (draw.js:
 - Changing any narwhal art or enemy art
 
 ## Tasks
-- [ ] Task 1 — `constants.js`: add `const PROJ_IMG_SIZE=36;`
-- [ ] Task 2 — `state.js:10-13`: add `'sand-dollar'`, `'water-projectile'`, `'fire-projectile'`, `'earth-projectile'`, `'air-projectile'`, `'void-projectile'` to the image loading array (file names match asset names exactly)
-- [ ] Task 3 — `index.html:23`: keep outer `<div id="sandDollars">` (id must stay — `update.js` hides it during the boss fight via `style.display='none'`); replace inner text `🪙 0` with `<img src="assets/sand-dollar.png" style="width:18px;height:18px;vertical-align:middle;margin-right:3px;"><span id="sandDollarCount">0</span>`
-- [ ] Task 4 — `draw.js:drawCoinPickups()` (lines 203-217): replace `ctx.fillText('🪙',c.x,by)` with `ctx.drawImage(IMAGES['sand-dollar'], c.x-12, by-12, 24, 24)` (keep glow shadow, remove emoji shadow)
-- [ ] Task 5 — `draw.js:173-178` (void portal lock text): replace inline `🪙` with image-interleaved canvas rendering using `ctx.measureText()` to split text around a 16 px sand-dollar drawImage
-- [ ] Task 6 — `draw.js:387-398` (enemy projectile loop): for each enemy projectile, wrap entirely in `ctx.save()`/`ctx.restore()` to protect the transform stack, then `ctx.translate(p.x,p.y); ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2)` and draw `ctx.drawImage(IMAGES[p.element+'-projectile'], -s/2, -s/2, s, s*(862/512))`; set `ctx.shadowColor=p.color; ctx.shadowBlur=10` before the drawImage for the element glow; add fallback circle (current code) when image not yet loaded; boss-fight projectiles also use `enemyProjectiles` and will naturally receive sprite treatment — no special guard needed
-- [ ] Task 7 — `draw.js:401-405` (particle renderer): add `else if(p.type==='coin-img')` branch that draws the sand-dollar image at the float-up position (`p.y-(1-alpha)*20`) with `ctx.globalAlpha=alpha`
-- [ ] Task 8 — `update.js:332-335` (`updateParticles` static-type guard): add `||p.type==='coin-img'` so coin-img particles don't get vx/vy movement applied
-- [ ] Task 9 — `update.js:168` (`updateCoinPickups` particle spawn): change `{type:'text',text:'+🪙',...}` to `{type:'coin-img', x:c.x, y:c.y-10, life:0.7, maxLife:0.7}`
-- [ ] Task 10 — `update.js:166,501,822` (HUD updates): change all three `document.getElementById('sandDollars').textContent='🪙 '+sandDollars` to `document.getElementById('sandDollarCount').textContent=sandDollars`
-- [ ] Task 11 — `update.js:107` (`showStatus`): change `el.textContent=msg` to `el.innerHTML=msg`
-- [ ] Task 12 — `update.js:824,830` (two `showStatus` callers with 🪙): replace inline `🪙` in those two string literals with the `<img>` HTML snippet (defined as a constant at top of function or inline)
-- [ ] Task 13 — `update.js:489-501` (shop dialog): change `document.getElementById('shopText').textContent=...` to `.innerHTML=...` for both the affordable and unaffordable branches; replace `🪙` in template literals with `<img>` snippet
+- [x] Task 1 — `constants.js`: add `const PROJ_IMG_SIZE=36;`
+- [x] Task 2 — `state.js:10-13`: add `'sand-dollar'`, `'water-projectile'`, `'fire-projectile'`, `'earth-projectile'`, `'air-projectile'`, `'void-projectile'` to the image loading array (file names match asset names exactly)
+- [x] Task 3 — `index.html:23`: keep outer `<div id="sandDollars">` (id must stay — `update.js` hides it during the boss fight via `style.display='none'`); replace inner text `🪙 0` with `<img src="assets/sand-dollar.png" style="width:18px;height:18px;vertical-align:middle;margin-right:3px;"><span id="sandDollarCount">0</span>`
+- [x] Task 4 — `draw.js:drawCoinPickups()` (lines 203-217): replace `ctx.fillText('🪙',c.x,by)` with `ctx.drawImage(IMAGES['sand-dollar'], c.x-12, by-12, 24, 24)` (keep glow shadow, remove emoji shadow)
+- [x] Task 5 — `draw.js:173-178` (void portal lock text): replace inline `🪙` with image-interleaved canvas rendering using `ctx.measureText()` to split text around a 16 px sand-dollar drawImage
+- [x] Task 6 — `draw.js:387-398` (enemy projectile loop): for each enemy projectile, wrap entirely in `ctx.save()`/`ctx.restore()` to protect the transform stack, then `ctx.translate(p.x,p.y); ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2)` and draw `ctx.drawImage(IMAGES[p.element+'-projectile'], -s/2, -s/2, s, s*(862/512))`; set `ctx.shadowColor=p.color; ctx.shadowBlur=10` before the drawImage for the element glow; add fallback circle (current code) when image not yet loaded; boss-fight projectiles also use `enemyProjectiles` and will naturally receive sprite treatment — no special guard needed
+- [x] Task 7 — `draw.js:401-405` (particle renderer): add `else if(p.type==='coin-img')` branch that draws the sand-dollar image at the float-up position (`p.y-(1-alpha)*20`) with `ctx.globalAlpha=alpha`
+- [x] Task 8 — `update.js:332-335` (`updateParticles` static-type guard): add `||p.type==='coin-img'` so coin-img particles don't get vx/vy movement applied
+- [x] Task 9 — `update.js:168` (`updateCoinPickups` particle spawn): change `{type:'text',text:'+🪙',...}` to `{type:'coin-img', x:c.x, y:c.y-10, life:0.7, maxLife:0.7}`
+- [x] Task 10 — `update.js:166,501,822` (HUD updates): change all three `document.getElementById('sandDollars').textContent='🪙 '+sandDollars` to `document.getElementById('sandDollarCount').textContent=sandDollars`
+- [x] Task 11 — `update.js:107` (`showStatus`): change `el.textContent=msg` to `el.innerHTML=msg`
+- [x] Task 12 — `update.js:824,830` (two `showStatus` callers with 🪙): replace inline `🪙` in those two string literals with the `<img>` HTML snippet (defined as a constant at top of function or inline)
+- [x] Task 13 — `update.js:489-501` (shop dialog): change `document.getElementById('shopText').textContent=...` to `.innerHTML=...` for both the affordable and unaffordable branches; replace `🪙` in template literals with `<img>` snippet

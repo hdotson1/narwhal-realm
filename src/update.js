@@ -106,7 +106,7 @@ function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
 
 function showStatus(msg,dur=2){
   const el=document.getElementById('statusMsg');
-  el.textContent=msg;el.style.display='block';
+  el.innerHTML=msg;el.style.display='block';
   clearTimeout(showStatus._t);
   showStatus._t=setTimeout(()=>{el.style.display='none';},dur*1000);
 }
@@ -163,9 +163,9 @@ function updateCoinPickups(dt){
     c.life-=dt;
     if(dist(player,c)<player.r+14){
       sandDollars++;
-      document.getElementById('sandDollars').textContent='🪙 '+sandDollars;
+      document.getElementById('sandDollarCount').textContent=sandDollars;
       // pop particle
-      particles.push({type:'text',text:'+🪙',x:c.x,y:c.y-10,life:0.7,maxLife:0.7,color:'#ffee44'});
+      particles.push({type:'coin-img',x:c.x,y:c.y-10,life:0.7,maxLife:0.7});
       return false;
     }
     return c.life>0;
@@ -330,7 +330,7 @@ function checkProjHitEnemies(){
 function updateParticles(dt){
   particles=particles.filter(p=>{
     p.life-=dt;
-    if(p.type==='text'||p.type==='coin')return p.life>0;
+    if(p.type==='text'||p.type==='coin'||p.type==='coin-img')return p.life>0;
     p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=0.92;p.vy*=0.92;return p.life>0;
   });
 }
@@ -489,10 +489,11 @@ function shopAnswer(yes){
     // They said yes to "did you conquer all four realms?"
     shopStep=2;
     const canAfford=sandDollars>=21;
-    document.getElementById('shopText').textContent=
+    const sdImg='<img src="assets/sand-dollar.png" style="width:14px;height:14px;vertical-align:middle;">';
+    document.getElementById('shopText').innerHTML=
       canAfford
-        ? `The Black Hole power is LEGENDARY. It costs 21 sand dollars. You have 🪙${sandDollars}. Do you wish to purchase?`
-        : `HA! You need 21 sand dollars but you only have 🪙${sandDollars}. Go earn more and come back, broke narwhal!`;
+        ? `The Black Hole power is LEGENDARY. It costs 21 sand dollars. You have ${sdImg}${sandDollars}. Do you wish to purchase?`
+        : `HA! You need 21 sand dollars but you only have ${sdImg}${sandDollars}. Go earn more and come back, broke narwhal!`;
     document.getElementById('shopYes').style.display=canAfford?'block':'none';
     document.getElementById('shopYes').onclick=()=>shopAnswer(true);
     document.getElementById('shopNo').textContent=canAfford?'No thanks':'Ugh, fine...';
@@ -500,7 +501,7 @@ function shopAnswer(yes){
   } else if(shopStep===2){
     if(sandDollars>=21){
       sandDollars-=21;
-      document.getElementById('sandDollars').textContent='🪙 '+sandDollars;
+      document.getElementById('sandDollarCount').textContent=sandDollars;
       blackHolePurchased=true;
       rescuedSet.add('void');
       companionHp['void']=COMPANION_MAX_HP;
@@ -821,15 +822,15 @@ function update(dt){
             showReadyPrompt();
           } else if(p.id==='void'&&!blackHolePurchased){
             sandDollars-=5;
-            document.getElementById('sandDollars').textContent='🪙 '+sandDollars;
+            document.getElementById('sandDollarCount').textContent=sandDollars;
             voidUnlocked=true;
-            showStatus('🌑 5🪙 paid! Now find Luma!',3);
+            showStatus('🌑 5<img src="assets/sand-dollar.png" style="width:14px;height:14px;vertical-align:middle;"> paid! Now find Luma!',3);
             enterRealm(p.id);
           } else {
             enterRealm(p.id);
           }
         } else if(p.id==='void'&&hasAllFour()&&sandDollars<5){
-          showStatus(`🪙 Need 5 sand dollars to enter! You have ${sandDollars}.`,3);
+          showStatus(`<img src="assets/sand-dollar.png" style="width:14px;height:14px;vertical-align:middle;"> Need 5 sand dollars to enter! You have ${sandDollars}.`,3);
         }
       }
     });

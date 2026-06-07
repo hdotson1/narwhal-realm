@@ -175,7 +175,19 @@ function drawPortal(p){
       ctx.fillStyle=four?'#88ff88':'#ff8888';
       ctx.fillText(four?'✅ All 4 narwhals rescued':'❌ Need all 4 narwhals',p.x,p.y+baseR+26);
       ctx.fillStyle=coins?'#88ff88':'#ff8888';
-      ctx.fillText(coins?'✅ 5 🪙 ready':'❌ Need 5 🪙 (have '+sandDollars+')',p.x,p.y+baseR+40);
+      {
+        const pre=coins?'✅ 5 ':' ❌ Need 5 ';
+        const suf=coins?' ready':' (have '+sandDollars+')';
+        const imgW=16,gap=2;
+        const totalW=ctx.measureText(pre).width+imgW+gap+ctx.measureText(suf).width;
+        const lx=p.x-totalW/2;const cy=p.y+baseR+40;
+        ctx.textAlign='left';
+        ctx.fillText(pre,lx,cy);
+        const preW=ctx.measureText(pre).width;
+        ctx.drawImage(IMAGES['sand-dollar'],lx+preW,cy-8,imgW,imgW);
+        ctx.fillText(suf,lx+preW+imgW+gap,cy);
+        ctx.textAlign='center';
+      }
     }
 
   } else {
@@ -203,10 +215,8 @@ function drawPortal(p){
 function drawCoinPickups(){
   coinPickups.forEach(c=>{
     const by=c.y+Math.sin(c.bobT)*4;
-    ctx.font=CANVAS_FONT.emoji_sm;ctx.textAlign='center';ctx.textBaseline='middle';
-    // glow
     ctx.shadowColor='#ffcc00';ctx.shadowBlur=10;
-    ctx.fillText('🪙',c.x,by);
+    ctx.drawImage(IMAGES['sand-dollar'],c.x-12,by-12,24,24);
     ctx.shadowBlur=0;
     // fade ring when about to despawn
     if(c.life<3){
@@ -385,22 +395,28 @@ function render(){
     ctx.shadowColor=p.color;ctx.shadowBlur=12+p.r;ctx.fill();ctx.shadowBlur=0;
   });
   enemyProjectiles.forEach(p=>{
-    // Glowing colored circle
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
-    // Small box icon tinted with element color so color stays readable
-    ctx.save();
-    ctx.globalAlpha=0.85;
-    ctx.font=CANVAS_FONT.xs;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=4;
-    ctx.fillText('📦',p.x,p.y);
-    ctx.restore();
+    const projImg=IMAGES[p.element+'-projectile'];
+    if(projImg&&projImg.complete&&projImg.naturalWidth>0){
+      const s=PROJ_IMG_SIZE;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2);
+      ctx.shadowColor=p.color;ctx.shadowBlur=10;
+      ctx.drawImage(projImg,-s/2,-s/2,s,s*(862/512));
+      ctx.shadowBlur=0;
+      ctx.restore();
+    } else {
+      // Fallback: glowing circle while image loads
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
+    }
   });
 
   // Particles
   particles.forEach(p=>{
     const alpha=p.life/p.maxLife;
     if(p.type==='text'){ctx.font=CANVAS_FONT.lg_bold;ctx.fillStyle=p.color;ctx.globalAlpha=alpha;ctx.textAlign='center';ctx.fillText(p.text,p.x,p.y-(1-alpha)*20);ctx.globalAlpha=1;}
+    else if(p.type==='coin-img'){ctx.globalAlpha=alpha;ctx.drawImage(IMAGES['sand-dollar'],p.x-8,p.y-(1-alpha)*20-8,16,16);ctx.globalAlpha=1;}
     else{ctx.beginPath();ctx.arc(p.x,p.y,p.size*alpha,0,Math.PI*2);ctx.fillStyle=p.color;ctx.globalAlpha=alpha;ctx.fill();ctx.globalAlpha=1;}
   });
 
