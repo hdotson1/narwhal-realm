@@ -36,7 +36,7 @@ Each non-hub realm contains one captive narwhal (`captiveNarwhals` array). Touch
 
 ### Narwhals / Companions
 
-`NARWHAL_DEFS` (array of 5) defines each companion: element, emoji, damage, cooldown, colors. Rescued narwhals are tracked in `rescuedSet` (a `Set`). Active companions orbit the player (`getOrbitPos`) and auto-fire at the nearest enemy; the selected companion (`selectedElement`) also fires manual ability shots. Air (Breeze) heals instead of attacking; Void (Luma) fires a black-hole projectile or instant boss damage during the boss fight.
+`NARWHAL_DEFS` (array of 5) defines each companion: element, emoji, damage, cooldown, colors. Rescued narwhals are tracked in `rescuedSet` (a `Set`). Active companions orbit the player (`getOrbitPos`) and auto-fire at the nearest enemy; the selected companion (`selectedElement`) also fires manual ability shots. Air (Breeze) heals instead of attacking; Void (Luma) fires a black-hole projectile toward the cursor in any active scene; on boss hit it also deals 10–30% of boss max HP as bonus damage.
 
 ### Combat
 

@@ -28,26 +28,14 @@ window.addEventListener('keydown',e=>{
       const s4=document.getElementById('slot4');s4.classList.add('activating');s4.addEventListener('animationend',()=>s4.classList.remove('activating'),{once:true});
       showStatus('💨 Healed!',1.5);
     } else if(n.id==='void'){
-      if(state!=='boss'){showStatus('🌑 Reach the boss first!',1.2);return;}
       if(abilityCooldowns[n.id]>0)return;
       abilityCooldowns[n.id]=effectiveCooldown;
-      if(boss.alive){
-        // BLACK HOLE: 10-30% of boss max HP as instant damage + visual
-        const pct=0.10+Math.random()*0.20;
-        const dmg=Math.round(boss.maxHp*pct);
-        boss.hp=Math.max(0,boss.hp-dmg);
-        boss.dmgFlash=0.4;
-        document.getElementById('bossFill').style.width=Math.max(0,boss.hp/boss.maxHp*100)+'%';
-        blackHoleEffect={x:boss.x,y:boss.y,life:3.5,maxLife:3.5,pct:Math.round(pct*100)};
-        spawnBurst(boss.x,boss.y,'#8800ff',30);
-        showStatus('🌑 BLACK HOLE! -'+Math.round(pct*100)+'% HP!',2);
-        const s5=document.getElementById('slot5');s5.classList.add('activating');s5.addEventListener('animationend',()=>s5.classList.remove('activating'),{once:true});
-        if(boss.hp<=0){
-          boss.alive=false;spawnBurst(boss.x,boss.y,'#ff4400',40);
-          setTimeout(()=>{state='win';document.getElementById('winScreen').style.display='flex';drawQR();
-            },1800);
-        }
-      }
+      shootPlayer(player.x,player.y,mouseX,mouseY,n,true);
+      projectiles[projectiles.length-1].isVoidSpecial=true;
+      projectiles[projectiles.length-1].targetX=mouseX;
+      projectiles[projectiles.length-1].targetY=mouseY;
+      const s5=document.getElementById('slot5');s5.classList.add('activating');s5.addEventListener('animationend',()=>s5.classList.remove('activating'),{once:true});
+      showStatus('🌑 Black Hole!',1.5);
     } else {
       setSelected(n.id);
       if(abilityCooldowns[n.id]>0)return;

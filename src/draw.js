@@ -344,44 +344,44 @@ function render(){
     if(boss.alive)drawCybertruck(boss.dmgFlash>0);
     else spawnBurst(W/2,H/2,'#ff8800',4);
 
-    // Black hole visual
-    if(blackHoleEffect){
-      blackHoleEffect.life-=blackHoleEffect.dtRef||0.016;
-      const t=1-blackHoleEffect.life/blackHoleEffect.maxLife;
-      const r=20+t*260; // expands more slowly over 3.5s
-      const alpha=Math.max(0,blackHoleEffect.life/blackHoleEffect.maxLife);
-      ctx.save();
-      // Dark singularity — grows to eclipse the boss
-      ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*0.4,0,Math.PI*2);
-      ctx.fillStyle=`rgba(0,0,0,${Math.min(1,alpha*1.5)})`;ctx.fill();
-      // Purple event horizon ring
-      ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r,0,Math.PI*2);
-      ctx.strokeStyle=`rgba(160,0,255,${alpha*0.95})`;ctx.lineWidth=10*alpha;
-      ctx.shadowColor='#aa00ff';ctx.shadowBlur=40*alpha;ctx.stroke();ctx.shadowBlur=0;
-      // Outer glow ring
-      ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*1.35,0,Math.PI*2);
-      ctx.strokeStyle=`rgba(220,100,255,${alpha*0.45})`;ctx.lineWidth=5*alpha;ctx.stroke();
-      // Second outer ring
-      ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*1.7,0,Math.PI*2);
-      ctx.strokeStyle=`rgba(160,0,255,${alpha*0.2})`;ctx.lineWidth=3*alpha;ctx.stroke();
-      // Damage text — shows during first 70% of animation
-      if(t<0.7){
-        const textAlpha=t<0.5?1:1-(t-0.5)/0.2;
-        ctx.font=`bold ${CANVAS_FONT_BASE_ANIM+t*16|0}px Fredoka One,cursive`;
-        ctx.fillStyle=`rgba(255,180,255,${textAlpha})`;
-        ctx.textAlign='center';ctx.textBaseline='middle';
-        ctx.shadowColor='#cc00ff';ctx.shadowBlur=20;
-        ctx.fillText('🌑 BLACK HOLE! -'+blackHoleEffect.pct+'% HP!',blackHoleEffect.x,blackHoleEffect.y);
-        ctx.shadowBlur=0;
-      }
-      ctx.restore();
-      if(blackHoleEffect.life<=0)blackHoleEffect=null;
-    }
-
     enemies.forEach(e=>{
       drawRobot(e.x,e.y,e.element,e.r,e.dmgFlash>0);
       if(e.hp<e.maxHp){const bw=e.r*2.5;ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(e.x-bw/2,e.y-e.r-10,bw,5);ctx.fillStyle='#ff4444';ctx.fillRect(e.x-bw/2,e.y-e.r-10,bw*(e.hp/e.maxHp),5);}
     });
+  }
+
+  // Black hole visual — rendered in any active state
+  if(blackHoleEffect){
+    blackHoleEffect.life-=blackHoleEffect.dtRef||0.016;
+    const t=1-blackHoleEffect.life/blackHoleEffect.maxLife;
+    const r=20+t*260; // expands more slowly over 3.5s
+    const alpha=Math.max(0,blackHoleEffect.life/blackHoleEffect.maxLife);
+    ctx.save();
+    // Dark singularity — grows to eclipse the boss
+    ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*0.4,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,0,0,${Math.min(1,alpha*1.5)})`;ctx.fill();
+    // Purple event horizon ring
+    ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(160,0,255,${alpha*0.95})`;ctx.lineWidth=10*alpha;
+    ctx.shadowColor='#aa00ff';ctx.shadowBlur=40*alpha;ctx.stroke();ctx.shadowBlur=0;
+    // Outer glow ring
+    ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*1.35,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(220,100,255,${alpha*0.45})`;ctx.lineWidth=5*alpha;ctx.stroke();
+    // Second outer ring
+    ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*1.7,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(160,0,255,${alpha*0.2})`;ctx.lineWidth=3*alpha;ctx.stroke();
+    // Damage text — only on boss hits
+    if(blackHoleEffect.pct&&t<0.7){
+      const textAlpha=t<0.5?1:1-(t-0.5)/0.2;
+      ctx.font=`bold ${CANVAS_FONT_BASE_ANIM+t*16|0}px Fredoka One,cursive`;
+      ctx.fillStyle=`rgba(255,180,255,${textAlpha})`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.shadowColor='#cc00ff';ctx.shadowBlur=20;
+      ctx.fillText('🌑 BLACK HOLE! -'+blackHoleEffect.pct+'% HP!',blackHoleEffect.x,blackHoleEffect.y);
+      ctx.shadowBlur=0;
+    }
+    ctx.restore();
+    if(blackHoleEffect.life<=0)blackHoleEffect=null;
   }
 
   // Projectiles

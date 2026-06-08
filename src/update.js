@@ -282,6 +282,10 @@ function updateProjectiles(dt){
         e.x+=Math.cos(pa)*pf*dt;e.y+=Math.sin(pa)*pf*dt;
       }});
     }
+    if(p.isVoidSpecial&&Math.hypot(p.x-p.targetX,p.y-p.targetY)<35){
+      blackHoleEffect={x:p.targetX,y:p.targetY,life:3.5,maxLife:3.5};
+      spawnBurst(p.targetX,p.targetY,'#8800ff',20);p.life=0;
+    }
     return p.life>0&&p.x>-20&&p.x<W+20&&p.y>-20&&p.y<H+20;
   });
   enemyProjectiles=enemyProjectiles.filter(p=>{
@@ -320,6 +324,7 @@ function checkProjHitEnemies(){
           if(Math.random()<0.75&&state!=='boss'){spawnCoin(e.x,e.y);}
           spawnBurst(e.x,e.y,ELEM_COLORS[e.element],14);
         }
+        if(proj.isVoidSpecial)blackHoleEffect={x:proj.x,y:proj.y,life:3.5,maxLife:3.5};
         hit=true;return e.hp>0;
       }
       return true;
@@ -360,7 +365,7 @@ function updateEnemy(e,dt){
 
 // ── REALM / NARWHAL ───────────────────────────────────────────────────────────
 function enterRealm(id){
-  currentRealm=id;enemies=[];projectiles=[];enemyProjectiles=[];coinPickups=[];
+  currentRealm=id;enemies=[];projectiles=[];enemyProjectiles=[];coinPickups=[];blackHoleEffect=null;
   enemySpawnTimer=3;realmDmgTimer=2;state='playing';
   player.x=W/2;player.y=H-80;playerEntangled=0;playerBlown={vx:0,vy:0,t:0};
   obstacles=id==='hub'?[]:generateObstacles(id);
@@ -709,7 +714,9 @@ function updateBoss(dt){
   // Check player projectile hits boss
   projectiles=projectiles.filter(proj=>{
     if(boss.alive&&dist(proj,boss)<boss.r+proj.r){
-      boss.hp-=proj.dmg;boss.dmgFlash=0.12;
+      boss.hp-=proj.dmg;
+      if(proj.isVoidSpecial){const pct=0.10+Math.random()*0.20;boss.hp=Math.max(0,boss.hp-Math.round(boss.maxHp*pct));blackHoleEffect={x:proj.x,y:proj.y,life:3.5,maxLife:3.5,pct:Math.round(pct*100)};}
+      boss.dmgFlash=0.12;
       spawnBurst(proj.x,proj.y,proj.color,6);
       document.getElementById('bossFill').style.width=Math.max(0,boss.hp/boss.maxHp*100)+'%';
       if(boss.hp<=0){
@@ -862,6 +869,7 @@ function update(dt){
     }
   }
 
+  if(blackHoleEffect)blackHoleEffect.dtRef=dt;
   updateProjectiles(dt);updateParticles(dt);updateCoinPickups(dt);updateCooldownUI(dt);
   updateAutoFire(dt,false);updateVoidPhysics(dt);checkEnemyProjHit();checkProjHitEnemies();
 

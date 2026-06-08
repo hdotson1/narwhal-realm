@@ -89,7 +89,7 @@ Unlock logic lives in `canEnterRealm` (`update.js`). `UNLOCK_CHAIN` (`constants.
 | `fire` | Spark | fire | Standard projectile |
 | `earth` | Root | earth | Standard projectile |
 | `air` | Breeze | air | Heals player + companions instead of attacking |
-| `void` | Luma | void | Black-hole projectile; instant phase damage in boss fight |
+| `void` | Luma | void | Fires a void projectile toward cursor in any active scene; on boss hit also deals 10–30% bonus HP damage and shows the black hole visual |
 
 `rescuedSet` (`state.js`) is a `Set<string>` of rescued companion ids. Active companions orbit the player via `getOrbitPos(idx, total)` (`update.js`) and auto-fire at the nearest enemy through `updateAutoFire`. The currently selected companion (`selectedElement`, `state.js`) also fires on mouse click.
 
@@ -124,7 +124,7 @@ Three phases triggered by HP thresholds (50% → phase 2, 25% → phase 3), each
 
 `startBoss()` (`update.js`) transitions state to `boss`, locks the player to the bottom third of the screen, and shows the boss HP bar. `updateBoss(dt)`, `updateBossAutoFire(dt)`, and `updateBossMinion` handle the boss update path, all in `update.js`, all called from within `update(dt)`.
 
-`blackHoleEffect` (`state.js`) is a transient object created when Luma fires her void ability during the boss fight; it pulls all enemy projectiles toward a point and deals instant phase damage.
+`blackHoleEffect` (`state.js`) is a transient object spawned when a void special projectile hits a target or reaches its cursor target position, in any active state; in boss fights only, also applies 10–30% of boss max HP as bonus damage and renders the '% HP' text.
 
 ---
 
