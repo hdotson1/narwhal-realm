@@ -100,7 +100,6 @@ function meetLuma(cn){
   popup.appendChild(goBtn);
   popup.appendChild(notYetBtn);
   popup.classList.add('show');
-  if(!selectedElement)setSelected('void');
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
@@ -728,7 +727,7 @@ function updateBoss(dt){
 function gameLoop(ts){
   const dt=Math.min((ts-lastTime)/1000,0.05);lastTime=ts;
   if(state==='playing'||state==='carrying'||state==='boss')update(dt);
-  // fact, shop, quiz states intentionally skip update — game is paused behind the popup
+  // fact, shop states intentionally skip update — game is paused behind the popup
   render();requestAnimationFrame(gameLoop);
 }
 

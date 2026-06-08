@@ -55,17 +55,17 @@ For any new DOM text element: pick the closest semantic category above, or defin
 
 | Key | Value | Used for |
 |---|---|---|
-| `xs` | `'9px serif'` | Enemy projectile icon, void portal requirement text |
-| `sm` | `'11px Nunito,sans-serif'` | Shopkeeper hint, portal name label, normal portal name |
-| `sm_bold` | `'bold 11px Nunito,sans-serif'` | Rescue hints above caged narwhals, in-world directional labels |
-| `md` | `'12px Nunito,sans-serif'` | Portal name when locked (void portal) |
-| `md_bold` | `'bold 13px Nunito,sans-serif'` | Hub hex-grid label, Luma cry bubble, entangle status, boss phase text |
-| `lg_bold` | `'bold 14px Nunito,sans-serif'` | Floating damage/score particles |
-| `emoji_sm` | `'18px serif'` | Coin pickup emoji |
-| `emoji_md` | `'22px serif'` | Normal portal emoji |
-| `emoji_lg` | `'32px serif'` | Void portal emoji |
+| `xs` | `'20px sans-serif'` | Enemy projectile icon, void portal requirement text |
+| `sm` | `'22px Nunito,sans-serif'` | Shopkeeper hint, portal name label, normal portal name |
+| `sm_bold` | `'bold 23px Nunito,sans-serif'` | Rescue hints above caged narwhals, in-world directional labels |
+| `md` | `'26px Nunito,sans-serif'` | Portal name when locked (void portal) |
+| `md_bold` | `'bold 26px Nunito,sans-serif'` | Hub hex-grid label, Luma cry bubble, entangle status, boss phase text |
+| `lg_bold` | `'bold 30px Nunito,sans-serif'` | Floating damage/score particles |
+| `emoji_sm` | `'27px serif'` | Coin pickup emoji |
+| `emoji_md` | `'33px serif'` | Normal portal emoji |
+| `emoji_lg` | `'46px serif'` | Void portal emoji |
 
-`CANVAS_FONT_BASE_ANIM = 32` is the base pixel size for the animated black-hole intro text. The full font string is assembled as `` `bold ${CANVAS_FONT_BASE_ANIM + t*16|0}px Fredoka One,cursive` ``.
+`CANVAS_FONT_BASE_ANIM = 42` is the base pixel size for the animated black-hole intro text. The full font string is assembled as `` `bold ${42 + t*16|0}px Fredoka One,cursive` ``.
 
 ### Adding new canvas text
 

@@ -42,6 +42,8 @@
   .abilitySlot{width:58px;height:62px;border-radius:10px;border:2px solid rgba(255,255,255,0.25);background:rgba(0,0,0,0.5);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:border-color 0.15s,box-shadow 0.15s;}
   .abilitySlot.locked{opacity:0.3;filter:grayscale(1);}
   .abilitySlot.active{border-color:#fff;box-shadow:0 0 14px rgba(255,255,255,0.6);}
+  @keyframes slotPulse{0%{border-color:#cc88ff;box-shadow:0 0 22px rgba(160,80,255,0.95);}60%{border-color:#bb88ff;box-shadow:0 0 14px rgba(200,160,255,0.7);}100%{border-color:rgba(255,255,255,0.25);box-shadow:0 0 4px rgba(255,255,255,0.1);}}
+  .abilitySlot.activating{animation:slotPulse 0.4s ease-out forwards;}
   .abilitySlot .emoji{font-size:24px;}
   .abilitySlot .key{font-family:'Fredoka One',cursive;font-size:var(--font-ui-sm);color:rgba(255,255,255,0.6);}
   .abilitySlot .slotHp{width:44px;height:5px;background:rgba(0,0,0,0.5);border-radius:3px;overflow:hidden;margin-top:2px;}
