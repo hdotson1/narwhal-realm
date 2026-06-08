@@ -7,6 +7,7 @@ const NARWHAL_SIZE=80;  // square bounding box at scale=1; companions drawn at 0
 const ENEMY_SIZE=48;    // square
 const BOSS_W=140,BOSS_H=100;
 const PROJ_IMG_SIZE=36; // enemy projectile sprite display size (px)
+const PLAYER_PROJ_IMG_SIZE=24; // player projectile sprite display size (px)
 
 // ── UNLOCK ────────────────────────────────────────────────────────────────────
 const UNLOCK_CHAIN={water:null,fire:'water',earth:'fire',air:'earth'};

@@ -167,7 +167,7 @@ function drawPortal(p){
 
     ctx.font=unlocked?CANVAS_FONT.md_bold:CANVAS_FONT.md;
     ctx.fillStyle=unlocked?'#cc88ff':'#666';ctx.textAlign='center';ctx.textBaseline='top';
-    ctx.fillText(REALMS.void.name,p.x,p.y+baseR+12);
+    ctx.fillText(REALMS.void.name,p.x,p.y+baseR+22);
     if(!unlocked){
       const four=hasAllFour();
       const coins=sandDollars>=5;
@@ -184,7 +184,7 @@ function drawPortal(p){
         ctx.textAlign='left';
         ctx.fillText(pre,lx,cy);
         const preW=ctx.measureText(pre).width;
-        ctx.drawImage(IMAGES['sand-dollar'],lx+preW,cy-8,imgW,imgW);
+        ctx.drawImage(IMAGES['sand-dollar'],lx+preW,cy+2,imgW,imgW);
         ctx.fillText(suf,lx+preW+imgW+gap,cy);
         ctx.textAlign='center';
       }
@@ -202,7 +202,7 @@ function drawPortal(p){
 
     ctx.font=CANVAS_FONT.emoji_md;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.emoji,p.x,p.y);
     ctx.font=CANVAS_FONT.sm;ctx.fillStyle=unlocked?'#fff':'#666';
-    ctx.fillText(REALMS[p.id]?.name||'Home',p.x,p.y+42);
+    ctx.fillText(REALMS[p.id]?.name||'Home',p.x,p.y+52);
     if(!unlocked){
       const nid=UNLOCK_CHAIN[p.id];
       const hint='Need: '+NARWHAL_DEFS.find(n=>n.id===nid)?.name+' first';
@@ -386,13 +386,38 @@ function render(){
 
   // Projectiles
   projectiles.forEach(p=>{
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    const projImg=IMAGES[p.element+'-player-projectile'];
+    const imgReady=projImg&&projImg.complete&&projImg.naturalWidth>0;
     if(p.element==='void'){
+      // Radial gradient underneath (communicates pull effect)
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       const vg=ctx.createRadialGradient(p.x,p.y,2,p.x,p.y,p.r);
       vg.addColorStop(0,'rgba(200,100,255,0.9)');vg.addColorStop(1,'rgba(80,0,180,0)');
       ctx.fillStyle=vg;
-    } else ctx.fillStyle=p.color;
-    ctx.shadowColor=p.color;ctx.shadowBlur=12+p.r;ctx.fill();ctx.shadowBlur=0;
+      ctx.shadowColor=p.color;ctx.shadowBlur=12+p.r;ctx.fill();ctx.shadowBlur=0;
+      if(imgReady){
+        const s=PLAYER_PROJ_IMG_SIZE;
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2);
+        ctx.shadowColor=p.color;ctx.shadowBlur=10;
+        ctx.drawImage(projImg,-s/2,-s/2,s,s*(409/256));
+        ctx.shadowBlur=0;
+        ctx.restore();
+      }
+    } else if(imgReady){
+      const s=PLAYER_PROJ_IMG_SIZE;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2);
+      ctx.shadowColor=p.color;ctx.shadowBlur=10;
+      ctx.drawImage(projImg,-s/2,-s/2,s,s*(409/256));
+      ctx.shadowBlur=0;
+      ctx.restore();
+    } else {
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=12+p.r;ctx.fill();ctx.shadowBlur=0;
+    }
   });
   enemyProjectiles.forEach(p=>{
     const projImg=IMAGES[p.element+'-projectile'];

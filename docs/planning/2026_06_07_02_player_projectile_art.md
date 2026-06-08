@@ -31,9 +31,9 @@ Replace the current glowing-circle rendering for player projectiles with element
 - Scaling the sprite with `p.r` — sprite size is fixed at `PLAYER_PROJ_IMG_SIZE`
 
 ## Tasks
-- [ ] **constants.js** — Add `PLAYER_PROJ_IMG_SIZE = 24` after the existing `PROJ_IMG_SIZE` constant at line 9
-- [ ] **state.js** — Append `'water-player-projectile'`, `'fire-player-projectile'`, `'earth-player-projectile'`, `'void-player-projectile'` to the image-loading array at line 12
-- [ ] **draw.js** — Replace the player projectile rendering block (lines 388–396) with the new logic:
+- [x] **constants.js** — Add `PLAYER_PROJ_IMG_SIZE = 24` after the existing `PROJ_IMG_SIZE` constant at line 9
+- [x] **state.js** — Append `'water-player-projectile'`, `'fire-player-projectile'`, `'earth-player-projectile'`, `'void-player-projectile'` to the image-loading array at line 12
+- [x] **draw.js** — Replace the player projectile rendering block (lines 388–396) with the new logic:
   - For all elements: attempt to look up `IMAGES[p.element+'-player-projectile']`
   - For void: keep the entire existing `beginPath → arc(p.r) → createRadialGradient(…, p.r) → fill` block as-is, then draw the sprite on top inside a `save()`/`restore()` block if the image is ready. The gradient outer radius stays `p.r` (already scales with r=7 vs r=20 from existing code).
   - For water/fire/earth: draw the sprite inside `save()`/`restore()` if the image is ready; fall back to a plain glowing circle (matching the existing non-void branch) if not. Keep the fallback outside any save/restore to avoid leaking shadow state.

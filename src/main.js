@@ -74,7 +74,8 @@ function initNarwhalIcons(){
 function _startGame(){
   initNarwhalIcons();
   requestAnimationFrame(ts=>{lastTime=ts;gameLoop(ts);});
-  setTimeout(()=>{document.getElementById('startBtn').classList.remove('splash-btn-hidden');},2000);
+  const _splashTimer=setTimeout(()=>{document.getElementById('startBtn').classList.remove('splash-btn-hidden');},2000);
+  document.getElementById('titleScreen').addEventListener('click',()=>{clearTimeout(_splashTimer);document.getElementById('startBtn').classList.remove('splash-btn-hidden');},{once:true});
 }
 if(_imgsLoaded===_imgsTotal){
   _startGame();

@@ -22,7 +22,7 @@ The canvas is 800×600 px, id `c`. All game drawing uses the 2D context `ctx`. `
 
 All PNGs and SVGs are loaded at startup into the `IMAGES` dict before the game loop starts. `_imgsTotal` / `_imgsLoaded` / `_onImgsReady` coordinate a simple callback-based ready gate. The game loop only starts after all images report `onload` or `onerror`. `main.js` adds a safety guard that fires immediately if all images are already cached at parse time.
 
-Asset keys match filenames without extensions: `narwhal-player`, `enemy-water`, `bg-hub`, `cybertruck-boss`, etc.
+Asset keys match filenames without extensions: `narwhal-player`, `enemy-water`, `bg-hub`, `cybertruck-boss`, `water-player-projectile`, etc.
 
 ---
 
@@ -99,7 +99,7 @@ Companion HP is tracked in `companionHp` (`state.js`), capped at `COMPANION_MAX_
 - Hitting an enemy with its weakness element applies ×2 damage (`checkProjHitEnemies` in `update.js`).
 - `void` element has no weakness.
 
-**Projectiles**: `projectiles` — player/companion shots; `enemyProjectiles` — enemy shots. Both are arrays of `{x,y,vx,vy,r,damage,elem,…}` objects updated and culled each frame in `updateProjectiles` (`update.js`).
+**Projectiles**: `projectiles` — player/companion shots; `enemyProjectiles` — enemy shots. Both are arrays of `{x,y,vx,vy,r,damage,element,…}` objects updated and culled each frame in `updateProjectiles` (`update.js`). Both use PNG sprites keyed by element (`water-player-projectile`, `enemy-water`, etc.), rotated to face direction of travel via `atan2(vy,vx)+π/2`. `PLAYER_PROJ_IMG_SIZE=24` and `PROJ_IMG_SIZE=36` control display sizes independently. Void player projectiles additionally draw a radial gradient underneath the sprite to communicate the pull effect.
 
 **Coin drops**: Defeated enemies call `spawnCoin(x,y)` (`update.js`). Coins bob in place until the player walks over them, incrementing `sandDollars`. `updateCoinPickups` (`update.js`) / `drawCoinPickups` (`draw.js`) manage them.
 
