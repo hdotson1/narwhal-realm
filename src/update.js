@@ -303,6 +303,28 @@ function updateProjectiles(dt){
   });
 }
 
+function updateBlackHoleEffect(dt){
+  if(!blackHoleEffect)return;
+  const t=1-blackHoleEffect.life/blackHoleEffect.maxLife;
+  const pullR=20+t*260;
+  const bx=blackHoleEffect.x,by=blackHoleEffect.y;
+  enemies=enemies.filter(e=>{
+    const d=Math.hypot(e.x-bx,e.y-by);
+    if(d<pullR){
+      const force=300*(1-d/pullR);
+      const a=Math.atan2(by-e.y,bx-e.x);
+      e.x+=Math.cos(a)*force*dt;e.y+=Math.sin(a)*force*dt;
+      e.hp-=20*dt;e.dmgFlash=0.15;
+      if(e.hp<=0){
+        if(Math.random()<0.75&&state!=='boss'){spawnCoin(e.x,e.y);}
+        spawnBurst(e.x,e.y,ELEM_COLORS[e.element],14);
+        return false;
+      }
+    }
+    return true;
+  });
+}
+
 function checkEnemyProjHit(){
   enemyProjectiles=enemyProjectiles.filter(p=>{
     if(dist(player,p)<player.r+p.r){damagePlayer(p.dmg);spawnBurst(p.x,p.y,p.color,5);return false;}
@@ -789,7 +811,7 @@ function update(dt){
       enemySpawnTimer=1.8+Math.random()*(boss.phase>=2?1.2:2.0);
       spawnBossMinions();
     }
-    checkProjHitEnemies();
+    checkProjHitEnemies();updateBlackHoleEffect(dt);
     enemies.forEach(e=>updateBossMinion(e,dt));
     return;
   }
@@ -871,7 +893,7 @@ function update(dt){
 
   if(blackHoleEffect)blackHoleEffect.dtRef=dt;
   updateProjectiles(dt);updateParticles(dt);updateCoinPickups(dt);updateCooldownUI(dt);
-  updateAutoFire(dt,false);updateVoidPhysics(dt);checkEnemyProjHit();checkProjHitEnemies();
+  updateAutoFire(dt,false);updateVoidPhysics(dt);checkEnemyProjHit();checkProjHitEnemies();updateBlackHoleEffect(dt);
 
   // Companion-enemy interactions
   const rescArr=[...rescuedSet];

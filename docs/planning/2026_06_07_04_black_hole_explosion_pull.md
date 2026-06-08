@@ -30,6 +30,6 @@ When the void projectile's black hole detonates, the `blackHoleEffect` visual (c
 - Changing the in-flight projectile pull behavior
 
 ## Tasks
-- [ ] Add `updateBlackHoleEffect(dt)` function in `update.js` after `updateProjectiles` (~line 304): compute `t = 1 - life/maxLife` and `pullR = 20 + t*260` (read-only — do NOT decrement `life`); pull all enemies in range with force `300*(1-d/pullR)`; deal `20*dt` tick damage with `e.dmgFlash=0.15`; filter dead enemies with coin/burst death effects
-- [ ] Call `updateBlackHoleEffect(dt)` in the boss path (`update.js:792`), **after** `checkProjHitEnemies()` and **before** `enemies.forEach(e=>updateBossMinion(e,dt))`
-- [ ] Call `updateBlackHoleEffect(dt)` in the normal path, on a new line after the chained update calls at `update.js:874` (the chain ends with `checkProjHitEnemies()`)
+- [x] Add `updateBlackHoleEffect(dt)` function in `update.js` after `updateProjectiles` (~line 304): compute `t = 1 - life/maxLife` and `pullR = 20 + t*260` (read-only — do NOT decrement `life`); pull all enemies in range with force `300*(1-d/pullR)`; deal `20*dt` tick damage with `e.dmgFlash=0.15`; filter dead enemies with coin/burst death effects
+- [x] Call `updateBlackHoleEffect(dt)` in the boss path (`update.js:792`), **after** `checkProjHitEnemies()` and **before** `enemies.forEach(e=>updateBossMinion(e,dt))`
+- [x] Call `updateBlackHoleEffect(dt)` in the normal path, on a new line after the chained update calls at `update.js:874` (the chain ends with `checkProjHitEnemies()`)
