@@ -43,7 +43,7 @@ const NARWHAL_DEFS=[
   {id:'void', idx:4,emoji:'🌑',name:'Luma',  element:'void', realm:'void',
    color:'#8800ff',damage:60,cooldown:10000,autoColor:'#aa22ff',
    fact:'There are only about 123,000 narwhals left in the world. Climate change is melting their Arctic home!',
-   factTitle:'🌑 Luma the Void Narwhal!'},
+   factTitle:'Luma the Void Narwhal!'},
 ];
 
 // ── COMPANION HP ──────────────────────────────────────────────────────────────

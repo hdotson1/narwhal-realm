@@ -4,6 +4,7 @@ document.getElementById('startBtn').onclick=()=>{
   state='playing';enterRealm('hub');
 };
 document.getElementById('factBtn').onclick=()=>{
+  if(factChainFn){const fn=factChainFn;factChainFn=null;fn();return;}
   document.getElementById('factPopup').classList.remove('show');
   lastTime=performance.now(); // prevent dt spike after pause
   state=factResumeState;
@@ -65,8 +66,6 @@ function drawQR(){
 // ── NARWHAL ICONS ─────────────────────────────────────────────────────────────
 function initNarwhalIcons(){
   drawNarwhalToCanvas(document.getElementById('playerIconHP'),18);
-  const fn=document.getElementById('factNarwhal');
-  if(fn){fn.textContent='';}
 }
 
 // ── STARTUP ───────────────────────────────────────────────────────────────────

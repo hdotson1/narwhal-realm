@@ -1,3 +1,5 @@
+let factChainFn=null;
+
 // ── UNLOCK ────────────────────────────────────────────────────────────────────
 function canEnterRealm(id){
   if(id==='hub'||id==='water')return true;
@@ -40,7 +42,7 @@ function setSelected(id){
     n.id===id?slot.classList.add('active'):slot.classList.remove('active');
   });
   const lbl=document.getElementById('activeElemLabel');
-  if(id){const def=NARWHAL_DEFS.find(n=>n.id===id);lbl.textContent=def?(def.element==='air'?'💨 Breeze — healing mode':def.emoji+' '+def.name+' active'):'';lbl.style.display='block';}
+  if(id){const def=NARWHAL_DEFS.find(n=>n.id===id);lbl.textContent=def?(def.element==='air'?'Breeze — healing mode':def.name+' active'):'';lbl.style.display='block';}
   else lbl.style.display='none';
 }
 
@@ -55,7 +57,7 @@ function meetLuma(cn){
   state='fact'; // pause the game
 
   // Use the factPopup — fill it with Luma's dialogue
-  document.getElementById('factNarwhal').textContent='🌑';
+  document.getElementById('factNarwhal').src='assets/narwhal-void.png';
   document.getElementById('factTitle').textContent='Luma the Void Narwhal!';
   document.getElementById('factText').textContent=
     'You found me! Thank you for rescuing all of us — the narwhals will never forget this.\n\n' +
@@ -367,7 +369,7 @@ function enterRealm(id){
   const hint=document.getElementById('unlockHint');
   if(id!=='hub'){
     const cn=captiveNarwhals.find(n=>n.realm===id&&!n.freed);
-    if(cn){hint.textContent='Find '+cn.emoji+' '+cn.name+' in the north!';hint.style.display='block';setTimeout(()=>hint.style.display='none',3500);}
+    if(cn){hint.textContent='Find '+cn.name+' in the north!';hint.style.display='block';setTimeout(()=>hint.style.display='none',3500);}
     else{hint.style.display='none';}
   if(id==='void'){
       setTimeout(()=>showStatus('🌑 Find Luma the Void Narwhal!',3),500);
@@ -380,11 +382,11 @@ function enterRealm(id){
 
   // Companion realm tips — fire after hint toast settles, first entry only
   if(id==='fire' &&rescuedSet.has('water')&&!realmTipsShown.has('fire'))
-    setTimeout(()=>{if(state==='playing')showRealmTip('fire','💧','Squirt says:','Squirt here! 💧 Water is super effective against these fire enemies — I\'ve got this!');},400);
+    setTimeout(()=>{if(state==='playing')showRealmTip('fire','water','Squirt says:','Squirt here! 💧 Water is super effective against these fire enemies — I\'ve got this!');},400);
   else if(id==='earth'&&rescuedSet.has('fire') &&!realmTipsShown.has('earth'))
-    setTimeout(()=>{if(state==='playing')showRealmTip('earth','🔥','Spark says:','Spark here! 🔥 Fire tears right through earth creatures — leave it to me!');},400);
+    setTimeout(()=>{if(state==='playing')showRealmTip('earth','fire','Spark says:','Spark here! 🔥 Fire tears right through earth creatures — leave it to me!');},400);
   else if(id==='air'  &&rescuedSet.has('earth')&&!realmTipsShown.has('air'))
-    setTimeout(()=>{if(state==='playing')showRealmTip('air','🍃','Root says:','Root here! 🍃 Earth energy grounds these air enemies perfectly — I\'ll handle them!');},400);
+    setTimeout(()=>{if(state==='playing')showRealmTip('air','earth','Root says:','Root here! 🍃 Earth energy grounds these air enemies perfectly — I\'ll handle them!');},400);
 }
 
 function freeNarwhal(cn){
@@ -394,25 +396,24 @@ function freeNarwhal(cn){
   factResumeState='carrying';
   document.getElementById('factBtn').textContent='Awesome! Now bring them back safely! 🌊';
   state='fact'; // pauses game behind popup
-  document.getElementById('factNarwhal').textContent=cn.emoji;
+  document.getElementById('factNarwhal').src='assets/narwhal-'+cn.id+'.png';
   document.getElementById('factTitle').textContent=cn.factTitle;
-  let factBody=cn.fact;
-  if(cn.element==='air')factBody+='\n\nAs your companion, Breeze will HEAL your whole team! Press [4] to activate her healing power.';
-  document.getElementById('factText').textContent=factBody;
+  document.getElementById('factText').textContent=cn.fact;
   document.getElementById('factNote').style.display='';
   document.getElementById('factPopup').classList.add('show');
   spawnBurst(cn.x,cn.y,ELEM_COLORS[cn.element],20);
+  if(cn.element==='air')factChainFn=showBreezeTip;
   if(!selectedElement&&cn.element!=='air')setSelected(cn.id);
   updateCompanionUI();
 }
 
-function showRealmTip(realmId,emoji,title,msg){
+function showRealmTip(realmId,narwhalId,title,msg){
   factResumeState='playing';
   realmTipsShown.add(realmId);
   const factBtn=document.getElementById('factBtn');
   factBtn.textContent='Got it';
   factBtn.style.display='';
-  document.getElementById('factNarwhal').textContent=emoji;
+  document.getElementById('factNarwhal').src='assets/narwhal-'+narwhalId+'.png';
   document.getElementById('factTitle').textContent=title;
   document.getElementById('factText').textContent=msg;
   document.getElementById('factNote').style.display='none';
@@ -421,13 +422,23 @@ function showRealmTip(realmId,emoji,title,msg){
   popup.classList.add('show');
 }
 
+function showBreezeTip(){
+  factResumeState='carrying';
+  document.getElementById('factBtn').textContent='Got it!';
+  document.getElementById('factBtn').style.display='';
+  document.getElementById('factNarwhal').src='assets/narwhal-air.png';
+  document.getElementById('factTitle').textContent='Breeze the Air Narwhal!';
+  document.getElementById('factText').textContent="HEY! I noticed you've been battling hard to save all our friends. If you need a hand press [4] to activate my power to heal everyone!";
+  document.getElementById('factNote').style.display='none';
+}
+
 function showReadyPrompt(){
   state='fact'; // pause game
   const factBtn=document.getElementById('factBtn');
   factBtn.style.display='none';
   ['readyGo','readyNot'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
 
-  document.getElementById('factNarwhal').textContent='🌑';
+  document.getElementById('factNarwhal').src='assets/narwhal-void.png';
   document.getElementById('factTitle').textContent='Luma the Void Narwhal';
   document.getElementById('factText').textContent=
     'Are you ready to save the ocean and defeat the Evil Orca?';

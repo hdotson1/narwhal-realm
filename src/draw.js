@@ -167,20 +167,20 @@ function drawPortal(p){
 
     ctx.font=unlocked?CANVAS_FONT.md_bold:CANVAS_FONT.md;
     ctx.fillStyle=unlocked?'#cc88ff':'#666';ctx.textAlign='center';ctx.textBaseline='top';
-    ctx.fillText(REALMS.void.name,p.x,p.y+baseR+10);
+    ctx.fillText(REALMS.void.name,p.x,p.y+baseR+12);
     if(!unlocked){
       const four=hasAllFour();
       const coins=sandDollars>=5;
       ctx.font=CANVAS_FONT.xs;
       ctx.fillStyle=four?'#88ff88':'#ff8888';
-      ctx.fillText(four?'✅ All 4 narwhals rescued':'❌ Need all 4 narwhals',p.x,p.y+baseR+26);
+      ctx.fillText(four?'✅ All 4 narwhals rescued':'❌ Need all 4 narwhals',p.x,p.y+baseR+48);
       ctx.fillStyle=coins?'#88ff88':'#ff8888';
       {
         const pre=coins?'✅ 5 ':' ❌ Need 5 ';
         const suf=coins?' ready':' (have '+sandDollars+')';
         const imgW=16,gap=2;
         const totalW=ctx.measureText(pre).width+imgW+gap+ctx.measureText(suf).width;
-        const lx=p.x-totalW/2;const cy=p.y+baseR+40;
+        const lx=p.x-totalW/2;const cy=p.y+baseR+70;
         ctx.textAlign='left';
         ctx.fillText(pre,lx,cy);
         const preW=ctx.measureText(pre).width;
@@ -205,8 +205,8 @@ function drawPortal(p){
     ctx.fillText(REALMS[p.id]?.name||'Home',p.x,p.y+42);
     if(!unlocked){
       const nid=UNLOCK_CHAIN[p.id];
-      const hint='Need: '+NARWHAL_DEFS.find(n=>n.id===nid)?.emoji+' first';
-      ctx.font=CANVAS_FONT.xs;ctx.fillStyle='#ff8888';ctx.fillText(hint,p.x,p.y+56);
+      const hint='Need: '+NARWHAL_DEFS.find(n=>n.id===nid)?.name+' first';
+      ctx.font=CANVAS_FONT.xs;ctx.fillStyle='#ff8888';ctx.fillText(hint,p.x,p.y+72);
     }
   }
 }
@@ -310,7 +310,7 @@ function render(){
           ctx.restore();
           drawNarwhal(cn.x,by,cn.bobT*0.5,1,ELEM_COLORS[cn.element],false,'narwhal-'+cn.id);
           ctx.font=CANVAS_FONT.sm_bold;ctx.fillStyle='#ffffaa';ctx.textAlign='center';
-          ctx.fillText('Swim close to rescue!',cn.x,by-56);ctx.fillText(cn.emoji+' '+cn.name,cn.x,by-70);
+          ctx.fillText('Swim close to rescue!',cn.x,by-56);ctx.fillText(cn.name,cn.x,by-70);
           const ddx=cn.x-player.x,ddy=cn.y-player.y,dd=Math.hypot(ddx,ddy);
           if(dd>200){
             const ax=player.x+ddx/dd*60,ay=player.y+ddy/dd*60;
