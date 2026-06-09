@@ -37,7 +37,7 @@ function drawRobot(x,y,elem,r,flash){
 }
 
 function drawCybertruck(flash){
-  const img=IMAGES['cybertruck-boss'];
+  const img=IMAGES['orca-boss'];
   ctx.save();ctx.translate(boss.x,boss.y);
   if(flash)ctx.filter='brightness(5)';
   if(img&&img.complete&&img.naturalWidth)ctx.drawImage(img,-BOSS_W/2,-BOSS_H/2,BOSS_W,BOSS_H);
@@ -167,15 +167,27 @@ function drawPortal(p){
 
     ctx.font=unlocked?CANVAS_FONT.md_bold:CANVAS_FONT.md;
     ctx.fillStyle=unlocked?'#cc88ff':'#666';ctx.textAlign='center';ctx.textBaseline='top';
-    ctx.fillText(REALMS.void.name,p.x,p.y+baseR+10);
+    ctx.fillText(REALMS.void.name,p.x,p.y+baseR+22);
     if(!unlocked){
       const four=hasAllFour();
       const coins=sandDollars>=5;
       ctx.font=CANVAS_FONT.xs;
       ctx.fillStyle=four?'#88ff88':'#ff8888';
-      ctx.fillText(four?'✅ All 4 narwhals rescued':'❌ Need all 4 narwhals',p.x,p.y+baseR+26);
+      ctx.fillText(four?'✅ All 4 narwhals rescued':'❌ Need all 4 narwhals',p.x,p.y+baseR+48);
       ctx.fillStyle=coins?'#88ff88':'#ff8888';
-      ctx.fillText(coins?'✅ 5 🪙 ready':'❌ Need 5 🪙 (have '+sandDollars+')',p.x,p.y+baseR+40);
+      {
+        const pre=coins?'✅ 5 ':' ❌ Need 5 ';
+        const suf=coins?' ready':' (have '+sandDollars+')';
+        const imgW=16,gap=2;
+        const totalW=ctx.measureText(pre).width+imgW+gap+ctx.measureText(suf).width;
+        const lx=p.x-totalW/2;const cy=p.y+baseR+70;
+        ctx.textAlign='left';
+        ctx.fillText(pre,lx,cy);
+        const preW=ctx.measureText(pre).width;
+        ctx.drawImage(IMAGES['sand-dollar'],lx+preW,cy+2,imgW,imgW);
+        ctx.fillText(suf,lx+preW+imgW+gap,cy);
+        ctx.textAlign='center';
+      }
     }
 
   } else {
@@ -190,11 +202,11 @@ function drawPortal(p){
 
     ctx.font=CANVAS_FONT.emoji_md;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.emoji,p.x,p.y);
     ctx.font=CANVAS_FONT.sm;ctx.fillStyle=unlocked?'#fff':'#666';
-    ctx.fillText(REALMS[p.id]?.name||'Home',p.x,p.y+42);
+    ctx.fillText(REALMS[p.id]?.name||'Home',p.x,p.y+52);
     if(!unlocked){
       const nid=UNLOCK_CHAIN[p.id];
-      const hint='Need: '+NARWHAL_DEFS.find(n=>n.id===nid)?.emoji+' first';
-      ctx.font=CANVAS_FONT.xs;ctx.fillStyle='#ff8888';ctx.fillText(hint,p.x,p.y+56);
+      const hint='Need: '+NARWHAL_DEFS.find(n=>n.id===nid)?.name+' first';
+      ctx.font=CANVAS_FONT.xs;ctx.fillStyle='#ff8888';ctx.fillText(hint,p.x,p.y+72);
     }
   }
 }
@@ -203,10 +215,8 @@ function drawPortal(p){
 function drawCoinPickups(){
   coinPickups.forEach(c=>{
     const by=c.y+Math.sin(c.bobT)*4;
-    ctx.font=CANVAS_FONT.emoji_sm;ctx.textAlign='center';ctx.textBaseline='middle';
-    // glow
     ctx.shadowColor='#ffcc00';ctx.shadowBlur=10;
-    ctx.fillText('🪙',c.x,by);
+    ctx.drawImage(IMAGES['sand-dollar'],c.x-12,by-12,24,24);
     ctx.shadowBlur=0;
     // fade ring when about to despawn
     if(c.life<3){
@@ -261,6 +271,25 @@ function render(){
             ctx.fillStyle='#ee88ff';ctx.fillText(lumaState.cryText,lx,ly-52);
             ctx.restore();
           }
+          // Black-hole demo effect
+          if(lumaState.demoBhEffect){
+            const bh=lumaState.demoBhEffect;
+            const t=1-bh.life/bh.maxLife;
+            const alpha=bh.life/bh.maxLife;
+            const r=10+t*80;
+            ctx.save();
+            ctx.shadowColor='#aa00ff';ctx.shadowBlur=18;
+            ctx.globalAlpha=alpha;
+            // Expanding ring
+            ctx.strokeStyle='#cc44ff';ctx.lineWidth=3;
+            ctx.beginPath();ctx.arc(bh.x,bh.y,r,0,Math.PI*2);ctx.stroke();
+            // Dark singularity core
+            const cr=r*0.35;
+            ctx.fillStyle='#220033';
+            ctx.beginPath();ctx.arc(bh.x,bh.y,cr,0,Math.PI*2);ctx.fill();
+            ctx.globalAlpha=1;ctx.shadowBlur=0;
+            ctx.restore();
+          }
           // Rescue hint
           ctx.font=CANVAS_FONT.sm_bold;ctx.fillStyle='#cc88ff';ctx.textAlign='center';
           ctx.fillText('Catch Luma to rescue!',lx,ly+44);
@@ -281,7 +310,7 @@ function render(){
           ctx.restore();
           drawNarwhal(cn.x,by,cn.bobT*0.5,1,ELEM_COLORS[cn.element],false,'narwhal-'+cn.id);
           ctx.font=CANVAS_FONT.sm_bold;ctx.fillStyle='#ffffaa';ctx.textAlign='center';
-          ctx.fillText('Swim close to rescue!',cn.x,by-56);ctx.fillText(cn.emoji+' '+cn.name,cn.x,by-70);
+          ctx.fillText('Swim close to rescue!',cn.x,by-56);ctx.fillText(cn.name,cn.x,by-70);
           const ddx=cn.x-player.x,ddy=cn.y-player.y,dd=Math.hypot(ddx,ddy);
           if(dd>200){
             const ax=player.x+ddx/dd*60,ay=player.y+ddy/dd*60;
@@ -315,73 +344,104 @@ function render(){
     if(boss.alive)drawCybertruck(boss.dmgFlash>0);
     else spawnBurst(W/2,H/2,'#ff8800',4);
 
-    // Black hole visual
-    if(blackHoleEffect){
-      blackHoleEffect.life-=blackHoleEffect.dtRef||0.016;
-      const t=1-blackHoleEffect.life/blackHoleEffect.maxLife;
-      const r=20+t*260; // expands more slowly over 3.5s
-      const alpha=Math.max(0,blackHoleEffect.life/blackHoleEffect.maxLife);
-      ctx.save();
-      // Dark singularity — grows to eclipse the boss
-      ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*0.4,0,Math.PI*2);
-      ctx.fillStyle=`rgba(0,0,0,${Math.min(1,alpha*1.5)})`;ctx.fill();
-      // Purple event horizon ring
-      ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r,0,Math.PI*2);
-      ctx.strokeStyle=`rgba(160,0,255,${alpha*0.95})`;ctx.lineWidth=10*alpha;
-      ctx.shadowColor='#aa00ff';ctx.shadowBlur=40*alpha;ctx.stroke();ctx.shadowBlur=0;
-      // Outer glow ring
-      ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*1.35,0,Math.PI*2);
-      ctx.strokeStyle=`rgba(220,100,255,${alpha*0.45})`;ctx.lineWidth=5*alpha;ctx.stroke();
-      // Second outer ring
-      ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*1.7,0,Math.PI*2);
-      ctx.strokeStyle=`rgba(160,0,255,${alpha*0.2})`;ctx.lineWidth=3*alpha;ctx.stroke();
-      // Damage text — shows during first 70% of animation
-      if(t<0.7){
-        const textAlpha=t<0.5?1:1-(t-0.5)/0.2;
-        ctx.font=`bold ${CANVAS_FONT_BASE_ANIM+t*16|0}px Fredoka One,cursive`;
-        ctx.fillStyle=`rgba(255,180,255,${textAlpha})`;
-        ctx.textAlign='center';ctx.textBaseline='middle';
-        ctx.shadowColor='#cc00ff';ctx.shadowBlur=20;
-        ctx.fillText('🌑 BLACK HOLE! -'+blackHoleEffect.pct+'% HP!',blackHoleEffect.x,blackHoleEffect.y);
-        ctx.shadowBlur=0;
-      }
-      ctx.restore();
-      if(blackHoleEffect.life<=0)blackHoleEffect=null;
-    }
-
     enemies.forEach(e=>{
       drawRobot(e.x,e.y,e.element,e.r,e.dmgFlash>0);
       if(e.hp<e.maxHp){const bw=e.r*2.5;ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(e.x-bw/2,e.y-e.r-10,bw,5);ctx.fillStyle='#ff4444';ctx.fillRect(e.x-bw/2,e.y-e.r-10,bw*(e.hp/e.maxHp),5);}
     });
   }
 
+  // Black hole visual — rendered in any active state
+  if(blackHoleEffect){
+    blackHoleEffect.life-=blackHoleEffect.dtRef||0.016;
+    const t=1-blackHoleEffect.life/blackHoleEffect.maxLife;
+    const r=20+t*260; // expands more slowly over 3.5s
+    const alpha=Math.max(0,blackHoleEffect.life/blackHoleEffect.maxLife);
+    ctx.save();
+    // Dark singularity — grows to eclipse the boss
+    ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*0.4,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,0,0,${Math.min(1,alpha*1.5)})`;ctx.fill();
+    // Purple event horizon ring
+    ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(160,0,255,${alpha*0.95})`;ctx.lineWidth=10*alpha;
+    ctx.shadowColor='#aa00ff';ctx.shadowBlur=40*alpha;ctx.stroke();ctx.shadowBlur=0;
+    // Outer glow ring
+    ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*1.35,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(220,100,255,${alpha*0.45})`;ctx.lineWidth=5*alpha;ctx.stroke();
+    // Second outer ring
+    ctx.beginPath();ctx.arc(blackHoleEffect.x,blackHoleEffect.y,r*1.7,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(160,0,255,${alpha*0.2})`;ctx.lineWidth=3*alpha;ctx.stroke();
+    // Damage text — only on boss hits
+    if(blackHoleEffect.pct&&t<0.7){
+      const textAlpha=t<0.5?1:1-(t-0.5)/0.2;
+      ctx.font=`bold ${CANVAS_FONT_BASE_ANIM+t*16|0}px Fredoka One,cursive`;
+      ctx.fillStyle=`rgba(255,180,255,${textAlpha})`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.shadowColor='#cc00ff';ctx.shadowBlur=20;
+      ctx.fillText('🌑 BLACK HOLE! -'+blackHoleEffect.pct+'% HP!',blackHoleEffect.x,blackHoleEffect.y);
+      ctx.shadowBlur=0;
+    }
+    ctx.restore();
+    if(blackHoleEffect.life<=0)blackHoleEffect=null;
+  }
+
   // Projectiles
   projectiles.forEach(p=>{
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    const projImg=IMAGES[p.element+'-player-projectile'];
+    const imgReady=projImg&&projImg.complete&&projImg.naturalWidth>0;
     if(p.element==='void'){
+      // Radial gradient underneath (communicates pull effect)
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
       const vg=ctx.createRadialGradient(p.x,p.y,2,p.x,p.y,p.r);
       vg.addColorStop(0,'rgba(200,100,255,0.9)');vg.addColorStop(1,'rgba(80,0,180,0)');
       ctx.fillStyle=vg;
-    } else ctx.fillStyle=p.color;
-    ctx.shadowColor=p.color;ctx.shadowBlur=12+p.r;ctx.fill();ctx.shadowBlur=0;
+      ctx.shadowColor=p.color;ctx.shadowBlur=12+p.r;ctx.fill();ctx.shadowBlur=0;
+      if(imgReady){
+        const s=PLAYER_PROJ_IMG_SIZE;
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2);
+        ctx.shadowColor=p.color;ctx.shadowBlur=10;
+        ctx.drawImage(projImg,-s/2,-s/2,s,s*(409/256));
+        ctx.shadowBlur=0;
+        ctx.restore();
+      }
+    } else if(imgReady){
+      const s=PLAYER_PROJ_IMG_SIZE;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2);
+      ctx.shadowColor=p.color;ctx.shadowBlur=10;
+      ctx.drawImage(projImg,-s/2,-s/2,s,s*(409/256));
+      ctx.shadowBlur=0;
+      ctx.restore();
+    } else {
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=12+p.r;ctx.fill();ctx.shadowBlur=0;
+    }
   });
   enemyProjectiles.forEach(p=>{
-    // Glowing colored circle
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
-    // Small box icon tinted with element color so color stays readable
-    ctx.save();
-    ctx.globalAlpha=0.85;
-    ctx.font=CANVAS_FONT.xs;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=4;
-    ctx.fillText('📦',p.x,p.y);
-    ctx.restore();
+    const projImg=IMAGES[p.element+'-projectile'];
+    if(projImg&&projImg.complete&&projImg.naturalWidth>0){
+      const s=PROJ_IMG_SIZE;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(Math.atan2(p.vy,p.vx)+Math.PI/2);
+      ctx.shadowColor=p.color;ctx.shadowBlur=10;
+      ctx.drawImage(projImg,-s/2,-s/2,s,s*(862/512));
+      ctx.shadowBlur=0;
+      ctx.restore();
+    } else {
+      // Fallback: glowing circle while image loads
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
+    }
   });
 
   // Particles
   particles.forEach(p=>{
     const alpha=p.life/p.maxLife;
     if(p.type==='text'){ctx.font=CANVAS_FONT.lg_bold;ctx.fillStyle=p.color;ctx.globalAlpha=alpha;ctx.textAlign='center';ctx.fillText(p.text,p.x,p.y-(1-alpha)*20);ctx.globalAlpha=1;}
+    else if(p.type==='coin-img'){ctx.globalAlpha=alpha;ctx.drawImage(IMAGES['sand-dollar'],p.x-8,p.y-(1-alpha)*20-8,16,16);ctx.globalAlpha=1;}
     else{ctx.beginPath();ctx.arc(p.x,p.y,p.size*alpha,0,Math.PI*2);ctx.fillStyle=p.color;ctx.globalAlpha=alpha;ctx.fill();ctx.globalAlpha=1;}
   });
 

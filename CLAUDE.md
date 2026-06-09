@@ -8,7 +8,7 @@ Open `src/index.html` directly in a browser — no build step, no server, no dep
 
 ## Architecture
 
-The game lives in `src/` as three files: `index.html` (markup only), `styles.css`, and `game.js`. Art assets are in `src/assets/`. There is no module system, bundler, or external JS beyond Google Fonts and a QR code library loaded lazily on the win screen.
+The game lives in `src/` as nine files: `index.html` (markup only), `styles.css`, and 7 JS modules loaded in order via plain `<script>` tags — `constants.js`, `state.js`, `obstacles.js`, `draw.js`, `update.js`, `input.js`, `main.js`. Art assets are in `src/assets/`. There is no module system, bundler, or external JS beyond Google Fonts and a QR code library loaded lazily on the win screen. Full module descriptions are in [docs/implementation/001](docs/implementation/001_game_systems_overview.md).
 
 ### State Machine
 
@@ -21,12 +21,12 @@ A top-level `state` string drives what gets updated and rendered each frame:
 | `carrying` | Player rescued a narwhal and must escort it to the hub portal |
 | `fact` | Fact/dialogue popup shown; game is paused behind it |
 | `shop` | Void shopkeeper popup open |
-| `boss` | Final Cybertruck boss fight |
+| `boss` | Evil Orca boss fight |
 | `win` / `lose` | End screens |
 
 ### Game Loop
 
-`requestAnimationFrame` → `gameLoop(ts)` → calls `update(dt)` then `render()` every frame. `update` is skipped in `fact`/`shop`/`quiz` states (popup pauses the game). Boss fight has its own update path (`updateBoss`, `updateBossAutoFire`, `updateBossMinion`) called from within `update`.
+`requestAnimationFrame` → `gameLoop(ts)` → calls `update(dt)` then `render()` every frame. `update` is skipped in `fact`/`shop` states (popup pauses the game). Boss fight has its own update path (`updateBoss`, `updateBossAutoFire`, `updateBossMinion`) called from within `update`.
 
 ### Realms & Progression
 
@@ -36,7 +36,7 @@ Each non-hub realm contains one captive narwhal (`captiveNarwhals` array). Touch
 
 ### Narwhals / Companions
 
-`NARWHAL_DEFS` (array of 5) defines each companion: element, emoji, damage, cooldown, colors. Rescued narwhals are tracked in `rescuedSet` (a `Set`). Active companions orbit the player (`getOrbitPos`) and auto-fire at the nearest enemy; the selected companion (`selectedElement`) also fires manual ability shots. Air (Breeze) heals instead of attacking; Void (Luma) fires a black-hole projectile or instant boss damage during the boss fight.
+`NARWHAL_DEFS` (array of 5) defines each companion: element, emoji, damage, cooldown, colors. Rescued narwhals are tracked in `rescuedSet` (a `Set`). Active companions orbit the player (`getOrbitPos`) and auto-fire at the nearest enemy; the selected companion (`selectedElement`) also fires manual ability shots. Air (Breeze) heals instead of attacking; Void (Luma) fires a black-hole projectile toward the cursor in any active scene; on boss hit it also deals 10–30% of boss max HP as bonus damage.
 
 ### Combat
 
@@ -57,11 +57,12 @@ Each non-hub realm contains one captive narwhal (`captiveNarwhals` array). Touch
 | `player` | Player object `{x,y,hp,maxHp,speed,r,angle,invincible,dmgFlash}` |
 | `obstacles` | Per-realm obstacle array, regenerated on `enterRealm` |
 | `boss` | Boss state object `{x,y,hp,maxHp,phase,speed,alive,…}` |
+| `controlMode` | Current control scheme (`'wasd'` or `'mouse'`); toggled by `#controlToggleBtn` in `main.js` |
 | `lumaState` | Luma's bouncing physics while uncaptured in void realm |
 
 ### Drawing
 
-All rendering uses the 2D canvas API on an 800×600 `<canvas>`. `drawBackground` draws a gradient + optional hex grid or animated ocean waves. `drawNarwhal` is reused for the player, all companions, all captive narwhals, and the shopkeeper. Enemy robots use `drawRobot`. The Cybertruck boss uses `drawCybertruck`. Obstacle shapes (`bubble`, `lavarock`, `tree`, `cloud`, `rift`) are drawn procedurally in `drawObstacle`.
+All rendering uses the 2D canvas API on an 800×600 `<canvas>`. `drawBackground` draws a gradient + optional hex grid or animated ocean waves. `drawNarwhal` is reused for the player, all companions, all captive narwhals, and the shopkeeper. Enemy robots use `drawRobot`. The Cybertruck boss uses `drawCybertruck` (`draw.js`), which renders the `orca-boss` PNG asset (function name predates the art redesign). Obstacle shapes (`bubble`, `lavarock`, `tree`, `cloud`, `rift`) are drawn procedurally in `drawObstacle`.
 
 ### Void Realm Physics
 

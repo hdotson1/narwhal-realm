@@ -1,11 +1,16 @@
 const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+canvas.width=W*CANVAS_SCALE;canvas.height=H*CANVAS_SCALE;
+canvas.style.width=W+'px';canvas.style.height=H+'px';
+ctx.scale(CANVAS_SCALE,CANVAS_SCALE);
 
 // ── ART ASSETS ────────────────────────────────────────────────────────────────
 const IMAGES={};
 let _imgsTotal=0,_imgsLoaded=0,_onImgsReady=null;
 function _imgDone(){if(++_imgsLoaded===_imgsTotal&&_onImgsReady)_onImgsReady();}
 ['narwhal-player','narwhal-water','narwhal-fire','narwhal-earth','narwhal-air','narwhal-void',
- 'enemy-water','enemy-fire','enemy-earth','enemy-air','enemy-void','cybertruck-boss',
+ 'enemy-water','enemy-fire','enemy-earth','enemy-air','enemy-void','orca-boss',
+ 'sand-dollar','water-projectile','fire-projectile','earth-projectile','air-projectile','void-projectile',
+ 'water-player-projectile','fire-player-projectile','earth-player-projectile','void-player-projectile',
 ].forEach(k=>{_imgsTotal++;const i=new Image();i.onload=i.onerror=_imgDone;i.src='assets/'+k+'.png';IMAGES[k]=i;});
 ['hub','water','fire','earth','air','void','boss'].forEach(k=>{_imgsTotal++;const i=new Image();i.onload=i.onerror=_imgDone;i.src='assets/bg-'+k+'.svg';IMAGES['bg-'+k]=i;});
 
@@ -31,6 +36,8 @@ let playerEntangled=0;    // seconds remaining
 let playerBlown={vx:0,vy:0,t:0};  // wind push
 
 let rescuedSet=new Set();
+let factResumeState='carrying';
+let realmTipsShown=new Set();
 let carryingNarwhal=null; // narwhal id being carried back to exit
 let abilityCooldowns={};
 let autoFireTimer=0;

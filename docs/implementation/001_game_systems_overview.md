@@ -22,7 +22,7 @@ The canvas is 800×600 px, id `c`. All game drawing uses the 2D context `ctx`. `
 
 All PNGs and SVGs are loaded at startup into the `IMAGES` dict before the game loop starts. `_imgsTotal` / `_imgsLoaded` / `_onImgsReady` coordinate a simple callback-based ready gate. The game loop only starts after all images report `onload` or `onerror`. `main.js` adds a safety guard that fires immediately if all images are already cached at parse time.
 
-Asset keys match filenames without extensions: `narwhal-player`, `enemy-water`, `bg-hub`, `cybertruck-boss`, etc.
+Asset keys match filenames without extensions: `narwhal-player`, `enemy-water`, `bg-hub`, `orca-boss`, `water-player-projectile`, etc.
 
 ---
 
@@ -37,11 +37,15 @@ The top-level `state` string drives the entire game:
 | `carrying` | Player escorting a rescued narwhal to the hub portal |
 | `fact` | Narwhal fact/dialogue popup open; game paused |
 | `shop` | Void shopkeeper popup open; game paused |
-| `quiz` | Void Keeper trivia quiz; game paused |
-| `boss` | Final Cybertruck boss fight |
+| `quiz` | *(dormant)* Void Keeper trivia quiz — HTML element exists but this state value is never set in JS |
+| `boss` | Evil Orca boss fight |
 | `win` / `lose` | End screens |
 
-`update(dt)` is called only when state is `playing`, `carrying`, or `boss`. The `fact`, `shop`, and `quiz` states intentionally skip `update`, freezing all simulation behind the popup.
+`update(dt)` is called only when state is `playing`, `carrying`, or `boss`. The `fact` and `shop` states intentionally skip `update`, freezing all simulation behind the popup.
+
+> **Note — `#bossLoseScreen`**: When the player dies during the boss fight (`showBossLoseTrivia`, `update.js`), `state` is set to `'lose'` and the `#bossLoseScreen` overlay is shown with a random trivia question. A correct answer restores the player to full HP and transitions `state` back to `'boss'` after 1.2 s. A wrong answer shows a new question (state stays `'lose'`). This is implemented entirely via a `div` overlay — there is no separate state value for this screen.
+
+> **Note — `controlMode`**: `controlMode` (`state.js`) is a mutable variable (`'wasd'` or `'mouse'`) that switches how the player steers. It is toggled by `#controlToggleBtn` in `main.js`. See the Key Global Variables table in [CLAUDE.md](../../CLAUDE.md) for the primary reference.
 
 ---
 
@@ -85,7 +89,7 @@ Unlock logic lives in `canEnterRealm` (`update.js`). `UNLOCK_CHAIN` (`constants.
 | `fire` | Spark | fire | Standard projectile |
 | `earth` | Root | earth | Standard projectile |
 | `air` | Breeze | air | Heals player + companions instead of attacking |
-| `void` | Luma | void | Black-hole projectile; instant phase damage in boss fight |
+| `void` | Luma | void | Fires a void projectile toward cursor in any active scene; on boss hit also deals 10–30% bonus HP damage and shows the black hole visual |
 
 `rescuedSet` (`state.js`) is a `Set<string>` of rescued companion ids. Active companions orbit the player via `getOrbitPos(idx, total)` (`update.js`) and auto-fire at the nearest enemy through `updateAutoFire`. The currently selected companion (`selectedElement`, `state.js`) also fires on mouse click.
 
@@ -99,7 +103,7 @@ Companion HP is tracked in `companionHp` (`state.js`), capped at `COMPANION_MAX_
 - Hitting an enemy with its weakness element applies ×2 damage (`checkProjHitEnemies` in `update.js`).
 - `void` element has no weakness.
 
-**Projectiles**: `projectiles` — player/companion shots; `enemyProjectiles` — enemy shots. Both are arrays of `{x,y,vx,vy,r,damage,elem,…}` objects updated and culled each frame in `updateProjectiles` (`update.js`).
+**Projectiles**: `projectiles` — player/companion shots; `enemyProjectiles` — enemy shots. Both are arrays of `{x,y,vx,vy,r,damage,element,…}` objects updated and culled each frame in `updateProjectiles` (`update.js`). Both use PNG sprites keyed by element (`water-player-projectile`, `enemy-water`, etc.), rotated to face direction of travel via `atan2(vy,vx)+π/2`. `PLAYER_PROJ_IMG_SIZE=24` and `PROJ_IMG_SIZE=36` control display sizes independently. Void player projectiles additionally draw a radial gradient underneath the sprite to communicate the pull effect.
 
 **Coin drops**: Defeated enemies call `spawnCoin(x,y)` (`update.js`). Coins bob in place until the player walks over them, incrementing `sandDollars`. `updateCoinPickups` (`update.js`) / `drawCoinPickups` (`draw.js`) manage them.
 
@@ -112,7 +116,7 @@ Companion HP is tracked in `companionHp` (`state.js`), capped at `COMPANION_MAX_
 
 ---
 
-## Boss Fight (`update.js` / `state.js`)
+## Evil Orca Boss Fight (`update.js` / `state.js`)
 
 `boss` object (`state.js`): `{x, y, r, hp, maxHp, speed, velX, velY, shootTimer, phase, alive, dmgFlash, angle}`.
 
@@ -120,7 +124,7 @@ Three phases triggered by HP thresholds (50% → phase 2, 25% → phase 3), each
 
 `startBoss()` (`update.js`) transitions state to `boss`, locks the player to the bottom third of the screen, and shows the boss HP bar. `updateBoss(dt)`, `updateBossAutoFire(dt)`, and `updateBossMinion` handle the boss update path, all in `update.js`, all called from within `update(dt)`.
 
-`blackHoleEffect` (`state.js`) is a transient object created when Luma fires her void ability during the boss fight; it pulls all enemy projectiles toward a point and deals instant phase damage.
+`blackHoleEffect` (`state.js`) is a transient object spawned when a void special projectile hits a target or reaches its cursor target position, in any active state; in boss fights only, also applies 10–30% of boss max HP as bonus damage and renders the '% HP' text.
 
 ---
 
@@ -156,7 +160,8 @@ The HTML `#ui` div sits absolutely over the canvas (pointer-events: none except 
 | `#companionBars` | Per-companion HP bars shown when rescued |
 | `#factPopup` | Narwhal fact / dialogue popup (CSS scale transition) |
 | `#shopPopup` | Void shopkeeper popup |
-| `#quizPopup` | Void Keeper trivia quiz |
+| `#quizPopup` | *(dormant)* Void Keeper trivia quiz — element exists, state is never set |
 | `#bossHPWrap` | Boss HP bar (hidden until boss fight starts) |
+| `#bossLoseScreen` | Post-boss-death overlay: shows a narwhal trivia question; correct answer allows retry |
 | `#realmLabel` | Current realm name chip |
 | `#statusMsg` | Temporary on-screen message (shown by `showStatus`) |

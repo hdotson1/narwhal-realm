@@ -4,9 +4,10 @@ document.getElementById('startBtn').onclick=()=>{
   state='playing';enterRealm('hub');
 };
 document.getElementById('factBtn').onclick=()=>{
+  if(factChainFn){const fn=factChainFn;factChainFn=null;fn();return;}
   document.getElementById('factPopup').classList.remove('show');
   lastTime=performance.now(); // prevent dt spike after pause
-  state='carrying'; // now player must walk to exit
+  state=factResumeState;
 };
 document.getElementById('helpBtn').onclick=()=>{
   const c=document.getElementById('controls');
@@ -64,10 +65,7 @@ function drawQR(){
 
 // ── NARWHAL ICONS ─────────────────────────────────────────────────────────────
 function initNarwhalIcons(){
-  drawNarwhalToCanvas(document.getElementById('titleNarwhalCanvas'),70);
   drawNarwhalToCanvas(document.getElementById('playerIconHP'),18);
-  const fn=document.getElementById('factNarwhal');
-  if(fn){fn.textContent='';}
 }
 
 // ── STARTUP ───────────────────────────────────────────────────────────────────
@@ -76,6 +74,8 @@ function initNarwhalIcons(){
 function _startGame(){
   initNarwhalIcons();
   requestAnimationFrame(ts=>{lastTime=ts;gameLoop(ts);});
+  const _splashTimer=setTimeout(()=>{document.getElementById('startBtn').classList.remove('splash-btn-hidden');},2000);
+  document.getElementById('titleScreen').addEventListener('click',()=>{clearTimeout(_splashTimer);document.getElementById('startBtn').classList.remove('splash-btn-hidden');},{once:true});
 }
 if(_imgsLoaded===_imgsTotal){
   _startGame();

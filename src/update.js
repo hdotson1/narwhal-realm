@@ -1,3 +1,5 @@
+let factChainFn=null;
+
 // ── UNLOCK ────────────────────────────────────────────────────────────────────
 function canEnterRealm(id){
   if(id==='hub'||id==='water')return true;
@@ -40,7 +42,7 @@ function setSelected(id){
     n.id===id?slot.classList.add('active'):slot.classList.remove('active');
   });
   const lbl=document.getElementById('activeElemLabel');
-  if(id){const def=NARWHAL_DEFS.find(n=>n.id===id);lbl.textContent=def?(def.element==='air'?'💨 Breeze — healing mode':def.emoji+' '+def.name+' active'):'';lbl.style.display='block';}
+  if(id){const def=NARWHAL_DEFS.find(n=>n.id===id);lbl.textContent=def?(def.element==='air'?'Breeze — healing mode':def.name+' active'):'';lbl.style.display='block';}
   else lbl.style.display='none';
 }
 
@@ -55,11 +57,12 @@ function meetLuma(cn){
   state='fact'; // pause the game
 
   // Use the factPopup — fill it with Luma's dialogue
-  document.getElementById('factNarwhal').textContent='🌑';
+  document.getElementById('factNarwhal').src='assets/narwhal-void.png';
   document.getElementById('factTitle').textContent='Luma the Void Narwhal!';
   document.getElementById('factText').textContent=
     'You found me! Thank you for rescuing all of us — the narwhals will never forget this.\n\n' +
-    'The Black Hole power is now yours. 🌑 Use it against the Evil Cybertruck and save the ocean!';
+    "The Black Hole power is now yours. 🌑 Use it against the Evil Orca's Cybertruck and save the ocean!";
+  document.getElementById('factNote').style.display='none';
 
   // Replace the single factBtn with two choices
   const factBtn=document.getElementById('factBtn');
@@ -97,7 +100,6 @@ function meetLuma(cn){
   popup.appendChild(goBtn);
   popup.appendChild(notYetBtn);
   popup.classList.add('show');
-  if(!selectedElement)setSelected('void');
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
@@ -105,7 +107,7 @@ function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
 
 function showStatus(msg,dur=2){
   const el=document.getElementById('statusMsg');
-  el.textContent=msg;el.style.display='block';
+  el.innerHTML=msg;el.style.display='block';
   clearTimeout(showStatus._t);
   showStatus._t=setTimeout(()=>{el.style.display='none';},dur*1000);
 }
@@ -162,9 +164,9 @@ function updateCoinPickups(dt){
     c.life-=dt;
     if(dist(player,c)<player.r+14){
       sandDollars++;
-      document.getElementById('sandDollars').textContent='🪙 '+sandDollars;
+      document.getElementById('sandDollarCount').textContent=sandDollars;
       // pop particle
-      particles.push({type:'text',text:'+🪙',x:c.x,y:c.y-10,life:0.7,maxLife:0.7,color:'#ffee44'});
+      particles.push({type:'coin-img',x:c.x,y:c.y-10,life:0.7,maxLife:0.7});
       return false;
     }
     return c.life>0;
@@ -280,9 +282,47 @@ function updateProjectiles(dt){
         e.x+=Math.cos(pa)*pf*dt;e.y+=Math.sin(pa)*pf*dt;
       }});
     }
+    if(p.isVoidSpecial&&Math.hypot(p.x-p.targetX,p.y-p.targetY)<35){
+      blackHoleEffect={x:p.targetX,y:p.targetY,life:3.5,maxLife:3.5};
+      spawnBurst(p.targetX,p.targetY,'#8800ff',20);p.life=0;
+    }
     return p.life>0&&p.x>-20&&p.x<W+20&&p.y>-20&&p.y<H+20;
   });
-  enemyProjectiles=enemyProjectiles.filter(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;return p.life>0&&p.x>-20&&p.x<W+20&&p.y>-20&&p.y<H+20;});
+  enemyProjectiles=enemyProjectiles.filter(p=>{
+    p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+    if(p.homing>0){
+      const speed=Math.hypot(p.vx,p.vy);
+      const ta=Math.atan2(player.y-p.y,player.x-p.x);
+      const blend=p.homing*dt*5;
+      p.vx+=(Math.cos(ta)*speed-p.vx)*blend;
+      p.vy+=(Math.sin(ta)*speed-p.vy)*blend;
+      const ns=Math.hypot(p.vx,p.vy)||1;
+      p.vx=p.vx/ns*speed;p.vy=p.vy/ns*speed;
+    }
+    return p.life>0&&p.x>-20&&p.x<W+20&&p.y>-20&&p.y<H+20;
+  });
+}
+
+function updateBlackHoleEffect(dt){
+  if(!blackHoleEffect)return;
+  const t=1-blackHoleEffect.life/blackHoleEffect.maxLife;
+  const pullR=20+t*260;
+  const bx=blackHoleEffect.x,by=blackHoleEffect.y;
+  enemies=enemies.filter(e=>{
+    const d=Math.hypot(e.x-bx,e.y-by);
+    if(d<pullR){
+      const force=300*(1-d/pullR);
+      const a=Math.atan2(by-e.y,bx-e.x);
+      e.x+=Math.cos(a)*force*dt;e.y+=Math.sin(a)*force*dt;
+      e.hp-=20*dt;e.dmgFlash=0.15;
+      if(e.hp<=0){
+        if(Math.random()<0.75&&state!=='boss'){spawnCoin(e.x,e.y);}
+        spawnBurst(e.x,e.y,ELEM_COLORS[e.element],14);
+        return false;
+      }
+    }
+    return true;
+  });
 }
 
 function checkEnemyProjHit(){
@@ -306,6 +346,7 @@ function checkProjHitEnemies(){
           if(Math.random()<0.75&&state!=='boss'){spawnCoin(e.x,e.y);}
           spawnBurst(e.x,e.y,ELEM_COLORS[e.element],14);
         }
+        if(proj.isVoidSpecial)blackHoleEffect={x:proj.x,y:proj.y,life:3.5,maxLife:3.5};
         hit=true;return e.hp>0;
       }
       return true;
@@ -317,7 +358,7 @@ function checkProjHitEnemies(){
 function updateParticles(dt){
   particles=particles.filter(p=>{
     p.life-=dt;
-    if(p.type==='text'||p.type==='coin')return p.life>0;
+    if(p.type==='text'||p.type==='coin'||p.type==='coin-img')return p.life>0;
     p.x+=p.vx*dt;p.y+=p.vy*dt;p.vx*=0.92;p.vy*=0.92;return p.life>0;
   });
 }
@@ -346,7 +387,7 @@ function updateEnemy(e,dt){
 
 // ── REALM / NARWHAL ───────────────────────────────────────────────────────────
 function enterRealm(id){
-  currentRealm=id;enemies=[];projectiles=[];enemyProjectiles=[];coinPickups=[];
+  currentRealm=id;enemies=[];projectiles=[];enemyProjectiles=[];coinPickups=[];blackHoleEffect=null;
   enemySpawnTimer=3;realmDmgTimer=2;state='playing';
   player.x=W/2;player.y=H-80;playerEntangled=0;playerBlown={vx:0,vy:0,t:0};
   obstacles=id==='hub'?[]:generateObstacles(id);
@@ -354,7 +395,7 @@ function enterRealm(id){
   const hint=document.getElementById('unlockHint');
   if(id!=='hub'){
     const cn=captiveNarwhals.find(n=>n.realm===id&&!n.freed);
-    if(cn){hint.textContent='Find '+cn.emoji+' '+cn.name+' in the north!';hint.style.display='block';setTimeout(()=>hint.style.display='none',3500);}
+    if(cn){hint.textContent='Find '+cn.name+' in the north!';hint.style.display='block';setTimeout(()=>hint.style.display='none',3500);}
     else{hint.style.display='none';}
   if(id==='void'){
       setTimeout(()=>showStatus('🌑 Find Luma the Void Narwhal!',3),500);
@@ -364,20 +405,57 @@ function enterRealm(id){
       lumaState.spinAngle=0;lumaState.spinRate=4;lumaState.cryTimer=1;lumaState.cryText='';
     }
   } else {hint.style.display='none';}
+
+  // Companion realm tips — fire after hint toast settles, first entry only
+  if(id==='fire' &&rescuedSet.has('water')&&!realmTipsShown.has('fire'))
+    setTimeout(()=>{if(state==='playing')showRealmTip('fire','water','Squirt says:','Squirt here! 💧 Water is super effective against these fire enemies — I\'ve got this!');},400);
+  else if(id==='earth'&&rescuedSet.has('fire') &&!realmTipsShown.has('earth'))
+    setTimeout(()=>{if(state==='playing')showRealmTip('earth','fire','Spark says:','Spark here! 🔥 Fire tears right through earth creatures — leave it to me!');},400);
+  else if(id==='air'  &&rescuedSet.has('earth')&&!realmTipsShown.has('air'))
+    setTimeout(()=>{if(state==='playing')showRealmTip('air','earth','Root says:','Root here! 🍃 Earth energy grounds these air enemies perfectly — I\'ll handle them!');},400);
 }
 
 function freeNarwhal(cn){
   cn.freed=true;rescuedSet.add(cn.id);
   companionHp[cn.id]=COMPANION_MAX_HP;
   carryingNarwhal=cn.id;
+  factResumeState='carrying';
+  document.getElementById('factBtn').textContent='Awesome! Now bring them back safely! 🌊';
   state='fact'; // pauses game behind popup
-  document.getElementById('factNarwhal').textContent=cn.emoji;
+  document.getElementById('factNarwhal').src='assets/narwhal-'+cn.id+'.png';
   document.getElementById('factTitle').textContent=cn.factTitle;
   document.getElementById('factText').textContent=cn.fact;
+  document.getElementById('factNote').style.display='';
   document.getElementById('factPopup').classList.add('show');
   spawnBurst(cn.x,cn.y,ELEM_COLORS[cn.element],20);
+  if(cn.element==='air')factChainFn=showBreezeTip;
   if(!selectedElement&&cn.element!=='air')setSelected(cn.id);
   updateCompanionUI();
+}
+
+function showRealmTip(realmId,narwhalId,title,msg){
+  factResumeState='playing';
+  realmTipsShown.add(realmId);
+  const factBtn=document.getElementById('factBtn');
+  factBtn.textContent='Got it';
+  factBtn.style.display='';
+  document.getElementById('factNarwhal').src='assets/narwhal-'+narwhalId+'.png';
+  document.getElementById('factTitle').textContent=title;
+  document.getElementById('factText').textContent=msg;
+  document.getElementById('factNote').style.display='none';
+  const popup=document.getElementById('factPopup');
+  state='fact';
+  popup.classList.add('show');
+}
+
+function showBreezeTip(){
+  factResumeState='carrying';
+  document.getElementById('factBtn').textContent='Got it!';
+  document.getElementById('factBtn').style.display='';
+  document.getElementById('factNarwhal').src='assets/narwhal-air.png';
+  document.getElementById('factTitle').textContent='Breeze the Air Narwhal!';
+  document.getElementById('factText').textContent="HEY! I noticed you've been battling hard to save all our friends. If you need a hand press [4] to activate my power to heal everyone!";
+  document.getElementById('factNote').style.display='none';
 }
 
 function showReadyPrompt(){
@@ -386,10 +464,11 @@ function showReadyPrompt(){
   factBtn.style.display='none';
   ['readyGo','readyNot'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
 
-  document.getElementById('factNarwhal').textContent='🌑';
+  document.getElementById('factNarwhal').src='assets/narwhal-void.png';
   document.getElementById('factTitle').textContent='Luma the Void Narwhal';
   document.getElementById('factText').textContent=
-    'Are you ready to save the ocean and destroy the Evil Cybertruck?';
+    'Are you ready to save the ocean and defeat the Evil Orca?';
+  document.getElementById('factNote').style.display='none';
 
   const popup=document.getElementById('factPopup');
 
@@ -447,10 +526,11 @@ function shopAnswer(yes){
     // They said yes to "did you conquer all four realms?"
     shopStep=2;
     const canAfford=sandDollars>=21;
-    document.getElementById('shopText').textContent=
+    const sdImg='<img src="assets/sand-dollar.png" style="width:14px;height:14px;vertical-align:middle;">';
+    document.getElementById('shopText').innerHTML=
       canAfford
-        ? `The Black Hole power is LEGENDARY. It costs 21 sand dollars. You have 🪙${sandDollars}. Do you wish to purchase?`
-        : `HA! You need 21 sand dollars but you only have 🪙${sandDollars}. Go earn more and come back, broke narwhal!`;
+        ? `The Black Hole power is LEGENDARY. It costs 21 sand dollars. You have ${sdImg}${sandDollars}. Do you wish to purchase?`
+        : `HA! You need 21 sand dollars but you only have ${sdImg}${sandDollars}. Go earn more and come back, broke narwhal!`;
     document.getElementById('shopYes').style.display=canAfford?'block':'none';
     document.getElementById('shopYes').onclick=()=>shopAnswer(true);
     document.getElementById('shopNo').textContent=canAfford?'No thanks':'Ugh, fine...';
@@ -458,12 +538,12 @@ function shopAnswer(yes){
   } else if(shopStep===2){
     if(sandDollars>=21){
       sandDollars-=21;
-      document.getElementById('sandDollars').textContent='🪙 '+sandDollars;
+      document.getElementById('sandDollarCount').textContent=sandDollars;
       blackHolePurchased=true;
       rescuedSet.add('void');
       companionHp['void']=COMPANION_MAX_HP;
       updateCompanionUI();
-      document.getElementById('shopText').textContent='EXCELLENT. The Black Hole power is yours! Now go destroy the Evil Cybertruck! 🌑';
+      document.getElementById('shopText').textContent='EXCELLENT. The Black Hole power is yours! Now go defeat the Evil Orca! 🌑';
       document.getElementById('shopYes').style.display='none';
       document.getElementById('shopNo').textContent='LET\'S GO! 🚗💥';
       document.getElementById('shopNo').onclick=()=>{
@@ -561,7 +641,7 @@ function startBoss(){
   document.getElementById('realmLabel').textContent='Boss Arena';
   document.getElementById('bossHPWrap').style.display='flex';
   document.getElementById('sandDollars').style.display='none'; // no coins in final level
-  showStatus('🚗 THE EVIL CYBERTRUCK ARRIVES!',3);
+  showStatus('🚗 THE EVIL ORCA ARRIVES!',3);
 }
 
 // Boss-mode auto fire: all narwhals fire straight upward
@@ -628,7 +708,7 @@ function updateBoss(dt){
       for(let i=0;i<spread2;i++){
         const off=(i-(spread2-1)/2)*0.18;
         enemyProjectiles.push({x:boss.x,y:boss.y+boss.r,vx:Math.cos(ba+off)*280,vy:Math.sin(ba+off)*280,
-          color:ELEM_COLORS[be],element:be,r:9,dmg:14,life:4});
+          color:ELEM_COLORS[be],element:be,r:9,dmg:14,life:4,homing:BOSS_HOMING_FACTOR});
       }
     } else if(pattern===2){
       // Horizontal spray across full width
@@ -656,7 +736,9 @@ function updateBoss(dt){
   // Check player projectile hits boss
   projectiles=projectiles.filter(proj=>{
     if(boss.alive&&dist(proj,boss)<boss.r+proj.r){
-      boss.hp-=proj.dmg;boss.dmgFlash=0.12;
+      boss.hp-=proj.dmg;
+      if(proj.isVoidSpecial){const pct=0.10+Math.random()*0.20;boss.hp=Math.max(0,boss.hp-Math.round(boss.maxHp*pct));blackHoleEffect={x:proj.x,y:proj.y,life:3.5,maxLife:3.5,pct:Math.round(pct*100)};}
+      boss.dmgFlash=0.12;
       spawnBurst(proj.x,proj.y,proj.color,6);
       document.getElementById('bossFill').style.width=Math.max(0,boss.hp/boss.maxHp*100)+'%';
       if(boss.hp<=0){
@@ -674,7 +756,7 @@ function updateBoss(dt){
 function gameLoop(ts){
   const dt=Math.min((ts-lastTime)/1000,0.05);lastTime=ts;
   if(state==='playing'||state==='carrying'||state==='boss')update(dt);
-  // fact, shop, quiz states intentionally skip update — game is paused behind the popup
+  // fact, shop states intentionally skip update — game is paused behind the popup
   render();requestAnimationFrame(gameLoop);
 }
 
@@ -729,7 +811,7 @@ function update(dt){
       enemySpawnTimer=1.8+Math.random()*(boss.phase>=2?1.2:2.0);
       spawnBossMinions();
     }
-    checkProjHitEnemies();
+    checkProjHitEnemies();updateBlackHoleEffect(dt);
     enemies.forEach(e=>updateBossMinion(e,dt));
     return;
   }
@@ -779,15 +861,15 @@ function update(dt){
             showReadyPrompt();
           } else if(p.id==='void'&&!blackHolePurchased){
             sandDollars-=5;
-            document.getElementById('sandDollars').textContent='🪙 '+sandDollars;
+            document.getElementById('sandDollarCount').textContent=sandDollars;
             voidUnlocked=true;
-            showStatus('🌑 5🪙 paid! Now find Luma!',3);
+            showStatus('🌑 5<img src="assets/sand-dollar.png" style="width:14px;height:14px;vertical-align:middle;"> paid! Now find Luma!',3);
             enterRealm(p.id);
           } else {
             enterRealm(p.id);
           }
         } else if(p.id==='void'&&hasAllFour()&&sandDollars<5){
-          showStatus(`🪙 Need 5 sand dollars to enter! You have ${sandDollars}.`,3);
+          showStatus(`<img src="assets/sand-dollar.png" style="width:14px;height:14px;vertical-align:middle;"> Need 5 sand dollars to enter! You have ${sandDollars}.`,3);
         }
       }
     });
@@ -809,8 +891,9 @@ function update(dt){
     }
   }
 
+  if(blackHoleEffect)blackHoleEffect.dtRef=dt;
   updateProjectiles(dt);updateParticles(dt);updateCoinPickups(dt);updateCooldownUI(dt);
-  updateAutoFire(dt,false);updateVoidPhysics(dt);checkEnemyProjHit();checkProjHitEnemies();
+  updateAutoFire(dt,false);updateVoidPhysics(dt);checkEnemyProjHit();checkProjHitEnemies();updateBlackHoleEffect(dt);
 
   // Companion-enemy interactions
   const rescArr=[...rescuedSet];
